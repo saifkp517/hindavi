@@ -6,6 +6,13 @@ import cors from "cors"
 import bcrypt from "bcrypt"
 import multer from "multer"
 import { fileURLToPath } from "url";
+import { Session } from "inspector";
+
+declare module 'express-session' {
+    interface SessionData {
+        userid: any;
+    }
+}
 
 const prisma = new PrismaClient()
 
@@ -15,8 +22,8 @@ const app = express();
 app.use(session({
     secret: "asdfkhjf324kner9p8u423p93hf9e830rt8uerfh",
     saveUninitialized: true,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 },
-    resave: false
+    cookie: { maxAge: 1000 * 60, secure: false},
+    resave: true,
 }));
 
 //parsing incoming data and parsing cookies
@@ -26,7 +33,7 @@ app.use(cookieParser())
 
 app.use(cors({
     origin: 'http://localhost:3000',
-    credentials: true
+    credentials: true,
 }))
 
 
@@ -61,6 +68,47 @@ app.use(cors({
 
 //////////////////////middleware-section//////////////////////
 
+//sign in OR log in
+
+//check if user is logged in or not
+app.get('/', (req, res) => {
+
+    if (  req.session.userid  ) {
+        res.json("Logged in!")
+    } else {
+        res.json("log in")
+    }
+})
+
+app.post('/signin', async (req, res) => {
+
+    const { email, password } = req.body;
+    const userPassword = await prisma.user.findUnique({
+        where: {
+            email: email
+        },
+        select: {
+            password: true
+        }
+    })
+
+    if (userPassword) {
+        const ValidPassword =bcrypt.compare(password, JSON.stringify(userPassword))
+
+        if (ValidPassword) {
+            res.json("welcome")
+            req.session.userid = email
+            console.log(req.session)
+            req.session.save()
+        } else {
+            res.status(404).json("invalid password")
+        }
+    } else {
+        res.status(404).json("user doesnt exist")
+    }
+})
+
+
 //multer initialization
 const imageStorage = multer.diskStorage({
     destination: (req, file, callback) => {
@@ -73,6 +121,7 @@ const imageStorage = multer.diskStorage({
 
 const upload = multer({ storage: imageStorage }).single('file');
 
+//upload profile picture
 app.post('/profile-upload', (req, res) => {
     upload(req, res, async function (err) {
         if (err instanceof multer.MulterError) {
@@ -140,7 +189,7 @@ app.post('/signup', async (req, res) => {
 //switch user to political  user
 app.post('/switch/political', async (req, res) => {
 
-    const { email, partylogo, facebook, instagram,designation1, designation2, twitter } = req.body
+    const { email, partylogo, facebook, instagram, designation1, designation2, twitter } = req.body
 
     const updateUser = await prisma.user.update({
         where: {
@@ -150,7 +199,7 @@ app.post('/switch/political', async (req, res) => {
             role: "Politicaluser",
             businessname: "",
             tagline: "",
-            whatsappno:"",
+            whatsappno: "",
             address: "",
             websiteurl: "",
             partylogo: partylogo,
