@@ -76,7 +76,7 @@ app.get('/', (req, res) => {
     if (  req.session.userid  ) {
         res.json("Logged in!")
     } else {
-        res.json("log in")
+        res.json("log in");
     }
 })
 
