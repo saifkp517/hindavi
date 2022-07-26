@@ -2,6 +2,10 @@ import express from "express";
 import session from "express-session"
 import cookieParser from "cookie-parser"
 import { PrismaClient } from '@prisma/client'
+import cors from "cors"
+import bcrypt from "bcrypt"
+import multer from "multer"
+import { fileURLToPath } from "url";
 
 const prisma = new PrismaClient()
 
@@ -19,6 +23,12 @@ app.use(session({
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
+
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}))
+
 
 ////////////////test////////////////////
 // const myusername = 'user1'
@@ -51,46 +61,137 @@ app.use(cookieParser())
 
 //////////////////////middleware-section//////////////////////
 
-//sign up for political and business users
-app.post('/signup/political', async (req, res) => {
-    const { profilephoto, partylogo, username, email, phoneno, designation1, designation2, facebook, instagram, twitter } = req.body;
+//multer initialization
+const imageStorage = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, './images')
+    },
+    filename: (req, file, callback) => {
+        callback(null, file.originalname)
+    }
+})
+
+const upload = multer({ storage: imageStorage }).single('file');
+
+app.post('/profile-upload', (req, res) => {
+    upload(req, res, async function (err) {
+        if (err instanceof multer.MulterError) {
+            return console.log("Error:- " + err)
+        } else if (err) {
+            return console.log(err)
+        }
+        console.log("alright!")
+        let filePath = req.file.path
+
+        let email = "asd@gmail.com"
+
+        const updateUser = await prisma.user.update({
+            where: {
+                email: email
+            },
+            data: {
+                profilephoto: filePath
+            }
+        })
+    })
+})
+
+
+//sign up as base user
+app.post('/signup', async (req, res) => {
+    const { username, email, password, phoneno } = req.body
 
     try {
-
-        const username = req.body.username;
-        const email = req.body.email
-        const profileStatus = "Political"
-
+        //check if user exists
         const user = await prisma.user.findUnique({
             where: {
                 email: email
             }
         })
 
-        if(user) return res.json("User exists");
+        if (user) return res.status(401).json("User exists");
 
+        const EncryptedPassword = await bcrypt.hash(password, 10)
+
+        //add user
         await prisma.user.create({
             data: {
-                profilephoto: profilephoto
+                profilephoto: "none",
+                username: username,
+                email: email,
+                role: "base",
+                password: EncryptedPassword,
+                phoneno: phoneno,
+                photos: {
+                    create: {
+                        image: "None"
+                    }
+                }
             }
         })
         res.json(user)
         console.log(user)
     } catch (err) {
         console.log(err)
-        res.send(500).json(err)
+        res.status(500).json(err + "this is a error bro!")
     }
-
-
-    
-
 })
 
-app.post('/signup/business', (req, res) => {
-    const { profilephoto, businessname, tagline, emailid, phoneno, whatsappno, address, websiteurl } = req.body
-    const profileStatus = "Business"
+//switch user to political  user
+app.post('/switch/political', async (req, res) => {
+
+    const { email, partylogo, facebook, instagram,designation1, designation2, twitter } = req.body
+
+    const updateUser = await prisma.user.update({
+        where: {
+            email: email
+        },
+        data: {
+            role: "Politicaluser",
+            businessname: "",
+            tagline: "",
+            whatsappno:"",
+            address: "",
+            websiteurl: "",
+            partylogo: partylogo,
+            designation1: designation1,
+            designation2: designation2,
+            facebook: facebook,
+            twitter: instagram,
+            instagram: twitter
+        }
+    })
+
+    console.log(updateUser)
+    res.json(updateUser)
 })
 
+//switch base user to political  user
+app.post('/switch/business', async (req, res) => {
+
+    const { email, businessname, tagline, whatsappno, address, websiteurl } = req.body
+
+    const updateUser = await prisma.user.update({
+        where: {
+            email: email
+        },
+        data: {
+            role: "Businessuser",
+            businessname: businessname,
+            tagline: tagline,
+            whatsappno: whatsappno,
+            address: address,
+            websiteurl: websiteurl,
+            partylogo: "",
+            facebook: "",
+            twitter: "",
+            instagram: ""
+        }
+    })
+
+    console.log(updateUser)
+    res.json(updateUser)
+})
 
 
 
@@ -98,3 +199,4 @@ app.post('/signup/business', (req, res) => {
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log('App listening on port ' + port));
+
