@@ -1,9 +1,9 @@
-POST http://localhost:4000/signup HTTP/1.1
+POST http://localhost:4000/signup/de64e834-bf9a-43f1-b8ff-a8c4a028ce1e HTTP/1.1
 content-type: application/json
 
 {
     "username": "testuser1",
-    "email": "test1@gmail.com",
+    "email": "test2@gmail.com",
     "password": "pass123",
     "phoneno": "1234567890"
 }
@@ -14,7 +14,7 @@ POST http://localhost:4000/switch/business HTTP/1.1
 content-type: application/json
 
 {
-    "email": "test231@gmail.com",
+    "email": "test2@gmail.com",
     "businessname": "avocado",
     "tagline": "we suffer so you don't",
     "whatsappno": "138927348923742",
@@ -29,7 +29,7 @@ POST http://localhost:4000/switch/political HTTP/1.1
 content-type: application/json
 
 {
-    "email": "test231@gmail.com",
+    "email": "test2@gmail.com",
     "partylogo": "dafwersfdfassdfsdf.jpg",
     "facebook": "facebook",
     "twitter": "facebook",
@@ -50,3 +50,23 @@ content-type: application/json
 ###
 
 GET http://localhost:4000/
+
+
+###
+
+POST http://localhost:4000/randomno HTTP/1.1
+content-type: application/json
+
+{
+    "email": "saifkhan501721@gmail.com"
+}
+
+###
+
+POST http://localhost:4000/verifyemail HTTP/1.1
+content-type: application/json
+
+{
+    "email": "test2@gmail.com",
+    "randomno" : 168886
+}

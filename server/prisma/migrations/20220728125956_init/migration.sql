@@ -1,12 +1,9 @@
--- CreateEnum
-CREATE TYPE "Role" AS ENUM ('Businessuser', 'Politicaluser');
-
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "profilephoto" TEXT NOT NULL,
     "username" TEXT NOT NULL,
-    "role" "Role",
+    "role" TEXT NOT NULL,
     "businessname" TEXT,
     "tagline" TEXT,
     "whatsappno" TEXT,
@@ -16,9 +13,13 @@ CREATE TABLE "User" (
     "facebook" TEXT,
     "instagram" TEXT,
     "twitter" TEXT,
+    "designation1" TEXT,
+    "designation2" TEXT,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "phoneno" TEXT NOT NULL,
+    "coins" INTEGER NOT NULL,
+    "verified" BOOLEAN NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

@@ -1,7 +1,9 @@
 import express from "express";
+import nodemailer from "nodemailer"
 import session from "express-session"
 import cookieParser from "cookie-parser"
 import { PrismaClient } from '@prisma/client'
+import { v4 as uuidv4 } from 'uuid';
 import cors from "cors"
 import bcrypt from "bcrypt"
 import multer from "multer"
@@ -22,7 +24,7 @@ const app = express();
 app.use(session({
     secret: "asdfkhjf324kner9p8u423p93hf9e830rt8uerfh",
     saveUninitialized: true,
-    cookie: { maxAge: 1000 * 60, secure: false},
+    cookie: { maxAge: 1000 * 60, secure: false },
     resave: true,
 }));
 
@@ -37,35 +39,6 @@ app.use(cors({
 }))
 
 
-////////////////test////////////////////
-// const myusername = 'user1'
-// const mypassword = 'mypassword'
-
-// // a variable to save a session
-// let Usersessions: any;
-
-// app.post('/user',(req,res) => {
-//     if(req.body.username == myusername && req.body.password == mypassword){
-//         Usersessions=req.session;
-//         Usersessions.userid=req.body.username;
-//         console.log(req.session)
-//         res.send(`Hey there, welcome <a href=\'/logout'>click to logout</a>`);
-//     }
-//     else{
-//         res.send('Invalid username or password');
-//     }
-// })
-// app.get('/',(req,res) => {
-//     Usersessions=req.session;
-//     if(Usersessions.userid){
-//         res.send("Welcome User <a href=\'/logout'>click to logout</a>");
-//     }else
-//     res.sendFile('./index.html',{root:__dirname})
-// });
-
-////////////////test////////////////////
-
-
 //////////////////////middleware-section//////////////////////
 
 //sign in OR log in
@@ -73,7 +46,7 @@ app.use(cors({
 //check if user is logged in or not
 app.get('/', (req, res) => {
 
-    if (  req.session.userid  ) {
+    if (req.session.userid) {
         res.json("Logged in!")
     } else {
         res.json("log in");
@@ -93,7 +66,7 @@ app.post('/signin', async (req, res) => {
     })
 
     if (userPassword) {
-        const ValidPassword =bcrypt.compare(password, JSON.stringify(userPassword))
+        const ValidPassword = bcrypt.compare(password, JSON.stringify(userPassword))
 
         if (ValidPassword) {
             res.json("welcome")
@@ -108,6 +81,67 @@ app.post('/signin', async (req, res) => {
     }
 })
 
+let RandomNumber: Number;
+
+function RandomNumberGenerator() {
+    RandomNumber = Math.floor(100000 + Math.random() * 900000)
+}
+
+setInterval(RandomNumberGenerator, 10 * 1000);
+
+app.post('/randomno', (req, res) => {
+
+    res.json(RandomNumber)
+
+    // let transporter = nodemailer.createTransport({
+    //     service: 'gmail',
+    //     port: 587,
+    //     secure: false,
+    //     requireTLS: true,
+    //     auth: {
+    //         user: process.env.EMAIL,
+    //         pass: process.env.PASSWD,
+    //     }
+    // })
+
+    // let mailOptions = {
+    //     to: req.body.email,
+    //     subject: 'HINDAVI GRAPHICS STUDIOS',
+    //     text: `In order to register and get yourself verified please refer to the number given below
+    //     Your OTT number is ${RandomNumber}`
+    // }
+
+    // transporter.sendMail(mailOptions, (err, info) => {
+    //     if (err) console.log(err)
+    //     else {
+    //         console.log('email sent' + info.response)
+    //     }
+    // })
+
+})
+
+app.post('/verifyemail', async (req, res) => {
+    const { email, randomno } = req.body;
+
+    if (randomno === RandomNumber) {
+
+        const verifyUser = await prisma.user.update({
+
+            where: {
+                email: email
+            },
+            data: {
+                verified: true
+            }
+
+        })
+
+        res.json(verifyUser)
+
+    } else {
+        res.status(404).json("Incorrect code number")
+    }
+})
 
 //multer initialization
 const imageStorage = multer.diskStorage({
@@ -147,7 +181,7 @@ app.post('/profile-upload', (req, res) => {
 
 
 //sign up as base user
-app.post('/signup', async (req, res) => {
+app.post('/signup/:id', async (req, res) => {
     const { username, email, password, phoneno } = req.body
 
     try {
@@ -163,23 +197,65 @@ app.post('/signup', async (req, res) => {
         const EncryptedPassword = await bcrypt.hash(password, 10)
 
         //add user
-        await prisma.user.create({
-            data: {
-                profilephoto: "none",
-                username: username,
-                email: email,
-                role: "base",
-                password: EncryptedPassword,
-                phoneno: phoneno,
-                photos: {
-                    create: {
-                        image: "None"
+
+        if (req.params.id === "null") {
+
+            const createUser = await prisma.user.create({
+                data: {
+                    profilephoto: "none",
+                    username: username,
+                    email: email,
+                    role: "base",
+                    password: EncryptedPassword,
+                    phoneno: phoneno,
+                    photos: {
+                        create: {
+                            image: "None"
+                        }
+                    },
+                    coins: 0,
+                    verified: false,
+                    refcode: uuidv4()
+                }
+            })
+            res.json(createUser)
+            console.log(createUser)
+
+        } else {
+
+            const createUser = await prisma.user.create({
+                data: {
+                    profilephoto: "none",
+                    username: username,
+                    email: email,
+                    role: "base",
+                    password: EncryptedPassword,
+                    phoneno: phoneno,
+                    photos: {
+                        create: {
+                            image: "None"
+                        }
+                    },
+                    coins: 0,
+                    verified: false,
+                    refcode: uuidv4()
+                }
+            })
+            res.json(createUser)
+            console.log(createUser)
+
+            const referral = await prisma.user.updateMany({
+                where: {
+                    refcode: req.params.id
+                },
+                data: {
+                    coins: {
+                        increment: 20
                     }
                 }
-            }
-        })
-        res.json(user)
-        console.log(user)
+            })
+
+        }
     } catch (err) {
         console.log(err)
         res.status(500).json(err + "this is a error bro!")
@@ -197,11 +273,11 @@ app.post('/switch/political', async (req, res) => {
         },
         data: {
             role: "Politicaluser",
-            businessname: "",
-            tagline: "",
-            whatsappno: "",
-            address: "",
-            websiteurl: "",
+            businessname: null,
+            tagline: null,
+            whatsappno: null,
+            address: null,
+            websiteurl: null,
             partylogo: partylogo,
             designation1: designation1,
             designation2: designation2,
@@ -231,10 +307,10 @@ app.post('/switch/business', async (req, res) => {
             whatsappno: whatsappno,
             address: address,
             websiteurl: websiteurl,
-            partylogo: "",
-            facebook: "",
-            twitter: "",
-            instagram: ""
+            partylogo: null,
+            facebook: null,
+            twitter: null,
+            instagram: null
         }
     })
 
