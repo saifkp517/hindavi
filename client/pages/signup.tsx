@@ -13,7 +13,9 @@ import {
 } from '@mui/material';
 import {
   AccountCircle,
+  Email,
   Lock,
+  Phone,
   Visibility,
   VisibilityOff,
 } from '@mui/icons-material';
@@ -29,13 +31,12 @@ const Home: NextPage = () => {
         width: '100%',
         minHeight: '100vh',
         display: 'grid',
-        placeContent: 'center',
+        placeItems: 'center',
       }}
     >
       <Box
         sx={{
           width: '100%',
-          placeSef: 'center center',
         }}
       >
         <Typography
@@ -47,7 +48,7 @@ const Home: NextPage = () => {
             fontWeight: 700,
           }}
         >
-          Login
+          Sign up
         </Typography>
 
         <Typography
@@ -60,17 +61,23 @@ const Home: NextPage = () => {
             marginLeft: 1,
           }}
         >
-          Please login to continue
+          Please sign up to continue
         </Typography>
         <Box
           sx={{
             width: '100%',
             paddingX: 1,
-            marginTop: 6,
+            marginTop: 2,
           }}
         >
           <form>
-            <FormControl fullWidth={true} variant='outlined'>
+            <FormControl
+              fullWidth={true}
+              variant='outlined'
+              sx={{
+                marginTop: 2,
+              }}
+            >
               <InputLabel htmlFor='username'>Username</InputLabel>
               <OutlinedInput
                 id='username'
@@ -79,6 +86,45 @@ const Home: NextPage = () => {
                 startAdornment={
                   <InputAdornment position='start'>
                     <AccountCircle />
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <FormControl
+              fullWidth={true}
+              variant='outlined'
+              sx={{
+                marginTop: 2,
+              }}
+            >
+              <InputLabel htmlFor='email'>Email Address</InputLabel>
+              <OutlinedInput
+                id='email'
+                type='email'
+                label='email address'
+                fullWidth={true}
+                startAdornment={
+                  <InputAdornment position='start'>
+                    <Email />
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <FormControl
+              fullWidth={true}
+              variant='outlined'
+              sx={{
+                marginTop: 2,
+              }}
+            >
+              <InputLabel htmlFor='phone'>Phone number</InputLabel>
+              <OutlinedInput
+                id='phone'
+                label='phone number'
+                fullWidth={true}
+                startAdornment={
+                  <InputAdornment position='start'>
+                    <Phone />
                   </InputAdornment>
                 }
               />
@@ -113,20 +159,25 @@ const Home: NextPage = () => {
                 }
               />
             </FormControl>
-            <Link
-              href='/' //     TODO     //
-              color='primary.light'
-              variant='subtitle1'
-              component='p'
-              align='right'
-              marginTop={0.5}
+            <FormControl
+              fullWidth={true}
+              variant='outlined'
               sx={{
-                width: '100%',
-                textDecoration: 'none',
+                marginTop: 2,
               }}
             >
-              forgot password?
-            </Link>
+              <InputLabel htmlFor='confirm'>Confirm Password</InputLabel>
+              <OutlinedInput
+                id='confirm'
+                label='confirm password'
+                fullWidth={true}
+                startAdornment={
+                  <InputAdornment position='start'>
+                    <Lock />
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
             <Button
               type='submit'
               fullWidth={true}
@@ -138,19 +189,15 @@ const Home: NextPage = () => {
                 paddingY: 1,
               }}
             >
-              Login
+              Sign up
             </Button>
           </form>
         </Box>
       </Box>
-      <Typography
-        variant='body1'
-        component='p'
-        sx={{ placeSelf: 'end center', marginTop: 6 }}
-      >
-        New user?
-        <Link href='/signup' sx={{ marginLeft: 1, textDecoration: 'none' }}>
-          Sign up
+      <Typography variant='body1' component='p'>
+        Already have an account
+        <Link href='/' sx={{ marginLeft: 1, textDecoration: 'none' }}>
+          Login
         </Link>
       </Typography>
     </Container>
