@@ -1,6 +1,8 @@
-import express from "express";
-import nodemailer from "nodemailer"
+import express, { NextFunction } from "express";
+require('dotenv').config()
 import session from "express-session"
+import bodyParser from "body-parser";
+import nodemailer from "nodemailer"
 import cookieParser from "cookie-parser"
 import { PrismaClient } from '@prisma/client'
 import { v4 as uuidv4 } from 'uuid';
@@ -9,18 +11,21 @@ import bcrypt from "bcrypt"
 import multer from "multer"
 import { fileURLToPath } from "url";
 import { Session } from "inspector";
-
-declare module 'express-session' {
-    interface SessionData {
-        userid: any;
-    }
-}
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 const prisma = new PrismaClient()
 
 const app = express();
 
-//session middleware
+export interface UserAuth extends express.Request {
+    user: string | JwtPayload
+}
+
+//parsing incoming data and parsing cookies
+app.use(express.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(cookieParser())
+
 app.use(session({
     secret: "asdfkhjf324kner9p8u423p93hf9e830rt8uerfh",
     saveUninitialized: true,
@@ -28,10 +33,6 @@ app.use(session({
     resave: true,
 }));
 
-//parsing incoming data and parsing cookies
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use(cookieParser())
 
 app.use(cors({
     origin: 'http://localhost:3000',
@@ -44,14 +45,49 @@ app.use(cors({
 //sign in OR log in
 
 //check if user is logged in or not
-app.get('/', (req, res) => {
 
-    if (req.session.userid) {
-        res.json("Logged in!")
-    } else {
-        res.json("log in");
-    }
+function parseCookies (request: UserAuth) {
+    const list: any = {};
+    const cookieHeader = request.headers?.cookie;
+    if (!cookieHeader) return list;
+
+    cookieHeader.split(`;`).forEach(function(cookie) {
+        let [ name, ...rest] = cookie.split(`=`);
+        name = name?.trim();
+        if (!name) return;
+        const value = rest.join(`=`).trim();
+        if (!value) return;
+        list[name] = decodeURIComponent(value);
+    });
+
+    return list;
+}
+
+
+function authenticateToken(req: UserAuth, res: express.Response, next: NextFunction) {
+
+    // if (token == null) return res.sendStatus(401)
+
+    // jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err: Error, user: any) => {
+    //     console.log(err)
+    //     if (err) return res.sendStatus(403)
+    //     req.user = user
+    //     next()
+    // })
+}
+app.get('/', (req: UserAuth, res) => {
+
+    const cookies = parseCookies(req)
+    console.log(cookies)
+
+    res.writeHead(200, {
+        "Set-Cookie": `mycookie=test`,
+        "Content-Type": `text/plain`
+    });
+
+    res.end(req.user + "adas")
 })
+
 
 app.post('/signin', async (req, res) => {
 
@@ -66,20 +102,39 @@ app.post('/signin', async (req, res) => {
     })
 
     if (userPassword) {
-        const ValidPassword = bcrypt.compare(password, JSON.stringify(userPassword))
+        bcrypt.compare(password, userPassword.password).then(result => {
 
-        if (ValidPassword) {
-            res.json("welcome")
-            req.session.userid = email
-            console.log(req.session)
-            req.session.save()
-        } else {
-            res.status(404).json("invalid password")
-        }
+            if (result) {
+
+                const accessToken = generateAccessToken(email)
+                const refreshToken = jwt.sign(email.toString(), process.env.ACCESS_TOKEN_SECRET)
+
+                res.cookie("token", accessToken, { httpOnly: true })
+
+                res.json({ accessToken: accessToken, refreshToken: refreshToken })
+
+            } else {
+
+                console.log(typeof password)
+                console.log(typeof userPassword.password)
+                console.log(password)
+                console.log(JSON.stringify(userPassword.password))
+
+                res.json({ message: "Invalid Password" })
+            }
+
+        })
+        .catch(err => console.log(err))
+        
     } else {
-        res.status(404).json("user doesnt exist")
+        res.json({ message: "User does not exist" })
     }
 })
+
+function generateAccessToken(user: any) {
+    return jwt.sign({ user: user.toString() }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
+}
+
 
 let RandomNumber: Number;
 
@@ -87,36 +142,36 @@ function RandomNumberGenerator() {
     RandomNumber = Math.floor(100000 + Math.random() * 900000)
 }
 
-setInterval(RandomNumberGenerator, 10 * 1000);
+setInterval(RandomNumberGenerator, 60 * 1000);
 
 app.post('/randomno', (req, res) => {
 
     res.json(RandomNumber)
 
-    // let transporter = nodemailer.createTransport({
-    //     service: 'gmail',
-    //     port: 587,
-    //     secure: false,
-    //     requireTLS: true,
-    //     auth: {
-    //         user: process.env.EMAIL,
-    //         pass: process.env.PASSWD,
-    //     }
-    // })
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        port: 587,
+        secure: false,
+        requireTLS: true,
+        auth: {
+            user: process.env.EMAIL,
+            pass: process.env.PASSWD,
+        }
+    })
 
-    // let mailOptions = {
-    //     to: req.body.email,
-    //     subject: 'HINDAVI GRAPHICS STUDIOS',
-    //     text: `In order to register and get yourself verified please refer to the number given below
-    //     Your OTT number is ${RandomNumber}`
-    // }
+    let mailOptions = {
+        to: req.body.email,
+        subject: 'HINDAVI GRAPHICS STUDIOS',
+        text: `In order to register and get yourself verified please refer to the number given below
+        Your OTT number is ${RandomNumber}`
+    }
 
-    // transporter.sendMail(mailOptions, (err, info) => {
-    //     if (err) console.log(err)
-    //     else {
-    //         console.log('email sent' + info.response)
-    //     }
-    // })
+    transporter.sendMail(mailOptions, (err, info) => {
+        if (err) console.log(err)
+        else {
+            console.log('email sent' + info.response)
+        }
+    })
 
 })
 
@@ -205,7 +260,7 @@ app.post('/signup/:id', async (req, res) => {
                     profilephoto: "none",
                     username: username,
                     email: email,
-                    role: "base",
+
                     password: EncryptedPassword,
                     phoneno: phoneno,
                     photos: {
@@ -228,7 +283,6 @@ app.post('/signup/:id', async (req, res) => {
                     profilephoto: "none",
                     username: username,
                     email: email,
-                    role: "base",
                     password: EncryptedPassword,
                     phoneno: phoneno,
                     photos: {
@@ -263,59 +317,56 @@ app.post('/signup/:id', async (req, res) => {
 })
 
 //switch user to political  user
-app.post('/switch/political', async (req, res) => {
+app.post('/add/political', async (req, res) => {
 
     const { email, partylogo, facebook, instagram, designation1, designation2, twitter } = req.body
 
-    const updateUser = await prisma.user.update({
+    const addPolitical = await prisma.user.update({
         where: {
             email: email
         },
         data: {
-            role: "Politicaluser",
-            businessname: null,
-            tagline: null,
-            whatsappno: null,
-            address: null,
-            websiteurl: null,
-            partylogo: partylogo,
-            designation1: designation1,
-            designation2: designation2,
-            facebook: facebook,
-            twitter: instagram,
-            instagram: twitter
+            politicalprofiles: {
+                create: {
+                    partylogo: partylogo,
+                    facebook: facebook,
+                    instagram: instagram,
+                    twitter: twitter,
+                    designation1: designation1,
+                    deisgnation2: designation2
+                }
+            }
         }
     })
 
-    console.log(updateUser)
-    res.json(updateUser)
+    console.log(addPolitical)
+    res.json(addPolitical)
 })
 
 //switch base user to political  user
-app.post('/switch/business', async (req, res) => {
+app.post('/add/business', async (req, res) => {
 
     const { email, businessname, tagline, whatsappno, address, websiteurl } = req.body
 
-    const updateUser = await prisma.user.update({
+    const addBusiness = await prisma.user.update({
         where: {
             email: email
         },
         data: {
-            role: "Businessuser",
-            businessname: businessname,
-            tagline: tagline,
-            whatsappno: whatsappno,
-            address: address,
-            websiteurl: websiteurl,
-            partylogo: null,
-            facebook: null,
-            twitter: null,
-            instagram: null
+            businessprofiles: {
+                create: {
+                    businessname: businessname,
+                    tagline: tagline,
+                    whatsappno: whatsappno,
+                    address: address,
+                    websiteurl: websiteurl
+                }
+            }
         }
     })
 
-    console.log(updateUser)
-    res.json(updateUser)
+    console.log(addBusiness)
+    res.json(addBusiness)
 })
 
 

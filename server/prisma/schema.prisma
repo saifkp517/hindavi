@@ -11,28 +11,41 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(uuid())
-  profilephoto String
-  username     String
-  role         String
-  businessname String?
-  tagline      String?
-  whatsappno   String?
-  address      String?
-  websiteurl   String?
-  partylogo    String?
-  facebook     String?
-  instagram    String?
-  twitter      String?
-  designation1 String?
-  designation2 String?
-  email        String   @unique
-  password     String
-  phoneno      String
-  photos       Photos[]
-  coins        Int
-  verified     Boolean
-  refcode      String
+  id                String             @id @default(uuid())
+  profilephoto      String
+  username          String
+  businessprofiles  BusinessProfile?
+  politicalprofiles PoliticalProfile?
+  email             String             @unique
+  password          String
+  phoneno           String
+  photos            Photos[]
+  coins             Int
+  verified          Boolean
+  refcode           String
+}
+
+model BusinessProfile {
+  id           String @id @default(uuid())
+  user         User?   @relation(fields: [userId], references: [email])
+  userId       String @unique
+  businessname String
+  tagline      String
+  whatsappno   String
+  address      String
+  websiteurl   String
+}
+
+model PoliticalProfile {
+  id           String @id @default(uuid())
+  user         User?   @relation(fields: [userId], references: [email])
+  userId       String @unique
+  partylogo    String
+  facebook     String
+  instagram    String
+  twitter      String
+  designation1 String
+  deisgnation2 String
 }
 
 model Photos {

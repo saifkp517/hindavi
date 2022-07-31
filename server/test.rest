@@ -3,14 +3,14 @@ content-type: application/json
 
 {
     "username": "testuser1",
-    "email": "test2@gmail.com",
+    "email": "test5@gmail.com",
     "password": "pass123",
     "phoneno": "1234567890"
 }
 
 ###
 
-POST http://localhost:4000/switch/business HTTP/1.1
+POST http://localhost:4000/add/business HTTP/1.1
 content-type: application/json
 
 {
@@ -25,7 +25,7 @@ content-type: application/json
 
 ###
 
-POST http://localhost:4000/switch/political HTTP/1.1
+POST http://localhost:4000/add/political HTTP/1.1
 content-type: application/json
 
 {
@@ -33,7 +33,9 @@ content-type: application/json
     "partylogo": "dafwersfdfassdfsdf.jpg",
     "facebook": "facebook",
     "twitter": "facebook",
-    "instagram": "twitter"    
+    "instagram": "twitter",
+    "designation1": "designation1",
+    "designation2": "designation2"
 }
 
 
@@ -43,13 +45,14 @@ POST http://localhost:4000/signin HTTP/1.1
 content-type: application/json
 
 {
-    "email": "test1@gmail.com",
+    "email": "test3@gmail.com",
     "password": "pass123"
 }
 
 ###
 
 GET http://localhost:4000/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InRlc3QxQGdtYWlsLmNvbSIsImlhdCI6MTY1OTE5MjE1MX0.pHcTXkRvsAqv5KH2T0czNHDU35cQsXOebKHDW7_6e5A
 
 
 ###
