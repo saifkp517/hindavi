@@ -81,7 +81,7 @@ const Home: NextPage = () => {
           marginTop={0.5}
           sx={{
             width: '100%',
-            marginLeft: 1,
+            marginLeft: 0.5,
           }}
         >
           Please login to continue

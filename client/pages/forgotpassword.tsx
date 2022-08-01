@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import type { NextPage } from 'next';
-import { Tag } from '@mui/icons-material';
+import { Email, Tag } from '@mui/icons-material';
 
 const Verify: NextPage = () => {
   return (
@@ -30,7 +30,7 @@ const Verify: NextPage = () => {
           fontWeight: 700,
         }}
       >
-        Email Verification
+        Forgot Password
       </Typography>
       <Typography
         color='primary.light'
@@ -42,17 +42,18 @@ const Verify: NextPage = () => {
           marginLeft: 0.5,
         }}
       >
-        Please enter the 6 - digit code sent to your email address.
+        Please enter the email address associated with the account
       </Typography>
       <form>
         <FormControl fullWidth={true} variant='outlined' sx={{ marginTop: 4 }}>
-          <InputLabel htmlFor='verification'>Verification Code</InputLabel>
+          <InputLabel htmlFor='email'>Email</InputLabel>
           <OutlinedInput
-            id='verification'
-            label='verification code'
+            id='email'
+            type='email'
+            label='Email'
             startAdornment={
               <InputAdornment position='start'>
-                <Tag />
+                <Email />
               </InputAdornment>
             }
           />
