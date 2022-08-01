@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import axios from "axios";
+import axios from 'axios';
 import Container from '@mui/material/Container';
 import {
   FormControl,
@@ -14,37 +14,43 @@ import {
 } from '@mui/material';
 import {
   AccountCircle,
+  Email,
   Lock,
   Visibility,
   VisibilityOff,
 } from '@mui/icons-material';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+
+interface State {
+  error: string;
+  showPassword: boolean;
+}
 
 const Home: NextPage = () => {
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const state = useState<State>({
+    error: '',
+    showPassword: false,
+  });
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const Auth = async(event: React.FormEvent) => {
-
+  const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
     try {
-
-      await axios.post('http://localhost:4000/signin', {
-
-        email: email,
-        password: password
-
-      })
-      .then(data => console.log("data: " + data))
-
+      if (emailRef.current && passwordRef.current) {
+        await axios
+          .post('http://localhost:4000/signin', {
+            email: emailRef.current.value,
+            password: passwordRef.current.value,
+          })
+          .then((data: any) => console.log('data: ' + data));
+      }
     } catch (err) {
       console.log(err);
     }
-
-  }
-
+  };
 
   return (
     <Container
@@ -93,18 +99,21 @@ const Home: NextPage = () => {
             marginTop: 6,
           }}
         >
-          <form onSubmit={Auth}>
+          <form onSubmit={submitHandler}>
             <FormControl fullWidth={true} variant='outlined'>
-              <InputLabel htmlFor='username'>Email</InputLabel>
+              <InputLabel htmlFor='email'>Email Address</InputLabel>
               <OutlinedInput
-                id='username'
-                label='Username'
+                id='email'
+                label='email address'
                 fullWidth={true}
-                value={email}
-                onChange={e => setEmail(e.target.value)}
+                type='email'
+                inputProps={{
+                  maxLength: 25,
+                }}
+                ref={emailRef}
                 startAdornment={
                   <InputAdornment position='start'>
-                    <AccountCircle />
+                    <Email />
                   </InputAdornment>
                 }
               />
@@ -122,8 +131,7 @@ const Home: NextPage = () => {
                 label='Password'
                 fullWidth={true}
                 type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={e=>setPassword(e.target.value)}
+                ref={passwordRef}
                 startAdornment={
                   <InputAdornment position='start'>
                     <Lock />
@@ -141,20 +149,17 @@ const Home: NextPage = () => {
                 }
               />
             </FormControl>
-            <Link
-              href='/' //     TODO     //
-              color='primary.light'
-              variant='subtitle1'
-              component='p'
-              align='right'
-              marginTop={0.5}
-              sx={{
-                width: '100%',
-                textDecoration: 'none',
-              }}
-            >
-              forgot password?
-            </Link>
+            <Typography align='right' sx={{ marginTop: 1 }}>
+              <Link
+                href='/forgotpassword'
+                color='secondary.light'
+                sx={{
+                  textDecoration: 'none',
+                }}
+              >
+                forgot password
+              </Link>
+            </Typography>
             <Button
               type='submit'
               fullWidth={true}

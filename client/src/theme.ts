@@ -7,10 +7,10 @@ const theme = createTheme({
     // you have something called mode which is light by default can be changed to dark
     // for dark mode
     primary: {
-      light: grey.A400,
       main: '#F27C35', // there is light, dark and contrast text
     },
     secondary: {
+      light: grey.A400,
       main: '#52428B',
     },
     error: {
