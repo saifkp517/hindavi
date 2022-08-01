@@ -7,8 +7,10 @@ services:
     depends_on:
       - postgres
     links:
-    - "postgres"
-    - "postgres:postgres"
+      - "postgres"
+      - "postgres:postgres"
+    env_file:
+      - ./server/.env
 
   postgres:
     image: postgres:14.1-alpine
