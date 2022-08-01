@@ -62,7 +62,7 @@ const Home: NextPage = () => {
         width: '100%',
         minHeight: '100vh',
         display: 'grid',
-        placeItems: 'center',
+        placeContent: 'center',
       }}
     >
       <Box
@@ -89,7 +89,7 @@ const Home: NextPage = () => {
           marginTop={0.5}
           sx={{
             width: '100%',
-            marginLeft: 1,
+            marginLeft: 0.5,
           }}
         >
           Please sign up to continue
@@ -233,7 +233,11 @@ const Home: NextPage = () => {
           </form>
         </Box>
       </Box>
-      <Typography variant='body1' component='p'>
+      <Typography
+        variant='body1'
+        component='p'
+        sx={{ placeSelf: 'end center', marginTop: 6 }}
+      >
         Already have an account
         <Link href='/' sx={{ marginLeft: 1, textDecoration: 'none' }}>
           Login
