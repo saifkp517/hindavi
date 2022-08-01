@@ -18,7 +18,7 @@ const prisma = new PrismaClient()
 const app = express();
 
 export interface UserAuth extends express.Request {
-    user: string | JwtPayload
+    email: string | JwtPayload
 }
 
 //parsing incoming data and parsing cookies
@@ -26,12 +26,12 @@ app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 
-app.use(session({
-    secret: "asdfkhjf324kner9p8u423p93hf9e830rt8uerfh",
-    saveUninitialized: true,
-    cookie: { maxAge: 1000 * 60, secure: false },
-    resave: true,
-}));
+// app.use(session({
+//     secret: "asdfkhjf324kner9p8u423p93hf9e830rt8uerfh",
+//     saveUninitialized: true,
+//     cookie: { maxAge: 1000 * 60, secure: false },
+//     resave: true,
+// }));
 
 
 app.use(cors({
@@ -46,46 +46,58 @@ app.use(cors({
 
 //check if user is logged in or not
 
-function parseCookies (request: UserAuth) {
-    const list: any = {};
-    const cookieHeader = request.headers?.cookie;
-    if (!cookieHeader) return list;
+app.get('/refreshtoken',async (req, res) => {
 
-    cookieHeader.split(`;`).forEach(function(cookie) {
-        let [ name, ...rest] = cookie.split(`=`);
-        name = name?.trim();
-        if (!name) return;
-        const value = rest.join(`=`).trim();
-        if (!value) return;
-        list[name] = decodeURIComponent(value);
-    });
+    const refreshToken = req.cookies.refreshtoken;
 
-    return list;
-}
+    if (!refreshToken) return res.status(401);
 
+    const user = await prisma.user.findFirst({
+        where: {
+            Token: refreshToken
+        },
+        select: {
+            email: true
+        }
+    })
 
-function authenticateToken(req: UserAuth, res: express.Response, next: NextFunction) {
+    if (!user) return res.status(403);
 
-    // if (token == null) return res.sendStatus(401)
+    jwt.verify(refreshToken, process.env.ACCESS_TOKEN_SECRET, (err: Error, decoded: any) => {
+        if (err) return res.sendStatus(403);
 
-    // jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err: Error, user: any) => {
-    //     console.log(err)
-    //     if (err) return res.sendStatus(403)
-    //     req.user = user
-    //     next()
-    // })
-}
+        let email = user.email
+
+        const accessToken = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
+
+        res.json({ accessToken: accessToken });
+
+    })
+
+})
+
+app.get('/verifytoken', (req: UserAuth, res, next) => {
+
+    const authHeader = req.headers['authorization'];
+
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if(token == null) return res.sendStatus(401);
+
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded: UserAuth) => {
+
+        if(err) return res.sendStatus(403);
+
+        req.email = decoded.email;
+
+        next();
+    })
+
+})
+
 app.get('/', (req: UserAuth, res) => {
 
-    const cookies = parseCookies(req)
-    console.log(cookies)
-
-    res.writeHead(200, {
-        "Set-Cookie": `mycookie=test`,
-        "Content-Type": `text/plain`
-    });
-
-    res.end(req.user + "adas")
+    res.end(req.email + "adas")
 })
 
 
@@ -102,32 +114,37 @@ app.post('/signin', async (req, res) => {
     })
 
     if (userPassword) {
-        bcrypt.compare(password, userPassword.password).then(result => {
+        const ValidPassword = await bcrypt.compare(password, userPassword.password)
 
-            if (result) {
+        if (ValidPassword) {
 
-                const accessToken = generateAccessToken(email)
-                const refreshToken = jwt.sign(email.toString(), process.env.ACCESS_TOKEN_SECRET)
+            const accessToken = generateAccessToken(email)
+            const refreshToken = jwt.sign({ email: email.toString() }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
 
-                res.cookie("token", accessToken, { httpOnly: true })
+            await prisma.user.update({
+                where: {
+                    email: email
+                },
+                data: {
+                    Token: refreshToken
+                }
+            })
 
-                res.json({ accessToken: accessToken, refreshToken: refreshToken })
+            res.cookie('refreshtoken', refreshToken, {
+                httpOnly: true,
+                maxAge: 60 * 1000
+            })
 
-            } else {
+            res.json({ accessToken: accessToken })
 
-                console.log(typeof password)
-                console.log(typeof userPassword.password)
-                console.log(password)
-                console.log(JSON.stringify(userPassword.password))
+        } else {
 
-                res.json({ message: "Invalid Password" })
-            }
+            res.json({ message: "Invalid Password" })
 
-        })
-        .catch(err => console.log(err))
-        
+        }
+
     } else {
-        res.json({ message: "User does not exist" })
+        res.json({ message: "Email not Found" })
     }
 })
 
@@ -265,7 +282,7 @@ app.post('/signup/:id', async (req, res) => {
                     phoneno: phoneno,
                     photos: {
                         create: {
-                            image: "None"
+                            image: "Nonets "
                         }
                     },
                     coins: 0,
@@ -274,6 +291,7 @@ app.post('/signup/:id', async (req, res) => {
                 }
             })
             res.json(createUser)
+            res.json({message: "User Signed Up!"})
             console.log(createUser)
 
         } else {

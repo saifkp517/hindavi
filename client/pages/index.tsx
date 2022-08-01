@@ -1,4 +1,5 @@
 import type { NextPage } from 'next';
+import axios from "axios";
 import Container from '@mui/material/Container';
 import {
   FormControl,
@@ -21,6 +22,29 @@ import { useState } from 'react';
 
 const Home: NextPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const Auth = async(event: React.FormEvent) => {
+
+    event.preventDefault();
+
+    try {
+
+      await axios.post('http://localhost:4000/signin', {
+
+        email: email,
+        password: password
+
+      })
+      .then(data => console.log("data: " + data))
+
+    } catch (err) {
+      console.log(err);
+    }
+
+  }
+
 
   return (
     <Container
@@ -69,13 +93,15 @@ const Home: NextPage = () => {
             marginTop: 6,
           }}
         >
-          <form>
+          <form onSubmit={Auth}>
             <FormControl fullWidth={true} variant='outlined'>
-              <InputLabel htmlFor='username'>Username</InputLabel>
+              <InputLabel htmlFor='username'>Email</InputLabel>
               <OutlinedInput
                 id='username'
                 label='Username'
                 fullWidth={true}
+                value={email}
+                onChange={e => setEmail(e.target.value)}
                 startAdornment={
                   <InputAdornment position='start'>
                     <AccountCircle />
@@ -96,6 +122,8 @@ const Home: NextPage = () => {
                 label='Password'
                 fullWidth={true}
                 type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={e=>setPassword(e.target.value)}
                 startAdornment={
                   <InputAdornment position='start'>
                     <Lock />

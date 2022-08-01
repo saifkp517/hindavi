@@ -1,4 +1,6 @@
 import type { NextPage } from 'next';
+import React from "react";
+import axios from "axios";
 import Container from '@mui/material/Container';
 import {
   FormControl,
@@ -22,6 +24,35 @@ import {
 import { useState } from 'react';
 
 const Home: NextPage = () => {
+
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [phoneno, setPhoneno] = useState('');
+
+  const Register = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+
+      await axios.post('http://localhost:4000/signup/null', {
+        username: username,
+        email: email,
+        password: password,
+        phoneno: phoneno
+      })
+        .then(data => {
+          console.log(data)
+        })
+
+    } catch (err) {
+
+      console.log(err);
+
+    }
+
+  }
+
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -70,7 +101,7 @@ const Home: NextPage = () => {
             marginTop: 2,
           }}
         >
-          <form>
+          <form onSubmit={Register}>
             <FormControl
               fullWidth={true}
               variant='outlined'
@@ -83,6 +114,8 @@ const Home: NextPage = () => {
                 id='username'
                 label='Username'
                 fullWidth={true}
+                value={username}
+                onChange={e=>setUsername(e.target.value)}
                 startAdornment={
                   <InputAdornment position='start'>
                     <AccountCircle />
@@ -103,6 +136,8 @@ const Home: NextPage = () => {
                 type='email'
                 label='email address'
                 fullWidth={true}
+                value={email}
+                onChange={e=>setEmail(e.target.value)}
                 startAdornment={
                   <InputAdornment position='start'>
                     <Email />
@@ -122,6 +157,8 @@ const Home: NextPage = () => {
                 id='phone'
                 label='phone number'
                 fullWidth={true}
+                value={phoneno}
+                onChange={e=>setPhoneno(e.target.value)}
                 startAdornment={
                   <InputAdornment position='start'>
                     <Phone />
@@ -141,6 +178,8 @@ const Home: NextPage = () => {
                 id='password'
                 label='Password'
                 fullWidth={true}
+                value={password}
+                onChange={e=>setPassword(e.target.value)}
                 type={showPassword ? 'text' : 'password'}
                 startAdornment={
                   <InputAdornment position='start'>
