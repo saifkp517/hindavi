@@ -22,24 +22,20 @@ interface State {
 }
 
 const Home: NextPage = () => {
-
   const router = useRouter();
-
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+
   const [state, setState] = useState<State>({
     error: '',
     showPassword: false,
   });
-  // const [showPassword, setShowPassword] = useState(false);
 
   const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
     try {
-      console.log(emailRef?.current?.value)
       if (emailRef.current && passwordRef.current) {
-        console.log(emailRef?.current?.value)
         await axios
           .post('http://localhost:4000/signin', {
             email: emailRef.current.value,
@@ -47,7 +43,7 @@ const Home: NextPage = () => {
           })
           .then((data: any) => {
             console.log(data);
-            router.push('/dashboard')
+            router.push('/dashboard');
           });
       }
     } catch (err) {
@@ -110,7 +106,11 @@ const Home: NextPage = () => {
                 label='email address'
                 fullWidth={true}
                 type='email'
-                ref={emailRef}
+                inputRef={emailRef}
+                required
+                inputProps={{
+                  minLength: 8,
+                }}
                 startAdornment={
                   <InputAdornment position='start'>
                     <Email />
@@ -131,7 +131,8 @@ const Home: NextPage = () => {
                 label='Password'
                 fullWidth={true}
                 type={state.showPassword ? 'text' : 'password'}
-                ref={passwordRef}
+                inputRef={passwordRef}
+                required
                 startAdornment={
                   <InputAdornment position='start'>
                     <Lock />
