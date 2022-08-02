@@ -11,6 +11,8 @@ import {
   InputLabel,
   OutlinedInput,
   Link,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import { Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
 import { useRef, useState } from 'react';
@@ -18,6 +20,7 @@ import { useRouter } from 'next/router';
 
 interface State {
   error: string;
+  showError: boolean;
   showPassword: boolean;
 }
 
@@ -28,6 +31,7 @@ const Home: NextPage = () => {
 
   const [state, setState] = useState<State>({
     error: '',
+    showError: false,
     showPassword: false,
   });
 
@@ -46,8 +50,8 @@ const Home: NextPage = () => {
             router.push('/dashboard');
           });
       }
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      setState({ ...state, error: err.message, showError: true });
     }
   };
 
@@ -192,6 +196,20 @@ const Home: NextPage = () => {
           Sign up
         </Link>
       </Typography>
+      <Snackbar
+        open={state.showError}
+        autoHideDuration={6000}
+        onClose={() => setState({ ...state, showError: false })}
+      >
+        <Alert
+          severity='error'
+          variant='filled'
+          elevation={4}
+          onClose={() => setState({ ...state, showError: false })}
+        >
+          {state.error}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

@@ -8,9 +8,33 @@ import {
   Typography,
 } from '@mui/material';
 import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import { Tag } from '@mui/icons-material';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 const Verify: NextPage = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.query) {
+      sendRequest(router.query.id);
+    }
+  }, []);
+
+  const sendRequest = async (email: string | string[] | undefined) => {
+    try {
+      await axios
+        .post('http://localhost:4000/email', {
+          email,
+          otp: Math.floor(Math.random() * 1000000 + 1),
+        })
+        .then((data: any) => {
+          console.log(data);
+        });
+    } catch (err) {}
+  };
+
   return (
     <Container
       maxWidth='sm'
