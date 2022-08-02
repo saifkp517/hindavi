@@ -112,9 +112,12 @@ const Home: NextPage = () => {
                 type='email'
                 inputRef={emailRef}
                 required
+<<<<<<< HEAD
                 inputProps={{
                   minLength: 8,
                 }}
+=======
+>>>>>>> 822c1ace108cd4b7d64eea7908db5c80f9de4ca3
                 startAdornment={
                   <InputAdornment position='start'>
                     <Email />
