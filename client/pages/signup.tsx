@@ -148,7 +148,7 @@ const Home: NextPage = () => {
                 id='username'
                 label='Username'
                 fullWidth={true}
-                ref={usernameRef}
+                inputRef={usernameRef}
                 inputProps={{
                   maxLength: 25,
                 }}
@@ -173,7 +173,7 @@ const Home: NextPage = () => {
                 type='email'
                 label='email address'
                 fullWidth={true}
-                ref={emailRef}
+                inputRef={emailRef}
                 required
                 startAdornment={
                   <InputAdornment position='start'>
@@ -194,7 +194,7 @@ const Home: NextPage = () => {
                 id='phone'
                 label='phone number'
                 fullWidth={true}
-                ref={phoneRef}
+                inputRef={phoneRef}
                 inputProps={{
                   minLength: 10,
                 }}
@@ -218,7 +218,7 @@ const Home: NextPage = () => {
                 id='password'
                 label='Password'
                 fullWidth={true}
-                ref={passwordRef}
+                inputRef={passwordRef}
                 required
                 inputProps={{
                   minLength: 8,
@@ -258,7 +258,7 @@ const Home: NextPage = () => {
                 id='confirm'
                 label='confirm password'
                 fullWidth={true}
-                ref={confirmPasswordRef}
+                inputRef={confirmPasswordRef}
                 required
                 startAdornment={
                   <InputAdornment position='start'>
