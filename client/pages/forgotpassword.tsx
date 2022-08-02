@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import type { NextPage } from 'next';
-import { Email, Tag } from '@mui/icons-material';
+import { Email } from '@mui/icons-material';
 
 const Verify: NextPage = () => {
   return (
@@ -33,7 +33,7 @@ const Verify: NextPage = () => {
         Forgot Password
       </Typography>
       <Typography
-        color='primary.light'
+        color='secondary.light'
         variant='body1'
         component='p'
         marginTop={0.5}
@@ -46,11 +46,11 @@ const Verify: NextPage = () => {
       </Typography>
       <form>
         <FormControl fullWidth={true} variant='outlined' sx={{ marginTop: 4 }}>
-          <InputLabel htmlFor='email'>Email</InputLabel>
+          <InputLabel htmlFor='email'>Email Address</InputLabel>
           <OutlinedInput
             id='email'
             type='email'
-            label='Email'
+            label='Email Address'
             startAdornment={
               <InputAdornment position='start'>
                 <Email />

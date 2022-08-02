@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
-import React from "react";
-import axios from "axios";
+import { useRouter } from 'next/router';
+import { useState, useRef } from 'react';
+import axios from 'axios';
 import Container from '@mui/material/Container';
 import {
   FormControl,
@@ -12,6 +13,7 @@ import {
   InputLabel,
   OutlinedInput,
   Link,
+  Snackbar,
 } from '@mui/material';
 import {
   AccountCircle,
@@ -21,39 +23,71 @@ import {
   Visibility,
   VisibilityOff,
 } from '@mui/icons-material';
-import { useState } from 'react';
+
+interface State {
+  showPassword: boolean;
+  showError: boolean;
+  error: string;
+}
 
 const Home: NextPage = () => {
+  const router = useRouter();
 
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [phoneno, setPhoneno] = useState('');
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const confirmPasswordRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
+
+  const [state, setState] = useState<State>({
+    showPassword: false,
+    showError: false,
+    error: '',
+  });
 
   const Register = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-
-      await axios.post('http://localhost:4000/signup/null', {
-        username: username,
-        email: email,
-        password: password,
-        phoneno: phoneno
-      })
-        .then(data => {
-          console.log(data)
-        })
-
+      console.log(
+        usernameRef.current,
+        passwordRef.current,
+        confirmPasswordRef.current,
+        emailRef.current,
+        phoneRef.current
+      );
+      if (
+        usernameRef.current &&
+        passwordRef.current &&
+        confirmPasswordRef.current &&
+        emailRef.current &&
+        phoneRef.current
+      ) {
+        if (passwordRef.current.value !== confirmPasswordRef.current.value) {
+          console.log('error');
+          setState({
+            ...state,
+            error: "Passwords don't match",
+            showError: true,
+          });
+        } else {
+          // await axios
+          //   .post('http://localhost:4000/signup/null', {
+          //     username: usernameRef.current.value,
+          //     email: emailRef.current.value,
+          //     password: passwordRef.current.value,
+          //     phoneno: phoneRef.current.value,
+          //   })
+          //   .then((data) => {
+          //     console.log(data);
+          //   });
+          router.push('/emailverify');
+        }
+      }
     } catch (err) {
-
       console.log(err);
-
     }
-
-  }
-
-  const [showPassword, setShowPassword] = useState(false);
+  };
 
   return (
     <Container
@@ -83,7 +117,7 @@ const Home: NextPage = () => {
         </Typography>
 
         <Typography
-          color='primary.light'
+          color='secondary.light'
           variant='body1'
           component='p'
           marginTop={0.5}
@@ -114,8 +148,11 @@ const Home: NextPage = () => {
                 id='username'
                 label='Username'
                 fullWidth={true}
-                value={username}
-                onChange={e=>setUsername(e.target.value)}
+                ref={usernameRef}
+                inputProps={{
+                  maxLength: 25,
+                }}
+                required={true}
                 startAdornment={
                   <InputAdornment position='start'>
                     <AccountCircle />
@@ -136,8 +173,8 @@ const Home: NextPage = () => {
                 type='email'
                 label='email address'
                 fullWidth={true}
-                value={email}
-                onChange={e=>setEmail(e.target.value)}
+                ref={emailRef}
+                required
                 startAdornment={
                   <InputAdornment position='start'>
                     <Email />
@@ -157,8 +194,11 @@ const Home: NextPage = () => {
                 id='phone'
                 label='phone number'
                 fullWidth={true}
-                value={phoneno}
-                onChange={e=>setPhoneno(e.target.value)}
+                ref={phoneRef}
+                inputProps={{
+                  minLength: 10,
+                }}
+                required
                 startAdornment={
                   <InputAdornment position='start'>
                     <Phone />
@@ -178,9 +218,12 @@ const Home: NextPage = () => {
                 id='password'
                 label='Password'
                 fullWidth={true}
-                value={password}
-                onChange={e=>setPassword(e.target.value)}
-                type={showPassword ? 'text' : 'password'}
+                ref={passwordRef}
+                required
+                inputProps={{
+                  minLength: 8,
+                }}
+                type={state.showPassword ? 'text' : 'password'}
                 startAdornment={
                   <InputAdornment position='start'>
                     <Lock />
@@ -190,9 +233,14 @@ const Home: NextPage = () => {
                   <InputAdornment position='end'>
                     <IconButton
                       aria-label='toggle password visibility'
-                      onClick={() => setShowPassword(!showPassword)}
+                      onClick={() =>
+                        setState({
+                          ...state,
+                          showPassword: !state.showPassword,
+                        })
+                      }
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {state.showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -210,6 +258,8 @@ const Home: NextPage = () => {
                 id='confirm'
                 label='confirm password'
                 fullWidth={true}
+                ref={confirmPasswordRef}
+                required
                 startAdornment={
                   <InputAdornment position='start'>
                     <Lock />
@@ -243,6 +293,12 @@ const Home: NextPage = () => {
           Login
         </Link>
       </Typography>
+      <Snackbar
+        open={state.showError}
+        autoHideDuration={6000}
+        onClose={() => setState({ ...state, showError: false })}
+        message='Note archived'
+      />
     </Container>
   );
 };

@@ -12,13 +12,7 @@ import {
   OutlinedInput,
   Link,
 } from '@mui/material';
-import {
-  AccountCircle,
-  Email,
-  Lock,
-  Visibility,
-  VisibilityOff,
-} from '@mui/icons-material';
+import { Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
 import { useRef, useState } from 'react';
 
 interface State {
@@ -29,11 +23,11 @@ interface State {
 const Home: NextPage = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const state = useState<State>({
+  const [state, setState] = useState<State>({
     error: '',
     showPassword: false,
   });
-  const [showPassword, setShowPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
 
   const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -81,7 +75,7 @@ const Home: NextPage = () => {
         </Typography>
 
         <Typography
-          color='primary.light'
+          color='secondary.light'
           variant='body1'
           component='p'
           marginTop={0.5}
@@ -107,9 +101,6 @@ const Home: NextPage = () => {
                 label='email address'
                 fullWidth={true}
                 type='email'
-                inputProps={{
-                  maxLength: 25,
-                }}
                 ref={emailRef}
                 startAdornment={
                   <InputAdornment position='start'>
@@ -130,7 +121,7 @@ const Home: NextPage = () => {
                 id='password'
                 label='Password'
                 fullWidth={true}
-                type={showPassword ? 'text' : 'password'}
+                type={state.showPassword ? 'text' : 'password'}
                 ref={passwordRef}
                 startAdornment={
                   <InputAdornment position='start'>
@@ -141,9 +132,14 @@ const Home: NextPage = () => {
                   <InputAdornment position='end'>
                     <IconButton
                       aria-label='toggle password visibility'
-                      onClick={() => setShowPassword(!showPassword)}
+                      onClick={() =>
+                        setState({
+                          ...state,
+                          showPassword: !state.showPassword,
+                        })
+                      }
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {state.showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 }

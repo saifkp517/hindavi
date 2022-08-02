@@ -33,7 +33,7 @@ const Verify: NextPage = () => {
         Email Verification
       </Typography>
       <Typography
-        color='primary.light'
+        color='secondary.light'
         variant='body1'
         component='p'
         marginTop={0.5}
