@@ -71,16 +71,16 @@ const Home: NextPage = () => {
             showError: true,
           });
         } else {
-          // await axios
-          //   .post('http://localhost:4000/signup/null', {
-          //     username: usernameRef.current.value,
-          //     email: emailRef.current.value,
-          //     password: passwordRef.current.value,
-          //     phoneno: phoneRef.current.value,
-          //   })
-          //   .then((data) => {
-          //     console.log(data);
-          //   });
+          await axios
+            .post('http://localhost:4000/signup/null', {
+              username: usernameRef.current.value,
+              email: emailRef.current.value,
+              password: passwordRef.current.value,
+              phoneno: phoneRef.current.value,
+            })
+            .then((data) => {
+              console.log(data);
+            });
           router.push('/emailverify');
         }
       }

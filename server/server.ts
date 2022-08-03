@@ -46,7 +46,7 @@ app.use(cors({
 
 //check if user is logged in or not
 
-app.get('/refreshtoken',async (req, res) => {
+app.get('/refreshtoken', async (req, res) => {
 
     const refreshToken = req.cookies.refreshtoken;
 
@@ -76,28 +76,27 @@ app.get('/refreshtoken',async (req, res) => {
 
 })
 
-app.get('/verifytoken', (req: UserAuth, res, next) => {
-
+function verifytoken(req: UserAuth, res: express.Response, next: NextFunction) {
     const authHeader = req.headers['authorization'];
 
     const token = authHeader && authHeader.split(' ')[1];
 
-    if(token == null) return res.sendStatus(401);
+    if (token == null) return res.sendStatus(401);
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded: UserAuth) => {
 
-        if(err) return res.sendStatus(403);
+        if (err) return res.sendStatus(403);
 
         req.email = decoded.email;
 
         next();
     })
+}
 
-})
-
-app.get('/', (req: UserAuth, res) => {
+app.get('/', verifytoken ,  (req: UserAuth, res) => {
 
     res.end(req.email + "adas")
+    
 })
 
 
@@ -153,17 +152,9 @@ function generateAccessToken(user: any) {
 }
 
 
-let RandomNumber: Number;
+app.post('/email', (req, res) => {
 
-function RandomNumberGenerator() {
-    RandomNumber = Math.floor(100000 + Math.random() * 900000)
-}
-
-setInterval(RandomNumberGenerator, 60 * 1000);
-
-app.post('/randomno', (req, res) => {
-
-    res.json(RandomNumber)
+    const {email, otp} = req.body;
 
     let transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -177,10 +168,10 @@ app.post('/randomno', (req, res) => {
     })
 
     let mailOptions = {
-        to: req.body.email,
+        to: email,
         subject: 'HINDAVI GRAPHICS STUDIOS',
         text: `In order to register and get yourself verified please refer to the number given below
-        Your OTT number is ${RandomNumber}`
+        Your OTT number is ${otp}`
     }
 
     transporter.sendMail(mailOptions, (err, info) => {
@@ -190,29 +181,6 @@ app.post('/randomno', (req, res) => {
         }
     })
 
-})
-
-app.post('/verifyemail', async (req, res) => {
-    const { email, randomno } = req.body;
-
-    if (randomno === RandomNumber) {
-
-        const verifyUser = await prisma.user.update({
-
-            where: {
-                email: email
-            },
-            data: {
-                verified: true
-            }
-
-        })
-
-        res.json(verifyUser)
-
-    } else {
-        res.status(404).json("Incorrect code number")
-    }
 })
 
 //multer initialization
@@ -290,8 +258,8 @@ app.post('/signup/:id', async (req, res) => {
                     refcode: uuidv4()
                 }
             })
-            res.json(createUser)
-            res.json({message: "User Signed Up!"})
+
+            res.json({ message: "User Signed Up!" })
             console.log(createUser)
 
         } else {

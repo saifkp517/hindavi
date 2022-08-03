@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "@types/bcrypt": "^5.0.0",
-    "bcrypt": "^5.0.1",
-    "D": "^1.0.0",
-    "sass": "^1.54.0"
-  }
-}

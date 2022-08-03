@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
 import { useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 
 interface State {
   error: string;
@@ -21,6 +22,9 @@ interface State {
 }
 
 const Home: NextPage = () => {
+
+  const router = useRouter();
+
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const [state, setState] = useState<State>({
@@ -33,13 +37,18 @@ const Home: NextPage = () => {
     event.preventDefault();
 
     try {
+      console.log(emailRef?.current?.value)
       if (emailRef.current && passwordRef.current) {
+        console.log(emailRef?.current?.value)
         await axios
           .post('http://localhost:4000/signin', {
             email: emailRef.current.value,
             password: passwordRef.current.value,
           })
-          .then((data: any) => console.log('data: ' + data));
+          .then((data: any) => {
+            console.log(data);
+            router.push('/dashboard')
+          });
       }
     } catch (err) {
       console.log(err);
