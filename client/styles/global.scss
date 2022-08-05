@@ -24,3 +24,31 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+.Poster {
+  &__card {
+    min-width: 15rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .Poster {
+    &__main {
+      height: calc(100vh - 2rem);
+    }
+
+    &__card {
+      width: 100%;
+      margin: 1rem 0;
+    }
+
+    &__display {
+      height: 16rem;
+    }
+
+    &__container {
+      flex-direction: column;
+      margin: 0;
+    }
+  }
+}
