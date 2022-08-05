@@ -116,7 +116,7 @@ const Poster: NextPage = () => {
               justifyContent: 'space-between',
               alignItems: 'center',
               gap: 2,
-              paddingY: 0.5,
+              padding: 0.5,
               border: '2px solid #F27C35',
             }}
           >
