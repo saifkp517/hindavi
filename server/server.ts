@@ -12,6 +12,7 @@ import multer from "multer"
 import { fileURLToPath } from "url";
 import { Session } from "inspector";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { decode } from "punycode";
 
 const prisma = new PrismaClient()
 
@@ -21,30 +22,35 @@ export interface UserAuth extends express.Request {
     email: string | JwtPayload
 }
 
+app.use(session({
+    secret: "asdfkhjf324kner9p8u423p93hf9e830rt8uerfh",
+    saveUninitialized: true,
+    cookie: { maxAge: 1000 * 60, secure: false },
+    resave: true,
+}));
+
 //parsing incoming data and parsing cookies
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
-
-// app.use(session({
-//     secret: "asdfkhjf324kner9p8u423p93hf9e830rt8uerfh",
-//     saveUninitialized: true,
-//     cookie: { maxAge: 1000 * 60, secure: false },
-//     resave: true,
-// }));
-
 
 app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true,
 }))
 
+//asd
 
 //////////////////////middleware-section//////////////////////
 
 //sign in OR log in
 
 //check if user is logged in or not
+
+app.post('/test', (req, res) => {
+    res.json(req.body.email);
+    res.cookie('cookies', 'data', { httpOnly: true })
+})
 
 app.get('/refreshtoken', async (req, res) => {
 
@@ -76,28 +82,24 @@ app.get('/refreshtoken', async (req, res) => {
 
 })
 
-function verifytoken(req: UserAuth, res: express.Response, next: NextFunction) {
-    const authHeader = req.headers['authorization'];
 
-    const token = authHeader && authHeader.split(' ')[1];
-
-    if (token == null) return res.sendStatus(401);
-
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded: UserAuth) => {
-
-        if (err) return res.sendStatus(403);
-
-        req.email = decoded.email;
-
-        next();
-    })
+function verifyToken(req: UserAuth, res: express.Response) {
+    const token = req.body.token;
+    if (!token) {
+        res.sendStatus(401).send('Unauthorized: No token provided');
+    } else {
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function (err: Error, decoded: UserAuth) {
+            if (err) {
+                res.status(401).json({message: 'Unauthorized: Invalid token'});
+            } else {
+                req.email = decoded.email;
+                res.json(decoded.email)
+            }
+        });
+    }
 }
 
-app.get('/', verifytoken ,  (req: UserAuth, res) => {
-
-    res.end(req.email + "adas")
-    
-})
+app.post('/verify', verifyToken);
 
 
 app.post('/signin', async (req, res) => {
@@ -117,24 +119,9 @@ app.post('/signin', async (req, res) => {
 
         if (ValidPassword) {
 
-            const accessToken = generateAccessToken(email)
-            const refreshToken = jwt.sign({ email: email.toString() }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
+            const token = jwt.sign({ email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' });
 
-            await prisma.user.update({
-                where: {
-                    email: email
-                },
-                data: {
-                    Token: refreshToken
-                }
-            })
-
-            res.cookie('refreshtoken', refreshToken, {
-                httpOnly: true,
-                maxAge: 60 * 1000
-            })
-
-            res.json({ accessToken: accessToken })
+            res.json({ token: token});
 
         } else {
 
@@ -147,14 +134,26 @@ app.post('/signin', async (req, res) => {
     }
 })
 
-function generateAccessToken(user: any) {
-    return jwt.sign({ user: user.toString() }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
-}
+app.post('/forgotpassword', async (req, res) => {
+    const { email, newpassword } = req.body;
+
+    await prisma.user.update({
+        where: {
+            email: email
+        },
+        data: {
+            password: newpassword
+        }
+
+    })
+
+    res.status(200).json({ message: "updates email" })
+})
 
 
 app.post('/email', (req, res) => {
 
-    const {email, otp} = req.body;
+    const { email, otp } = req.body;
 
     let transporter = nodemailer.createTransport({
         service: 'gmail',

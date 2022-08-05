@@ -4,6 +4,7 @@ services:
     build: ./server
     ports:
       - 4000:4000
+    restart: always
     depends_on:
       - postgres
     links:
@@ -11,6 +12,9 @@ services:
       - "postgres:postgres"
     env_file:
       - ./server/.env
+    volumes:
+      - ./server:/usr/src/hindavi/server
+      - ignore:/home/saif/hindavi/server/node_modules/
 
   postgres:
     image: postgres:14.1-alpine
@@ -30,9 +34,13 @@ services:
     ports:
       - 3000:3000
     container_name: client
+    volumes:
+      - ./client:/usr/src/hindavi/client
+      - ignore:/home/saif/hindavi/client/node_modules/
 
 
 volumes:
+  ignore:
   postgres:
     name: postgres
 

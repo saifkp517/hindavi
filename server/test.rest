@@ -3,7 +3,7 @@ content-type: application/json
 
 {
     "username": "testuser1",
-    "email": "test2@gmail.com",
+    "email": "saif501721@gmail.com",
     "password": "pass123",
     "phoneno": "1234567890"
 }
@@ -45,14 +45,18 @@ POST http://localhost:4000/signin HTTP/1.1
 content-type: application/json
 
 {
-    "email": "test5@gmail.com",
+    "email": "saif501721@gmail.com",
     "password": "pass123"
 }
 
 ###
 
-GET http://localhost:4000/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InRlc3QxQGdtYWlsLmNvbSIsImlhdCI6MTY1OTE5MjE1MX0.pHcTXkRvsAqv5KH2T0czNHDU35cQsXOebKHDW7_6e5A
+POST http://localhost:4000/verify
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhaWY1MDE3MjFAZ21haWwuY29tIiwiaWF0IjoxNjU5NjY4ODc3LCJleHAiOjE2NTk2Njg4OTJ9.r7rzqMJZSR-mz3hd60M4qR64ecwUaIq-qH0OIwU7xoo"
+}
 
 
 ###

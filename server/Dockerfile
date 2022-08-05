@@ -1,6 +1,11 @@
 FROM node:latest
-WORKDIR /usr/hindavi
+
+WORKDIR /usr/src/hindavi
+
 COPY package*.json ./
-RUN npm i
+
+RUN npm install && npm cache clean --force
+
 COPY . .
+
 CMD ["npm", "run", "dev"]
