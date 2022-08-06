@@ -52,9 +52,7 @@ const Home: NextPage = () => {
 
   const otp = Math.floor(100000 + Math.random() * 900000);
 
-  const sendEmail = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const sendEmail = async () => {
     try {
       if (emailRef.current) {
         await axios
@@ -97,21 +95,32 @@ const Home: NextPage = () => {
           setCookie("otp", otp)
           setCookie("userref", emailRef.current.value)
 
-          await axios
+          const data = await axios
             .post(`http://localhost:4000/signup/${id}`, {
               username: usernameRef.current.value,
               email: emailRef.current.value,
               password: passwordRef.current.value,
               phoneno: phoneRef.current.value,
-            })
-            .then((data) => {
-              console.log(data);
-              router.push(`/emailverify`);
-            })
-            .catch(err => {
+            });
+            // .then((data) => {
+            //   console.log(data);
+            //   router.push(`/emailverify`);
+            // })
+            // .catch(err => {
+            //   console.log(err);
+            //   setErr(err);
+            // })
+
+            try {
+              if (data) {
+                console.log(data)
+                await sendEmail();
+                router.push('/emailverify')
+              }
+            } catch (err) {
               console.log(err);
               setErr(err);
-            })
+            }
         }
       }
     } catch (err: any) {

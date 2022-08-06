@@ -32,6 +32,7 @@ const Verify: NextPage = () => {
 
 
   const submitHandler = (e: FormEvent) => {
+    e.preventDefault()
     if (otpRef.current) {
       const otp = getCookie("otp");
       const email = getCookie("userref")

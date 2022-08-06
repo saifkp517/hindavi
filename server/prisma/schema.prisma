@@ -54,4 +54,13 @@ model Photos {
   user   User   @relation(fields: [userId], references: [email])
   userId String
   image  String
-}
+}//add date, add tomorrow, today status
+
+//categories table assign photos 2 endpoint
+//-profile
+//-photos relate
+
+
+
+
+
