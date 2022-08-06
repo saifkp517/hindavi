@@ -1,4 +1,5 @@
 import Container from '@mui/material/Container';
+import { useState, useRef } from 'react';
 import {
   Button,
   FormControl,
@@ -9,8 +10,27 @@ import {
 } from '@mui/material';
 import type { NextPage } from 'next';
 import { Email } from '@mui/icons-material';
+import React from 'react';
 
 const Verify: NextPage = () => {
+
+  const emailRef = useRef<HTMLInputElement>(null);
+
+  const ForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+
+    try {
+      if ( emailRef.current ) {
+
+        
+
+      }
+    } catch(err: any) {
+      console.log(err)
+    }
+  }
+
   return (
     <Container
       maxWidth='sm'
@@ -50,6 +70,7 @@ const Verify: NextPage = () => {
           <OutlinedInput
             id='email'
             type='email'
+            inputRef={emailRef}
             label='Email Address'
             startAdornment={
               <InputAdornment position='start'>

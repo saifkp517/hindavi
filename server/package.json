@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "npx prisma generate && npx prisma migrate dev && nodemon -L --exec ts-node server.ts"
+    "dev": "npx prisma generate && npx prisma migrate dev && nodemon --exec ts-node server.ts"
   },
   "dependencies": {
     "@prisma/client": "^4.1.0",

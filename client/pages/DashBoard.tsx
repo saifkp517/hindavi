@@ -23,13 +23,13 @@ const DashBoard: NextPage = () => {
   const axiosJWT = axios.create();
 
   useEffect(() => {
-    Submit();
+    Verify();
   }, []);
 
-  const Submit = async () => {
+  const Verify = async () => {
 
     const token = getCookie('key')
-    axios.post("http://localhost:4000/verify", {
+    axios.post("http://localhost:4000/protected", {
       token: token
     })
     .then(data => {
@@ -38,7 +38,7 @@ const DashBoard: NextPage = () => {
     })
     .catch(err => {
       console.log("error"+err)
-      setError(err.response.data.message)
+      setError(err)
     })
 
   }
