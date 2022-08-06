@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import axios from 'axios';
 import Container from '@mui/material/Container';
+import { setCookie } from 'cookies-next'
 import {
   FormControl,
   InputAdornment,
@@ -15,6 +16,7 @@ import {
 import { Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/router';
+import Cookies from 'universal-cookie';
 
 interface State {
   error: string;
@@ -33,18 +35,23 @@ const Home: NextPage = () => {
 
   const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
+    //sad
 
     try {
       if (emailRef.current && passwordRef.current) {
-        // await axios
-        //   .post('http://localhost:4000/signin', {
-        //     email: emailRef.current.value,
-        //     password: passwordRef.current.value,
-        //   })
-        //   .then((data: any) => {
-        //     console.log(data);
-        //     router.push('/dashboard')
-        //   });
+        await axios
+          .post('http://localhost:4000/signin', {
+            email: emailRef.current.value,
+            password: passwordRef.current.value,
+          })
+          .then((data: any) => {
+              setCookie('key', data.data.token);
+              router.push('/DashBoard')
+          })
+          .catch(err => {
+            console.log(err);
+          })
+
       }
     } catch (err) {
       console.log(err);
