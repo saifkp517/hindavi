@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import axios from 'axios';
 import Container from '@mui/material/Container';
-import { setCookie } from 'cookies-next'
+import { setCookie } from 'cookies-next';
 import {
   FormControl,
   InputAdornment,
@@ -38,8 +38,6 @@ const Home: NextPage = () => {
 
   const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    //sad
-
     try {
       if (emailRef.current && passwordRef.current) {
         await axios
