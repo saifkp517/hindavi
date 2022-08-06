@@ -14,6 +14,7 @@ import {
   OutlinedInput,
   Link,
   Snackbar,
+  Alert,
 } from '@mui/material';
 import {
   AccountCircle,
@@ -49,13 +50,6 @@ const Home: NextPage = () => {
     e.preventDefault();
 
     try {
-      console.log(
-        usernameRef.current,
-        passwordRef.current,
-        confirmPasswordRef.current,
-        emailRef.current,
-        phoneRef.current
-      );
       if (
         usernameRef.current &&
         passwordRef.current &&
@@ -71,21 +65,22 @@ const Home: NextPage = () => {
             showError: true,
           });
         } else {
-          await axios
-            .post('http://localhost:4000/signup/null', {
-              username: usernameRef.current.value,
-              email: emailRef.current.value,
-              password: passwordRef.current.value,
-              phoneno: phoneRef.current.value,
-            })
-            .then((data) => {
-              console.log(data);
-            });
-          router.push('/emailverify');
+          // await axios
+          //   .post('http://localhost:4000/signup/null', {
+          //     username: usernameRef.current.value,
+          //     email: emailRef.current.value,
+          //     password: passwordRef.current.value,
+          //     phoneno: phoneRef.current.value,
+          //   })
+          //   .then((data) => {
+          //     console.log(data);
+          //   });
+          router.push(`/emailverify/${emailRef.current.value}`);
         }
       }
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      console.log(err.message);
+      setState({ ...state, error: err.message, showError: true });
     }
   };
 
@@ -297,8 +292,16 @@ const Home: NextPage = () => {
         open={state.showError}
         autoHideDuration={6000}
         onClose={() => setState({ ...state, showError: false })}
-        message='Note archived'
-      />
+      >
+        <Alert
+          severity='error'
+          variant='filled'
+          elevation={4}
+          onClose={() => setState({ ...state, showError: false })}
+        >
+          {state.error}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

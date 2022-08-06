@@ -13,9 +13,6 @@ const theme = createTheme({
       light: grey.A400,
       main: '#52428B',
     },
-    error: {
-      main: red.A400,
-    },
   },
   typography: {
     fontFamily: ['"Ubuntu"', 'sans-serif'].join(','),
