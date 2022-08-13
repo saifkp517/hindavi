@@ -52,38 +52,8 @@ app.post('/test', (req, res) => {
     res.cookie('cookies', 'data', { httpOnly: true })
 })
 
-app.get('/refreshtoken', async (req, res) => {
 
-    const refreshToken = req.cookies.refreshtoken;
-
-    if (!refreshToken) return res.status(401);
-
-    const user = await prisma.user.findFirst({
-        where: {
-            Token: refreshToken
-        },
-        select: {
-            email: true
-        }
-    })
-
-    if (!user) return res.status(403);
-
-    jwt.verify(refreshToken, process.env.ACCESS_TOKEN_SECRET, (err: Error, decoded: any) => {
-        if (err) return res.sendStatus(403);
-
-        let email = user.email
-
-        const accessToken = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
-
-        res.json({ accessToken: accessToken });
-
-    })
-
-})
-
-
-function verifyToken(req: UserAuth, res: express.Response) {
+function verifyToken(req: UserAuth, res: express.Response, next: NextFunction) {
     const token = req.body.token;
     if (!token) {
         res.sendStatus(401).send('Unauthorized: No token provided');
@@ -93,13 +63,31 @@ function verifyToken(req: UserAuth, res: express.Response) {
                 res.status(401).json({message: 'Unauthorized: Invalid token'});
             } else {
                 req.email = decoded.email;
-                res.json(decoded.email)
+                next();
             }
         });
     }
 }
 
-app.post('/verify', verifyToken);
+app.post('/protected', verifyToken, (req: UserAuth, res) => {
+    res.json(req.email);
+})
+
+app.post('/emailverify', async (req, res) => {
+    const {email} = req.body;
+
+    const verified = await prisma.user.update({
+        where: {
+            email: email
+        },
+        data: {
+            verified: true
+        }
+    })
+
+    if (verified) res.json("Email has been verified!")
+})
+
 
 
 app.post('/signin', async (req, res) => {
@@ -177,6 +165,7 @@ app.post('/email', (req, res) => {
         if (err) console.log(err)
         else {
             console.log('email sent' + info.response)
+            res.json("Email has been sent Successfully!")
         }
     })
 
@@ -231,7 +220,7 @@ app.post('/signup/:id', async (req, res) => {
             }
         })
 
-        if (user) return res.status(401).json("User exists");
+        if (user) return res.status(401).json({message: "User exists"});
 
         const EncryptedPassword = await bcrypt.hash(password, 10)
 
@@ -249,7 +238,7 @@ app.post('/signup/:id', async (req, res) => {
                     phoneno: phoneno,
                     photos: {
                         create: {
-                            image: "Nonets "
+                            image: "None"
                         }
                     },
                     coins: 0,

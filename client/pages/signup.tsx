@@ -1,7 +1,8 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
+import { setCookie } from 'cookies-next';
 import Container from '@mui/material/Container';
 import {
   FormControl,
@@ -43,8 +44,33 @@ const Home: NextPage = () => {
   const [state, setState] = useState<State>({
     showPassword: false,
     showError: false,
-    error: '',
+    error: ''
   });
+
+  const [id, setId] = useState("null")
+  const [err, setErr] = useState("");
+
+  const otp = Math.floor(100000 + Math.random() * 900000);
+
+  const sendEmail = async () => {
+    try {
+      if (emailRef.current) {
+        await axios
+          .post("http://localhost:4000/email", {
+            email: emailRef.current.value,
+            otp: otp
+          })
+          .then(data => {
+            console.log(data);
+          })
+          .catch(err => console.log(err))
+      }
+    } catch (err: any) {
+
+      console.log(err.message);
+      setState({ ...state, error: err.message, showError: true });
+    }
+  }
 
   const Register = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,17 +91,36 @@ const Home: NextPage = () => {
             showError: true,
           });
         } else {
-          // await axios
-          //   .post('http://localhost:4000/signup/null', {
-          //     username: usernameRef.current.value,
-          //     email: emailRef.current.value,
-          //     password: passwordRef.current.value,
-          //     phoneno: phoneRef.current.value,
-          //   })
-          //   .then((data) => {
-          //     console.log(data);
-          //   });
-          router.push(`/emailverify/${emailRef.current.value}`);
+
+          setCookie("otp", otp)
+          setCookie("userref", emailRef.current.value)
+
+          const data = await axios
+            .post(`http://localhost:4000/signup/${id}`, {
+              username: usernameRef.current.value,
+              email: emailRef.current.value,
+              password: passwordRef.current.value,
+              phoneno: phoneRef.current.value,
+            });
+            // .then((data) => {
+            //   console.log(data);
+            //   router.push(`/emailverify`);
+            // })
+            // .catch(err => {
+            //   console.log(err);
+            //   setErr(err);
+            // })
+
+            try {
+              if (data) {
+                console.log(data)
+                await sendEmail();
+                router.push('/emailverify')
+              }
+            } catch (err) {
+              console.log(err);
+              setErr(err);
+            }
         }
       }
     } catch (err: any) {
@@ -138,6 +183,7 @@ const Home: NextPage = () => {
                 marginTop: 2,
               }}
             >
+              <p color='red'>{err}</p>
               <InputLabel htmlFor='username'>Username</InputLabel>
               <OutlinedInput
                 id='username'

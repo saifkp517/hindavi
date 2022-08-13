@@ -18,7 +18,6 @@ import {
 import { Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import Cookies from 'universal-cookie';
 
 interface State {
   error: string;
@@ -47,8 +46,11 @@ const Home: NextPage = () => {
             password: passwordRef.current.value,
           })
           .then((data: any) => {
-            console.log(data);
-            router.push('/dashboard');
+              setCookie('key', data.data.token);
+              router.push('/DashBoard')
+          })
+          .catch(err => {
+            console.log(err);
           });
       }
     } catch (err: any) {

@@ -13,11 +13,11 @@ import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { Tag } from '@mui/icons-material';
 import { FormEvent, useEffect, useRef, useState } from 'react';
+import { getCookie } from 'cookies-next';
 import axios from 'axios';
 
 interface State {
   error: string;
-  otp: number;
   showError: boolean;
 }
 
@@ -27,38 +27,30 @@ const Verify: NextPage = () => {
   const otpRef = useRef<HTMLInputElement>(null);
   const [state, setState] = useState<State>({
     error: '',
-    otp: 0,
     showError: false,
   });
 
-  useEffect(() => {
-    if (router.query) {
-      sendRequest(router.query.id);
-    }
-  }, []);
 
   const submitHandler = (e: FormEvent) => {
+    e.preventDefault()
     if (otpRef.current) {
-      if (Number(otpRef.current.value) === state.otp) {
-        // ToDo next page
-      }
-    }
-  };
+      const otp = getCookie("otp");
+      const email = getCookie("userref")
 
-  const sendRequest = async (email: string | string[] | undefined) => {
-    const otp = Math.floor(Math.random() * 1000000 + 1);
-    setState({ ...state, otp: otp });
-    try {
-      // await axios
-      //   .post('http://localhost:4000/email', {
-      //     email,
-      //     otp,
-      //   })
-      //   .then((data: any) => {
-      //     console.log(data);
-      //   });
-    } catch (err: any) {
-      setState({ ...state, error: err.message, showError: true });
+      if (otpRef.current.value === otp) {
+        
+        axios.post("http://localhost:4000/emailverify", {
+          email: email
+        })
+        .then(data => {
+          console.log(data)
+        })
+        .catch(err => console.log(err));
+
+
+
+      }
+
     }
   };
 
