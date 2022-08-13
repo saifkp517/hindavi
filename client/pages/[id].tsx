@@ -14,6 +14,7 @@ import {
   IconButton,
   InputAdornment,
   Link,
+  Paper,
   TextField,
   Toolbar,
   Typography,
@@ -32,7 +33,13 @@ const Home: NextPage = () => {
   return (
     <main>
       <Box sx={{ flexGrow: 1 }} color='secondary.light'>
-        <AppBar position='static' color='inherit'>
+        <AppBar
+          position='static'
+          color='inherit'
+          sx={{
+            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.2)',
+          }}
+        >
           <Toolbar
             sx={{
               paddingY: 2,
@@ -197,47 +204,35 @@ const Home: NextPage = () => {
             </Box>
           </Toolbar>
         </AppBar>
-        <BottomNavigation
-          className='bottomNav'
-          showLabels={false}
-          value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue);
-          }}
+        <Paper
           sx={{
             width: '100%',
             position: 'fixed',
             bottom: 0,
-            paddingY: '1.8rem',
-            backgroundColor: '#52428B',
+            boxShadow: '0 -1px 2px rgba(0, 0, 0, 0.2)',
           }}
         >
-          <BottomNavigationAction
-            sx={{ color: '#fff' }}
-            label='Home'
-            icon={<HomeIcon />}
-          />
-          <BottomNavigationAction
-            sx={{ color: '#fff' }}
-            label='Recharge'
-            icon={<CurrencyRupee />}
-          />
-          <BottomNavigationAction
-            sx={{ color: '#fff' }}
-            label='Refer'
-            icon={<Share />}
-          />
-          <BottomNavigationAction
-            sx={{ color: '#fff' }}
-            label='Notifications'
-            icon={<Notifications />}
-          />
-          <BottomNavigationAction
-            sx={{ color: '#fff' }}
-            label='User'
-            icon={<AccountCircle />}
-          />
-        </BottomNavigation>
+          <BottomNavigation
+            className='bottomNav'
+            showLabels={false}
+            value={value}
+            onChange={(event, newValue) => {
+              setValue(newValue);
+            }}
+            sx={{
+              paddingY: '1.6rem',
+            }}
+          >
+            <BottomNavigationAction label='Home' icon={<HomeIcon />} />
+            <BottomNavigationAction label='Recharge' icon={<CurrencyRupee />} />
+            <BottomNavigationAction label='Refer' icon={<Share />} />
+            <BottomNavigationAction
+              label='Notifications'
+              icon={<Notifications />}
+            />
+            <BottomNavigationAction label='User' icon={<AccountCircle />} />
+          </BottomNavigation>
+        </Paper>
       </Box>
     </main>
   );
