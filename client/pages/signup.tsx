@@ -44,11 +44,11 @@ const Home: NextPage = () => {
   const [state, setState] = useState<State>({
     showPassword: false,
     showError: false,
-    error: ''
+    error: '',
   });
 
-  const [id, setId] = useState("null")
-  const [err, setErr] = useState("");
+  const [id, setId] = useState('null');
+  const [err, setErr] = useState('');
 
   const otp = Math.floor(100000 + Math.random() * 900000);
 
@@ -56,21 +56,20 @@ const Home: NextPage = () => {
     try {
       if (emailRef.current) {
         await axios
-          .post("http://localhost:4000/email", {
+          .post('http://localhost:4000/email', {
             email: emailRef.current.value,
-            otp: otp
+            otp: otp,
           })
-          .then(data => {
+          .then((data) => {
             console.log(data);
           })
-          .catch(err => console.log(err))
+          .catch((err) => console.log(err));
       }
     } catch (err: any) {
-
       console.log(err.message);
       setState({ ...state, error: err.message, showError: true });
     }
-  }
+  };
 
   const Register = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -91,36 +90,33 @@ const Home: NextPage = () => {
             showError: true,
           });
         } else {
+          setCookie('otp', otp);
+          setCookie('userref', emailRef.current.value);
 
-          setCookie("otp", otp)
-          setCookie("userref", emailRef.current.value)
+          const data = await axios.post(`http://localhost:4000/signup/${id}`, {
+            username: usernameRef.current.value,
+            email: emailRef.current.value,
+            password: passwordRef.current.value,
+            phoneno: phoneRef.current.value,
+          });
+          // .then((data) => {
+          //   console.log(data);
+          //   router.push(`/emailverify`);
+          // })
+          // .catch(err => {
+          //   console.log(err);
+          //   setErr(err);
+          // })
 
-          const data = await axios
-            .post(`http://localhost:4000/signup/${id}`, {
-              username: usernameRef.current.value,
-              email: emailRef.current.value,
-              password: passwordRef.current.value,
-              phoneno: phoneRef.current.value,
-            });
-            // .then((data) => {
-            //   console.log(data);
-            //   router.push(`/emailverify`);
-            // })
-            // .catch(err => {
-            //   console.log(err);
-            //   setErr(err);
-            // })
-
-            try {
-              if (data) {
-                console.log(data)
-                await sendEmail();
-                router.push('/emailverify')
-              }
-            } catch (err) {
-              console.log(err);
-              setErr(err);
+          try {
+            if (data) {
+              console.log(data);
+              await sendEmail();
+              router.push('/emailverify');
             }
+          } catch (err: any) {
+            setErr(err);
+          }
         }
       }
     } catch (err: any) {
