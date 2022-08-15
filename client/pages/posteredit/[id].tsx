@@ -1,22 +1,48 @@
-import { ChevronLeft, ChevronRight, Share } from '@mui/icons-material';
-import {
-  Button,
-  Card,
-  FormControlLabel,
-  IconButton,
-  IconButtonProps,
-  Paper,
-  styled,
-  Switch,
-  Typography,
-} from '@mui/material';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import ChevronRight from '@mui/icons-material/ChevronRight';
+import Share from '@mui/icons-material/Share';
+import { styled } from '@mui/material';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Switch from '@mui/material/Switch';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/system/Box';
+import Container from '@mui/system/Container';
 import { deepOrange } from '@mui/material/colors';
-import { Box, Container } from '@mui/system';
-import { NextPage } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
-import Img from '../public/images/image.jpeg';
+import {
+  Img18,
+  Img1,
+  Img10,
+  Img11,
+  Img12,
+  Img13,
+  Img14,
+  Img15,
+  Img16,
+  Img17,
+  Img2,
+  Img3,
+  Img4,
+  Img5,
+  Img6,
+  Img7,
+  Img8,
+  Img9,
+} from '../../public/index';
 
-const Poster: NextPage = () => {
+interface Props {
+  id: { id: string };
+}
+
+const Poster: NextPage<Props> = ({ id }) => {
+  const router = useRouter();
+
   const ColorButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
     color: theme.palette.getContrastText(deepOrange[500]),
     backgroundColor: '#F27C35',
@@ -24,6 +50,27 @@ const Poster: NextPage = () => {
       backgroundColor: deepOrange.A200,
     },
   }));
+
+  const ImagesArr = [
+    Img1,
+    Img2,
+    Img3,
+    Img4,
+    Img5,
+    Img6,
+    Img7,
+    Img8,
+    Img9,
+    Img10,
+    Img11,
+    Img12,
+    Img13,
+    Img14,
+    Img15,
+    Img16,
+    Img17,
+    Img18,
+  ];
 
   return (
     <Container
@@ -38,7 +85,7 @@ const Poster: NextPage = () => {
       }}
     >
       <Box sx={{ width: '100%' }}>
-        <ColorButton>
+        <ColorButton onClick={() => router.back()}>
           <ChevronLeft />
         </ColorButton>
       </Box>
@@ -56,7 +103,11 @@ const Poster: NextPage = () => {
           variant='outlined'
           sx={{ height: '18rem', aspectRatio: '1 / 1' }}
         >
-          <Image src={Img} alt='image' style={{ aspectRatio: '1 / 1' }} />
+          <Image
+            src={ImagesArr[Number(id.id)]}
+            alt='image'
+            style={{ aspectRatio: '1 / 1' }}
+          />
         </Card>
       </Box>
       <Box sx={{ width: '100%', textAlign: 'center' }}>
@@ -151,3 +202,11 @@ const Poster: NextPage = () => {
 };
 
 export default Poster;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return {
+    props: {
+      id: context.params,
+    },
+  };
+};

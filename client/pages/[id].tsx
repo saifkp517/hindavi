@@ -1,34 +1,73 @@
-import {
-  AccountCircle,
-  CurrencyRupee,
-  Home as HomeIcon,
-  Menu,
-  Notifications,
-  Search,
-  Share,
-} from '@mui/icons-material';
-import {
-  AppBar,
-  BottomNavigation,
-  BottomNavigationAction,
-  IconButton,
-  InputAdornment,
-  Link,
-  Paper,
-  TextField,
-  Toolbar,
-  Typography,
-} from '@mui/material';
-import { Box } from '@mui/system';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import HomeIcon from '@mui/icons-material/Home';
+import CurrencyRupee from '@mui/icons-material/CurrencyRupee';
+import Menu from '@mui/icons-material/Menu';
+import Notifications from '@mui/icons-material/Notifications';
+import Search from '@mui/icons-material/Search';
+import Share from '@mui/icons-material/Share';
+import AppBar from '@mui/material/AppBar';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/system/Box';
+import Card from '@mui/material/Card';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Logo from '../public/logo.png';
 import { useState } from 'react';
+import {
+  Img18,
+  Img1,
+  Img10,
+  Img11,
+  Img12,
+  Img13,
+  Img14,
+  Img15,
+  Img16,
+  Img17,
+  Img2,
+  Img3,
+  Img4,
+  Img5,
+  Img6,
+  Img7,
+  Img8,
+  Img9,
+} from '../public/index';
 
 const Home: NextPage = () => {
   const router = useRouter();
   const [value, setValue] = useState(0);
+
+  const ImagesArr = [
+    Img1,
+    Img2,
+    Img3,
+    Img4,
+    Img5,
+    Img6,
+    Img7,
+    Img8,
+    Img9,
+    Img10,
+    Img11,
+    Img12,
+    Img13,
+    Img14,
+    Img15,
+    Img16,
+    Img17,
+    Img18,
+  ];
 
   return (
     <main>
@@ -216,7 +255,7 @@ const Home: NextPage = () => {
             className='bottomNav'
             showLabels={false}
             value={value}
-            onChange={(event, newValue) => {
+            onChange={(_, newValue) => {
               setValue(newValue);
             }}
             sx={{
@@ -233,6 +272,22 @@ const Home: NextPage = () => {
             <BottomNavigationAction label='User' icon={<AccountCircle />} />
           </BottomNavigation>
         </Paper>
+        <Box sx={{ paddingX: 3, paddingTop: 1 }}>
+          <Typography variant='h6' component='p'>
+            Designs
+          </Typography>
+          <Grid container spacing={2} sx={{ paddingY: 1 }}>
+            {ImagesArr.map((el, i) => (
+              <Grid item key={i} xs={3}>
+                <Link href={`/posteredit/${i}`}>
+                  <Card elevation={2}>
+                    <Image src={el} alt='img' layout='responsive' />
+                  </Card>
+                </Link>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
       </Box>
     </main>
   );
