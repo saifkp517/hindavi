@@ -278,7 +278,7 @@ const Home: NextPage = () => {
           </Typography>
           <Grid container spacing={2} sx={{ paddingY: 1 }}>
             {ImagesArr.map((el, i) => (
-              <Grid item key={i} xs={3}>
+              <Grid item key={i} md={3} xs={6}>
                 <Link href={`/posteredit/${i}`}>
                   <Card elevation={2}>
                     <Image src={el} alt='img' layout='responsive' />
