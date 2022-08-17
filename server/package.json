@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "dev": "npx prisma generate && npx prisma migrate dev && nodemon --exec ts-node server.ts"
+    "dev": "npx prisma generate && npx prisma migrate dev && nodemon --exec ts-node server.ts",
+    "start":"nodemon --exec ts-node server.ts",
+    "heroku-postbuild":"cd ../client && npm install && npm run build"
   },
   "dependencies": {
     "@prisma/client": "^4.1.0",
