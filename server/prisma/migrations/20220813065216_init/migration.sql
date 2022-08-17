@@ -46,6 +46,7 @@ CREATE TABLE "Photos" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "image" TEXT NOT NULL,
+    "data" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Photos_pkey" PRIMARY KEY ("id")
 );

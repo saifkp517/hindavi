@@ -37,6 +37,8 @@ const Home: NextPage = () => {
     showPassword: false,
   });
 
+  const [err, setErr] = useState("")
+
   const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
@@ -52,6 +54,7 @@ const Home: NextPage = () => {
           })
           .catch((err) => {
             console.log(err);
+            setErr(err.response.data)
           });
       }
     } catch (err: any) {
@@ -107,6 +110,7 @@ const Home: NextPage = () => {
           }}
         >
           <form onSubmit={submitHandler}>
+            <p>{err}</p>
             <FormControl fullWidth={true} variant='outlined'>
               <InputLabel htmlFor='email'>Email Address</InputLabel>
               <OutlinedInput

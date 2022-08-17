@@ -23,7 +23,7 @@ model User {
   coins             Int
   verified          Boolean
   refcode           String
-  Token       String?
+  Token             String?
 }
 
 model BusinessProfile {
@@ -50,17 +50,16 @@ model PoliticalProfile {
 }
 
 model Photos {
-  id     String @id @default(uuid())
-  user   User   @relation(fields: [userId], references: [email])
+  id     String   @id @default(uuid())
+  user   User     @relation(fields: [userId], references: [email])
   userId String
   image  String
-}//add date, add tomorrow, today status
+}
+//add date, add tomorrow, today status
 
 //categories table assign photos 2 endpoint
 //-profile
 //-photos relate
 
-
-
-
-
+//svgframes
+//relation to photos

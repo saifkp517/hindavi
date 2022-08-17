@@ -1,7 +1,10 @@
 import express, { NextFunction } from "express";
+import S3 from "aws-sdk/clients/s3"
+import fs from "fs";
 require('dotenv').config()
 import session from "express-session"
 import bodyParser from "body-parser";
+import path from "path"
 import nodemailer from "nodemailer"
 import cookieParser from "cookie-parser"
 import { PrismaClient } from '@prisma/client'
@@ -9,10 +12,9 @@ import { v4 as uuidv4 } from 'uuid';
 import cors from "cors"
 import bcrypt from "bcrypt"
 import multer from "multer"
-import { fileURLToPath } from "url";
-import { Session } from "inspector";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { decode } from "punycode";
+import multerS3 from "multer-s3"
+import { Stream } from "stream";
 
 const prisma = new PrismaClient()
 
@@ -21,6 +23,18 @@ const app = express();
 export interface UserAuth extends express.Request {
     email: string | JwtPayload
 }
+
+///awsconfig////////////////
+
+const BUCKET_NAME = 'hindavidatabucket'; 
+
+ const s3 = new S3({
+    accessKeyId: process.env.AWSAccessKeyId,
+    secretAccessKey: process.env.AWSSecretKey,
+    region: "ap-south-1"
+})
+
+///awsconfig////////////////
 
 app.use(session({
     secret: "asdfkhjf324kner9p8u423p93hf9e830rt8uerfh",
@@ -39,8 +53,37 @@ app.use(cors({
     credentials: true,
 }))
 
+<<<<<<< HEAD
+=======
+if (process.env.NODE_ENV === 'production') {
+    // Serve any static files
+    app.use(express.static(path.join(__dirname, 'client/build')));
+  // Handle React routing, return all requests to React app
+    app.get('*', function(req, res) {
+      res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    });
+}
+
+const whitelist = ['http://localhost:3000', 'http://localhost:4000']
+const corsOptions = {
+  origin: function (origin: any, callback: any) {
+    console.log("** Origin of request " + origin)
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      console.log("Origin acceptable")
+      callback(null, true)
+    } else {
+      console.log("Origin rejected")
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+// --> Add this
+app.use(cors(corsOptions))
+
+
 //asd
 
+>>>>>>> e2bb4987c2700c318e63b7d53c9ca2c1dd8efa90
 //////////////////////middleware-section//////////////////////
 
 //sign in OR log in
@@ -53,14 +96,16 @@ app.post('/test', (req, res) => {
 })
 
 
+////authentications endpoints///////////////////////////////////
+
 function verifyToken(req: UserAuth, res: express.Response, next: NextFunction) {
     const token = req.body.token;
     if (!token) {
-        res.sendStatus(401).send('Unauthorized: No token provided');
+        res.status(401).send('Unauthorized: No token provided');
     } else {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function (err: Error, decoded: UserAuth) {
             if (err) {
-                res.status(401).json({message: 'Unauthorized: Invalid token'});
+                res.status(401).json({ message: 'Unauthorized: Invalid token' });
             } else {
                 req.email = decoded.email;
                 next();
@@ -70,11 +115,11 @@ function verifyToken(req: UserAuth, res: express.Response, next: NextFunction) {
 }
 
 app.post('/protected', verifyToken, (req: UserAuth, res) => {
-    res.json(req.email);
+    res.send(req.email);
 })
 
 app.post('/emailverify', async (req, res) => {
-    const {email} = req.body;
+    const { email } = req.body;
 
     const verified = await prisma.user.update({
         where: {
@@ -87,7 +132,6 @@ app.post('/emailverify', async (req, res) => {
 
     if (verified) res.json("Email has been verified!")
 })
-
 
 
 app.post('/signin', async (req, res) => {
@@ -107,18 +151,18 @@ app.post('/signin', async (req, res) => {
 
         if (ValidPassword) {
 
-            const token = jwt.sign({ email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' });
+            const token = jwt.sign({ email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5hr' });
 
-            res.json({ token: token});
+            res.json({ token: token });
 
         } else {
 
-            res.json({ message: "Invalid Password" })
+            res.status(404).json("Invalid Password")
 
         }
 
     } else {
-        res.json({ message: "Email not Found" })
+        res.status(404).json("Email not Found")
     }
 })
 
@@ -171,42 +215,24 @@ app.post('/email', (req, res) => {
 
 })
 
-//multer initialization
-const imageStorage = multer.diskStorage({
-    destination: (req, file, callback) => {
-        callback(null, './images')
-    },
-    filename: (req, file, callback) => {
-        callback(null, file.originalname)
+////authentications endpoints///////////////////////////////////
+
+/////////////////////////upload image-sections
+
+app.get('/images', (req, res, next) => {
+
+    const displayParams = {
+        Bucket: process.env.BUCKET_NAME,
+        Key: process.env.AWSAccessKeyId
     }
-})
-
-const upload = multer({ storage: imageStorage }).single('file');
-
-//upload profile picture
-app.post('/profile-upload', (req, res) => {
-    upload(req, res, async function (err) {
-        if (err instanceof multer.MulterError) {
-            return console.log("Error:- " + err)
-        } else if (err) {
-            return console.log(err)
-        }
-        console.log("alright!")
-        let filePath = req.file.path
-
-        let email = "asd@gmail.com"
-
-        const updateUser = await prisma.user.update({
-            where: {
-                email: email
-            },
-            data: {
-                profilephoto: filePath
-            }
-        })
+    
+    s3.getObject(displayParams, (err, data) => {
+        if (err) console.log(err, err.stack);
+        else console.log(data)
     })
 })
 
+/////////////////////////upload image-sections
 
 //sign up as base user
 app.post('/signup/:id', async (req, res) => {
@@ -220,7 +246,7 @@ app.post('/signup/:id', async (req, res) => {
             }
         })
 
-        if (user) return res.status(401).json({message: "User exists"});
+        if (user) return res.status(409).json("User exists");
 
         const EncryptedPassword = await bcrypt.hash(password, 10)
 
