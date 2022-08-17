@@ -1,14 +1,12 @@
 import Container from '@mui/material/Container';
-import {
-  Alert,
-  Button,
-  FormControl,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  Snackbar,
-  Typography,
-} from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import InputAdornment from '@mui/material/InputAdornment';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { Tag } from '@mui/icons-material';
@@ -30,27 +28,22 @@ const Verify: NextPage = () => {
     showError: false,
   });
 
-
   const submitHandler = (e: FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (otpRef.current) {
-      const otp = getCookie("otp");
-      const email = getCookie("userref")
+      const otp = getCookie('otp');
+      const email = getCookie('userref');
 
       if (otpRef.current.value === otp) {
-        
-        axios.post("http://localhost:4000/emailverify", {
-          email: email
-        })
-        .then(data => {
-          console.log(data)
-        })
-        .catch(err => console.log(err));
-
-
-
+        axios
+          .post('http://localhost:4000/emailverify', {
+            email: email,
+          })
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((err) => console.log(err));
       }
-
     }
   };
 

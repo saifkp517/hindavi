@@ -20,7 +20,7 @@ import Box from '@mui/system/Box';
 import Card from '@mui/material/Card';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import Logo from '../public/logo.png';
 import { useState } from 'react';
 import {
@@ -44,29 +44,97 @@ import {
   Img9,
 } from '../public/index';
 
+interface Design {
+  img: StaticImageData;
+  title: string;
+  designation: string;
+}
+
 const Home: NextPage = () => {
   const router = useRouter();
   const [value, setValue] = useState(0);
 
-  const ImagesArr = [
-    Img1,
-    Img2,
-    Img3,
-    Img4,
-    Img5,
-    Img6,
-    Img7,
-    Img8,
-    Img9,
-    Img10,
-    Img11,
-    Img12,
-    Img13,
-    Img14,
-    Img15,
-    Img16,
-    Img17,
-    Img18,
+  const ImagesArr: Design[] = [
+    {
+      title: 'स्वातंत्र्यदिनाच्या शुभेच्छा',
+      designation: 'By Hindavi Graphics',
+      img: Img1,
+    },
+    {
+      title: 'हिंदवी ग्राफिक्स',
+      designation: 'By Hindavi Graphics',
+      img: Img2,
+    },
+    {
+      title: 'वापरण्यास सोपे',
+      designation: 'By Hindavi Graphics',
+      img: Img3,
+    },
+    {
+      title: 'एकाच दिनविशेष',
+      designation: 'By Hindavi Graphics',
+      img: Img4,
+    },
+    {
+      title: 'आमची वैशिष्ट्ये',
+      designation: 'By Hindavi Graphics',
+      img: Img5,
+    },
+    {
+      title: 'स्वातंत्र्यदिनाच्या शुभेच्छा',
+      designation: 'By Hindavi Graphics',
+      img: Img6,
+    },
+    {
+      title: 'हिंदवी ग्राफिक्स',
+      designation: 'By Hindavi Graphics',
+      img: Img7,
+    },
+    {
+      title: 'वापरण्यास सोपे',
+      designation: 'By Hindavi Graphics',
+      img: Img8,
+    },
+    {
+      title: 'एकाच दिनविशेष',
+      designation: 'By Hindavi Graphics',
+      img: Img9,
+    },
+    {
+      title: 'आमची वैशिष्ट्ये',
+      designation: 'By Hindavi Graphics',
+      img: Img10,
+    },
+    {
+      title: 'स्वातंत्र्यदिनाच्या शुभेच्छा',
+      designation: 'By Hindavi Graphics',
+      img: Img11,
+    },
+    {
+      title: 'हिंदवी ग्राफिक्स',
+      designation: 'By Hindavi Graphics',
+      img: Img12,
+    },
+    {
+      title: 'वापरण्यास सोपे',
+      designation: 'By Hindavi Graphics',
+      img: Img13,
+    },
+    {
+      title: 'एकाच दिनविशेष',
+      designation: 'By Hindavi Graphics',
+      img: Img14,
+    },
+    {
+      title: 'आमची वैशिष्ट्ये',
+      designation: 'By Hindavi Graphics',
+      img: Img15,
+    },
+    {
+      title: 'आमची वैशिष्ट्ये',
+      designation: 'By Hindavi Graphics',
+      img: Img16,
+    },
   ];
 
   return (
@@ -249,6 +317,7 @@ const Home: NextPage = () => {
             position: 'fixed',
             bottom: 0,
             boxShadow: '0 -1px 2px rgba(0, 0, 0, 0.2)',
+            zIndex: 100,
           }}
         >
           <BottomNavigation
@@ -272,18 +341,252 @@ const Home: NextPage = () => {
             <BottomNavigationAction label='User' icon={<AccountCircle />} />
           </BottomNavigation>
         </Paper>
+        {/* 
+          Today
+        */}
         <Box sx={{ paddingX: 3, paddingTop: 1 }}>
-          <Typography variant='h6' component='p'>
-            Designs
-          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'baseline',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography variant='h6' component='p' sx={{ color: 'black' }}>
+              Today
+            </Typography>
+            <Typography
+              variant='subtitle2'
+              component='p'
+              sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
+            >
+              <Link href='#' underline='none' color='unset'>
+                Show All
+              </Link>
+            </Typography>
+          </Box>
           <Grid container spacing={2} sx={{ paddingY: 1 }}>
-            {ImagesArr.map((el, i) => (
-              <Grid item key={i} md={3} xs={6}>
-                <Link href={`/posteredit/${i}`}>
+            {ImagesArr.filter((_, i) => i < 4).map((el, i) => (
+              <Grid
+                item
+                key={i}
+                md={3}
+                xs={6}
+                sx={{
+                  display: i > 1 ? { xs: 'none', md: 'block' } : null,
+                }}
+              >
+                <Link href={`/posteredit/${i}`} underline='none'>
                   <Card elevation={2}>
-                    <Image src={el} alt='img' layout='responsive' />
+                    <Image src={el.img} alt='img' layout='responsive' />
                   </Card>
                 </Link>
+                <Typography
+                  variant='body1'
+                  component='p'
+                  sx={{
+                    marginTop: 1,
+                    fontSize: { md: '1.2rem', xs: '1rem' },
+                    color: 'gray',
+                  }}
+                >
+                  {el.title}
+                </Typography>
+                <Typography
+                  variant='subtitle2'
+                  component='p'
+                  sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
+                >
+                  {el.designation}
+                </Typography>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+        {/*
+         Stories 
+        */}
+        <Box sx={{ paddingX: 3, paddingTop: 1 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'baseline',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography variant='h6' component='p' sx={{ color: 'black' }}>
+              Stories
+            </Typography>
+            <Typography
+              variant='subtitle2'
+              component='p'
+              sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
+            >
+              <Link href='#' underline='none' color='unset'>
+                Show All
+              </Link>
+            </Typography>
+          </Box>
+          <Grid container spacing={2} sx={{ paddingY: 1 }}>
+            {ImagesArr.filter((_, i) => i >= 4 && i < 8).map((el, i) => (
+              <Grid
+                item
+                key={i}
+                md={3}
+                xs={6}
+                sx={{
+                  display: i > 1 ? { xs: 'none', md: 'block' } : null,
+                }}
+              >
+                <Link href={`/posteredit/${i}`} underline='none'>
+                  <Card elevation={2}>
+                    <Image src={el.img} alt='img' layout='responsive' />
+                  </Card>
+                </Link>
+                <Typography
+                  variant='body1'
+                  component='p'
+                  sx={{
+                    marginTop: 1,
+                    fontSize: { md: '1.2rem', xs: '1rem' },
+                    color: 'gray',
+                  }}
+                >
+                  {el.title}
+                </Typography>
+                <Typography
+                  variant='subtitle2'
+                  component='p'
+                  sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
+                >
+                  {el.designation}
+                </Typography>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+        {/*
+         Quotes
+        */}
+        <Box sx={{ paddingX: 3, paddingTop: 1 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'baseline',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography variant='h6' component='p' sx={{ color: 'black' }}>
+              Quotes
+            </Typography>
+            <Typography
+              variant='subtitle2'
+              component='p'
+              sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
+            >
+              <Link href='#' underline='none' color='unset'>
+                Show All
+              </Link>
+            </Typography>
+          </Box>
+          <Grid container spacing={2} sx={{ paddingY: 1 }}>
+            {ImagesArr.filter((_, i) => i >= 8 && i < 12).map((el, i) => (
+              <Grid
+                item
+                key={i}
+                md={3}
+                xs={6}
+                sx={{
+                  display: i > 1 ? { xs: 'none', md: 'block' } : null,
+                }}
+              >
+                <Link href={`/posteredit/${i}`} underline='none'>
+                  <Card elevation={2}>
+                    <Image src={el.img} alt='img' layout='responsive' />
+                  </Card>
+                </Link>
+                <Typography
+                  variant='body1'
+                  component='p'
+                  sx={{
+                    marginTop: 1,
+                    fontSize: { md: '1.2rem', xs: '1rem' },
+                    color: 'gray',
+                  }}
+                >
+                  {el.title}
+                </Typography>
+                <Typography
+                  variant='subtitle2'
+                  component='p'
+                  sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
+                >
+                  {el.designation}
+                </Typography>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+        {/*
+         Tomorrow
+        */}
+        <Box
+          sx={{ paddingX: 3, paddingTop: 1, marginBottom: { xs: 8, md: 0 } }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'baseline',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography variant='h6' component='p' sx={{ color: 'black' }}>
+              Tomorrow
+            </Typography>
+            <Typography
+              variant='subtitle2'
+              component='p'
+              sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
+            >
+              <Link href='#' underline='none' color='unset'>
+                Show All
+              </Link>
+            </Typography>
+          </Box>
+          <Grid container spacing={2} sx={{ paddingY: 1 }}>
+            {ImagesArr.filter((_, i) => i >= 12 && i < 16).map((el, i) => (
+              <Grid
+                item
+                key={i}
+                md={3}
+                xs={6}
+                sx={{
+                  display: i > 1 ? { xs: 'none', md: 'block' } : null,
+                }}
+              >
+                <Link href={`/posteredit/${i}`} underline='none'>
+                  <Card elevation={2}>
+                    <Image src={el.img} alt='img' layout='responsive' />
+                  </Card>
+                </Link>
+                <Typography
+                  variant='body1'
+                  component='p'
+                  sx={{
+                    marginTop: 1,
+                    fontSize: { md: '1.2rem', xs: '1rem' },
+                    color: 'gray',
+                  }}
+                >
+                  {el.title}
+                </Typography>
+                <Typography
+                  variant='subtitle2'
+                  component='p'
+                  sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
+                >
+                  {el.designation}
+                </Typography>
               </Grid>
             ))}
           </Grid>
