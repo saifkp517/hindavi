@@ -89,252 +89,251 @@ const Home: NextPage = () => {
           setCookie('otp', otp);
           setCookie('userref', emailRef.current.value);
 
-          const data = await axios
-            .post(`http://localhost:4000/signup/${id}`, {
-              username: usernameRef.current.value,
-              email: emailRef.current.value,
-              password: passwordRef.current.value,
-              phoneno: phoneRef.current.value,
-            });
+          const data = await axios.post(`http://localhost:4000/signup/${id}`, {
+            username: usernameRef.current.value,
+            email: emailRef.current.value,
+            password: passwordRef.current.value,
+            phoneno: phoneRef.current.value,
+          });
           try {
             if (data) {
-              console.log(data)
+              console.log(data);
               await sendEmail();
-              router.push('/emailverify')
+              router.push('/emailverify');
             }
           } catch (err) {
-            console.log(err)
+            console.log(err);
           }
         }
       }
     } catch (err: any) {
       console.log(err);
-      setErr(err.response.data)
+      setErr(err.response.data);
       setState({ ...state, error: err.message, showError: true });
     }
+  };
 
-    return (
-      <Container
-        maxWidth='sm'
+  return (
+    <Container
+      maxWidth='sm'
+      sx={{
+        width: '100%',
+        minHeight: '100vh',
+        display: 'grid',
+        placeContent: 'center',
+      }}
+    >
+      <Box
         sx={{
           width: '100%',
-          minHeight: '100vh',
-          display: 'grid',
-          placeContent: 'center',
         }}
       >
+        <Typography
+          color='primary'
+          variant='h3'
+          component='h1'
+          sx={{
+            width: '100%',
+            fontWeight: 700,
+          }}
+        >
+          Sign up
+        </Typography>
+
+        <Typography
+          color='secondary.light'
+          variant='body1'
+          component='p'
+          marginTop={0.5}
+          sx={{
+            width: '100%',
+            marginLeft: 0.5,
+          }}
+        >
+          Please sign up to continue
+        </Typography>
         <Box
           sx={{
             width: '100%',
+            paddingX: 1,
+            marginTop: 2,
           }}
         >
-          <Typography
-            color='primary'
-            variant='h3'
-            component='h1'
-            sx={{
-              width: '100%',
-              fontWeight: 700,
-            }}
-          >
-            Sign up
-          </Typography>
-
-          <Typography
-            color='secondary.light'
-            variant='body1'
-            component='p'
-            marginTop={0.5}
-            sx={{
-              width: '100%',
-              marginLeft: 0.5,
-            }}
-          >
-            Please sign up to continue
-          </Typography>
-          <Box
-            sx={{
-              width: '100%',
-              paddingX: 1,
-              marginTop: 2,
-            }}
-          >
-            <form onSubmit={Register}>
-              <FormControl
+          <form onSubmit={Register}>
+            <FormControl
+              fullWidth={true}
+              variant='outlined'
+              sx={{
+                marginTop: 2,
+              }}
+            >
+              <p color='red'>{err}</p>
+              <InputLabel htmlFor='username'>Username</InputLabel>
+              <OutlinedInput
+                id='username'
+                label='Username'
                 fullWidth={true}
-                variant='outlined'
-                sx={{
-                  marginTop: 2,
+                inputRef={usernameRef}
+                inputProps={{
+                  maxLength: 25,
                 }}
-              >
-                <p color='red'>{err}</p>
-                <InputLabel htmlFor='username'>Username</InputLabel>
-                <OutlinedInput
-                  id='username'
-                  label='Username'
-                  fullWidth={true}
-                  inputRef={usernameRef}
-                  inputProps={{
-                    maxLength: 25,
-                  }}
-                  required={true}
-                  startAdornment={
-                    <InputAdornment position='start'>
-                      <AccountCircle />
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
-              <FormControl
+                required={true}
+                startAdornment={
+                  <InputAdornment position='start'>
+                    <AccountCircle />
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <FormControl
+              fullWidth={true}
+              variant='outlined'
+              sx={{
+                marginTop: 2,
+              }}
+            >
+              <InputLabel htmlFor='email'>Email Address</InputLabel>
+              <OutlinedInput
+                id='email'
+                type='email'
+                label='email address'
                 fullWidth={true}
-                variant='outlined'
-                sx={{
-                  marginTop: 2,
-                }}
-              >
-                <InputLabel htmlFor='email'>Email Address</InputLabel>
-                <OutlinedInput
-                  id='email'
-                  type='email'
-                  label='email address'
-                  fullWidth={true}
-                  inputRef={emailRef}
-                  required
-                  startAdornment={
-                    <InputAdornment position='start'>
-                      <Email />
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
-              <FormControl
+                inputRef={emailRef}
+                required
+                startAdornment={
+                  <InputAdornment position='start'>
+                    <Email />
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <FormControl
+              fullWidth={true}
+              variant='outlined'
+              sx={{
+                marginTop: 2,
+              }}
+            >
+              <InputLabel htmlFor='phone'>Phone number</InputLabel>
+              <OutlinedInput
+                id='phone'
+                label='phone number'
                 fullWidth={true}
-                variant='outlined'
-                sx={{
-                  marginTop: 2,
+                inputRef={phoneRef}
+                inputProps={{
+                  minLength: 10,
                 }}
-              >
-                <InputLabel htmlFor='phone'>Phone number</InputLabel>
-                <OutlinedInput
-                  id='phone'
-                  label='phone number'
-                  fullWidth={true}
-                  inputRef={phoneRef}
-                  inputProps={{
-                    minLength: 10,
-                  }}
-                  required
-                  startAdornment={
-                    <InputAdornment position='start'>
-                      <Phone />
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
-              <FormControl
+                required
+                startAdornment={
+                  <InputAdornment position='start'>
+                    <Phone />
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <FormControl
+              fullWidth={true}
+              variant='outlined'
+              sx={{
+                marginTop: 2,
+              }}
+            >
+              <InputLabel htmlFor='password'>Password</InputLabel>
+              <OutlinedInput
+                id='password'
+                label='Password'
                 fullWidth={true}
-                variant='outlined'
-                sx={{
-                  marginTop: 2,
+                inputRef={passwordRef}
+                required
+                inputProps={{
+                  minLength: 8,
                 }}
-              >
-                <InputLabel htmlFor='password'>Password</InputLabel>
-                <OutlinedInput
-                  id='password'
-                  label='Password'
-                  fullWidth={true}
-                  inputRef={passwordRef}
-                  required
-                  inputProps={{
-                    minLength: 8,
-                  }}
-                  type={state.showPassword ? 'text' : 'password'}
-                  startAdornment={
-                    <InputAdornment position='start'>
-                      <Lock />
-                    </InputAdornment>
-                  }
-                  endAdornment={
-                    <InputAdornment position='end'>
-                      <IconButton
-                        aria-label='toggle password visibility'
-                        onClick={() =>
-                          setState({
-                            ...state,
-                            showPassword: !state.showPassword,
-                          })
-                        }
-                      >
-                        {state.showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
-              <FormControl
+                type={state.showPassword ? 'text' : 'password'}
+                startAdornment={
+                  <InputAdornment position='start'>
+                    <Lock />
+                  </InputAdornment>
+                }
+                endAdornment={
+                  <InputAdornment position='end'>
+                    <IconButton
+                      aria-label='toggle password visibility'
+                      onClick={() =>
+                        setState({
+                          ...state,
+                          showPassword: !state.showPassword,
+                        })
+                      }
+                    >
+                      {state.showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <FormControl
+              fullWidth={true}
+              variant='outlined'
+              sx={{
+                marginTop: 2,
+              }}
+            >
+              <InputLabel htmlFor='confirm'>Confirm Password</InputLabel>
+              <OutlinedInput
+                id='confirm'
+                label='confirm password'
                 fullWidth={true}
-                variant='outlined'
-                sx={{
-                  marginTop: 2,
-                }}
-              >
-                <InputLabel htmlFor='confirm'>Confirm Password</InputLabel>
-                <OutlinedInput
-                  id='confirm'
-                  label='confirm password'
-                  fullWidth={true}
-                  inputRef={confirmPasswordRef}
-                  required
-                  startAdornment={
-                    <InputAdornment position='start'>
-                      <Lock />
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
-              <Button
-                type='submit'
-                fullWidth={true}
-                variant='contained'
-                sx={{
-                  color: '#fff',
-                  fontWeight: '700',
-                  marginTop: 4,
-                  paddingY: 1,
-                }}
-              >
-                Sign up
-              </Button>
-            </form>
-          </Box>
+                inputRef={confirmPasswordRef}
+                required
+                startAdornment={
+                  <InputAdornment position='start'>
+                    <Lock />
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <Button
+              type='submit'
+              fullWidth={true}
+              variant='contained'
+              sx={{
+                color: '#fff',
+                fontWeight: '700',
+                marginTop: 4,
+                paddingY: 1,
+              }}
+            >
+              Sign up
+            </Button>
+          </form>
         </Box>
-        <Typography
-          variant='body1'
-          component='p'
-          sx={{ placeSelf: 'end center', marginTop: 6 }}
-        >
-          Already have an account
-          <Link href='/' sx={{ marginLeft: 1, textDecoration: 'none' }}>
-            Login
-          </Link>
-        </Typography>
-        <Snackbar
-          open={state.showError}
-          autoHideDuration={6000}
+      </Box>
+      <Typography
+        variant='body1'
+        component='p'
+        sx={{ placeSelf: 'end center', marginTop: 6 }}
+      >
+        Already have an account
+        <Link href='/' sx={{ marginLeft: 1, textDecoration: 'none' }}>
+          Login
+        </Link>
+      </Typography>
+      <Snackbar
+        open={state.showError}
+        autoHideDuration={6000}
+        onClose={() => setState({ ...state, showError: false })}
+      >
+        <Alert
+          severity='error'
+          variant='filled'
+          elevation={4}
           onClose={() => setState({ ...state, showError: false })}
         >
-          <Alert
-            severity='error'
-            variant='filled'
-            elevation={4}
-            onClose={() => setState({ ...state, showError: false })}
-          >
-            {state.error}
-          </Alert>
-        </Snackbar>
-      </Container>
-    );
-  };
+          {state.error}
+        </Alert>
+      </Snackbar>
+    </Container>
+  );
 };
 
-  export default Home;
+export default Home;
