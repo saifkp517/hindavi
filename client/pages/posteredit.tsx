@@ -14,7 +14,6 @@ import { deepOrange } from '@mui/material/colors';
 import { Box, Container } from '@mui/system';
 import { NextPage } from 'next';
 import Image from 'next/image';
-import Img from '../public/images/image.jpeg';
 
 const Poster: NextPage = () => {
   const ColorButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
@@ -56,7 +55,6 @@ const Poster: NextPage = () => {
           variant='outlined'
           sx={{ height: '18rem', aspectRatio: '1 / 1' }}
         >
-          <Image src={Img} alt='image' style={{ aspectRatio: '1 / 1' }} />
         </Card>
       </Box>
       <Box sx={{ width: '100%', textAlign: 'center' }}>

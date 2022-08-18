@@ -102,29 +102,20 @@ const Home: NextPage = () => {
               password: passwordRef.current.value,
               phoneno: phoneRef.current.value,
             });
-            // .then((data) => {
-            //   console.log(data);
-            //   router.push(`/emailverify`);
-            // })
-            // .catch(err => {
-            //   console.log(err);
-            //   setErr(err);
-            // })
-
-            try {
-              if (data) {
-                console.log(data)
-                await sendEmail();
-                router.push('/emailverify')
-              }
-            } catch (err) {
-              console.log(err);
-              setErr(err);
+          try {
+            if (data) {
+              console.log(data)
+              await sendEmail();
+              router.push('/emailverify')
             }
+          } catch (err) {
+            console.log(err)
+          }
         }
       }
     } catch (err: any) {
-      console.log(err.message);
+      console.log(err);
+      setErr(err.response.data)
       setState({ ...state, error: err.message, showError: true });
     }
   };
