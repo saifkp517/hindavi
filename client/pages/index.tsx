@@ -2,20 +2,21 @@ import type { NextPage } from 'next';
 import axios from 'axios';
 import Container from '@mui/material/Container';
 import { setCookie } from 'cookies-next';
-import {
-  FormControl,
-  InputAdornment,
-  Typography,
-  Box,
-  IconButton,
-  Button,
-  InputLabel,
-  OutlinedInput,
-  Link,
-  Snackbar,
-  Alert,
-} from '@mui/material';
-import { Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
+import FormControl from '@mui/material/FormControl';
+import InputAdornment from '@mui/material/InputAdornment';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/system/Box';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Link from '@mui/material/Link';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import Email from '@mui/icons-material/Email';
+import Lock from '@mui/icons-material/Lock';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 
@@ -48,10 +49,10 @@ const Home: NextPage = () => {
             password: passwordRef.current.value,
           })
           .then((data: any) => {
-              setCookie('key', data.data.token);
-              router.push('/DashBoard')
+            setCookie('key', data.data.token);
+            router.push('/DashBoard');
           })
-          .catch(err => {
+          .catch((err) => {
             console.log(err);
             setErr(err.response.data)
           });

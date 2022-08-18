@@ -4,27 +4,23 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { setCookie } from 'cookies-next';
 import Container from '@mui/material/Container';
-import {
-  FormControl,
-  InputAdornment,
-  Typography,
-  Box,
-  IconButton,
-  Button,
-  InputLabel,
-  OutlinedInput,
-  Link,
-  Snackbar,
-  Alert,
-} from '@mui/material';
-import {
-  AccountCircle,
-  Email,
-  Lock,
-  Phone,
-  Visibility,
-  VisibilityOff,
-} from '@mui/icons-material';
+import FormControl from '@mui/material/FormControl';
+import InputAdornment from '@mui/material/InputAdornment';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/system/Box';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Link from '@mui/material/Link';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import Phone from '@mui/icons-material/Phone';
+import Email from '@mui/icons-material/Email';
+import Lock from '@mui/icons-material/Lock';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 interface State {
   showPassword: boolean;
@@ -93,27 +89,26 @@ const Home: NextPage = () => {
           setCookie('otp', otp);
           setCookie('userref', emailRef.current.value);
 
-          const data = await axios
-            .post(`http://localhost:4000/signup/${id}`, {
-              username: usernameRef.current.value,
-              email: emailRef.current.value,
-              password: passwordRef.current.value,
-              phoneno: phoneRef.current.value,
-            });
+          const data = await axios.post(`http://localhost:4000/signup/${id}`, {
+            username: usernameRef.current.value,
+            email: emailRef.current.value,
+            password: passwordRef.current.value,
+            phoneno: phoneRef.current.value,
+          });
           try {
             if (data) {
-              console.log(data)
+              console.log(data);
               await sendEmail();
-              router.push('/emailverify')
+              router.push('/emailverify');
             }
           } catch (err) {
-            console.log(err)
+            console.log(err);
           }
         }
       }
     } catch (err: any) {
       console.log(err);
-      setErr(err.response.data)
+      setErr(err.response.data);
       setState({ ...state, error: err.message, showError: true });
     }
   }

@@ -1,35 +1,28 @@
 import Container from '@mui/material/Container';
 import { useState, useRef } from 'react';
-import {
-  Button,
-  FormControl,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  Typography,
-} from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import InputAdornment from '@mui/material/InputAdornment';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
 import type { NextPage } from 'next';
 import { Email } from '@mui/icons-material';
 import React from 'react';
 
 const Verify: NextPage = () => {
-
   const emailRef = useRef<HTMLInputElement>(null);
 
   const ForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
 
-
     try {
-      if ( emailRef.current ) {
-
-        
-
+      if (emailRef.current) {
       }
-    } catch(err: any) {
-      console.log(err)
+    } catch (err: any) {
+      console.log(err);
     }
-  }
+  };
 
   return (
     <Container
