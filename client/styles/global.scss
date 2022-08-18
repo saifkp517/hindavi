@@ -31,6 +31,29 @@ a {
   }
 }
 
+.logo {
+  min-width: 6rem;
+  height: auto;
+}
+
+@media (min-width: 601px) {
+  .bottomNav {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .menu {
+    & > div {
+      gap: 1rem;
+
+      & > div {
+        gap: 0.2rem;
+      }
+    }
+  }
+}
+
 @media (max-width: 600px) {
   .Poster {
     &__main {
@@ -49,6 +72,39 @@ a {
     &__container {
       flex-direction: column;
       margin: 0;
+    }
+  }
+
+  .logo {
+    min-width: 4rem;
+    margin-right: 1rem;
+  }
+
+  .search {
+    margin: 0 auto;
+    
+    & > div {
+      padding-left: 0.2rem;
+    }
+    
+    & input {
+      font-size: 0.8rem;
+      margin-left: -0.2rem;
+      padding: 0.5rem 0.2rem 0.5rem 0;
+    }
+  }
+
+  .menu,
+  .user {
+    display: none;
+  }
+
+  .balance {
+    margin-left: 1rem;
+    font-size: 0.8rem;
+
+    & span {
+      font-size: 0.6rem;
     }
   }
 }
