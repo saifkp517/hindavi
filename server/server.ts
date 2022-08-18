@@ -4,6 +4,7 @@ import fs from "fs";
 require('dotenv').config()
 import session from "express-session"
 import bodyParser from "body-parser";
+import path from "path"
 import nodemailer from "nodemailer"
 import cookieParser from "cookie-parser"
 import { PrismaClient } from '@prisma/client'
@@ -52,6 +53,37 @@ app.use(cors({
     credentials: true,
 }))
 
+<<<<<<< HEAD
+=======
+if (process.env.NODE_ENV === 'production') {
+    // Serve any static files
+    app.use(express.static(path.join(__dirname, 'client/build')));
+  // Handle React routing, return all requests to React app
+    app.get('*', function(req, res) {
+      res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    });
+}
+
+const whitelist = ['http://localhost:3000', 'http://localhost:4000']
+const corsOptions = {
+  origin: function (origin: any, callback: any) {
+    console.log("** Origin of request " + origin)
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      console.log("Origin acceptable")
+      callback(null, true)
+    } else {
+      console.log("Origin rejected")
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+// --> Add this
+app.use(cors(corsOptions))
+
+
+//asd
+
+>>>>>>> e2bb4987c2700c318e63b7d53c9ca2c1dd8efa90
 //////////////////////middleware-section//////////////////////
 
 //sign in OR log in
