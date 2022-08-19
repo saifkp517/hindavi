@@ -111,7 +111,7 @@ const Home: NextPage = () => {
       setErr(err.response.data);
       setState({ ...state, error: err.message, showError: true });
     }
-  };
+  }
 
   return (
     <Container
