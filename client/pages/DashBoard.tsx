@@ -47,21 +47,6 @@ const DashBoard: NextPage = () => {
 
   }
 
-  const Images = async () => {
-
-    axios.get("http://localhost:4000/images")
-      .then(data => {
-        console.log(data);
-      })
-      .catch(err => {
-        console.log(err)
-        if (err.response.status === 401) {
-          setError("Please Login again!")
-        }
-      })
-
-  }
-
   ///uploading images to s3////////////////
 
   const [imageUrl, setImageUrl] = useState("");
@@ -72,6 +57,12 @@ const DashBoard: NextPage = () => {
       let file = event.target.files[0];
       let {url} = await uploadToS3(file)
       setImageUrl(url)
+      axios.post("http://localhost:4000/upload-profile", {
+        email: email,
+        profilephoto: JSON.stringify(imageUrl)
+      })
+      .then(data => console.log(data))
+      .catch(err => console.log("lmao"))   
     } catch (err) {
       console.log(err)
     }
@@ -83,8 +74,6 @@ const DashBoard: NextPage = () => {
       <h1>DashBoard</h1>
       <p> {email}</p>
       <p style={{ color: "red" }}>{error}</p>
-
-      <button onClick={Images}>image</button>
 
       <input type="file" onChange={fileHandleChange} />
 

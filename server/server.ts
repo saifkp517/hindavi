@@ -53,37 +53,19 @@ app.use(cors({
     credentials: true,
 }))
 
-<<<<<<< HEAD
-=======
-if (process.env.NODE_ENV === 'production') {
-    // Serve any static files
-    app.use(express.static(path.join(__dirname, 'client/build')));
-  // Handle React routing, return all requests to React app
-    app.get('*', function(req, res) {
-      res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-    });
-}
 
-const whitelist = ['http://localhost:3000', 'http://localhost:4000']
-const corsOptions = {
-  origin: function (origin: any, callback: any) {
-    console.log("** Origin of request " + origin)
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      console.log("Origin acceptable")
-      callback(null, true)
-    } else {
-      console.log("Origin rejected")
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
-// --> Add this
-app.use(cors(corsOptions))
+////cors options//////
 
+app.get("/", (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*")
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Max-Age", "1800");
+    res.setHeader("Access-Control-Allow-Headers", "content-type");
+    res.setHeader("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS");
+});
 
-//asd
+////cors options//////
 
->>>>>>> e2bb4987c2700c318e63b7d53c9ca2c1dd8efa90
 //////////////////////middleware-section//////////////////////
 
 //sign in OR log in
@@ -147,6 +129,7 @@ app.post('/signin', async (req, res) => {
     })
 
     if (userPassword) {
+        
         const ValidPassword = await bcrypt.compare(password, userPassword.password)
 
         if (ValidPassword) {
@@ -164,6 +147,26 @@ app.post('/signin', async (req, res) => {
     } else {
         res.status(404).json("Email not Found")
     }
+})
+
+app.post('/upload-profile', async (req, res) => {
+
+    const {email, profilephoto} = req.body;
+
+    const updateprofile = await prisma.user.update({
+
+        where: {
+            email: JSON.parse(email)
+        },
+        data: {
+            profilephoto: JSON.parse(profilephoto)
+        }
+
+    })
+
+    res.json("updated successfully");
+
+
 })
 
 app.post('/forgotpassword', async (req, res) => {
@@ -219,18 +222,7 @@ app.post('/email', (req, res) => {
 
 /////////////////////////upload image-sections
 
-app.get('/images', (req, res, next) => {
 
-    const displayParams = {
-        Bucket: process.env.BUCKET_NAME,
-        Key: process.env.AWSAccessKeyId
-    }
-    
-    s3.getObject(displayParams, (err, data) => {
-        if (err) console.log(err, err.stack);
-        else console.log(data)
-    })
-})
 
 /////////////////////////upload image-sections
 
