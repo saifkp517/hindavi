@@ -3,25 +3,18 @@ import HomeIcon from '@mui/icons-material/Home';
 import CurrencyRupee from '@mui/icons-material/CurrencyRupee';
 import Menu from '@mui/icons-material/Menu';
 import Notifications from '@mui/icons-material/Notifications';
-import Search from '@mui/icons-material/Search';
 import Share from '@mui/icons-material/Share';
 import AppBar from '@mui/material/AppBar';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
-import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/system/Box';
-import Card from '@mui/material/Card';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import Image, { StaticImageData } from 'next/image';
-import Logo from '../public/logo.png';
+import { StaticImageData } from 'next/image';
 import { useState } from 'react';
 import {
   Img18,
@@ -43,8 +36,10 @@ import {
   Img8,
   Img9,
 } from '../public/index';
+import { PosterCards } from '../components/PosterCards/PosterCards';
+import { Navbar } from '../components/Navbar/Navbar';
 
-interface Design {
+export interface Design {
   img: StaticImageData;
   title: string;
   designation: string;
@@ -140,69 +135,7 @@ const Home: NextPage = () => {
   return (
     <main>
       <Box sx={{ flexGrow: 1 }} color='secondary.light'>
-        <AppBar
-          position='static'
-          color='inherit'
-          sx={{
-            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.2)',
-          }}
-        >
-          <Toolbar
-            sx={{
-              paddingY: 2,
-              display: 'flex',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-            }}
-          >
-            <div className='logo'>
-              <Image src={Logo} alt='logo' layout='responsive' />
-            </div>
-            <TextField
-              id='search'
-              className='search'
-              placeholder='Search'
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    <Search color='primary' />
-                  </InputAdornment>
-                ),
-              }}
-              sx={{
-                marginX: 'auto',
-                paddingY: 0,
-              }}
-              variant='outlined'
-            />
-            <Typography
-              variant='h6'
-              component='p'
-              color='secondary'
-              className='balance'
-              sx={{ textAlign: 'center', lineHeight: 1 }}
-            >
-              Balance
-              <Typography
-                variant='body1'
-                component='span'
-                sx={{ flexGrow: 1, display: 'block' }}
-              >
-                250 coins
-              </Typography>
-            </Typography>
-            <IconButton
-              className='user'
-              size='large'
-              aria-label='account'
-              sx={{
-                marginLeft: 2,
-              }}
-            >
-              <AccountCircle color='primary' fontSize='large' />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
+        <Navbar />
         <AppBar position='static' color='primary' className='menu'>
           <Toolbar
             sx={{
@@ -344,253 +277,35 @@ const Home: NextPage = () => {
         {/* 
           Today
         */}
-        <Box sx={{ paddingX: 3, paddingTop: 1 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'baseline',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Typography variant='h6' component='p' sx={{ color: 'black' }}>
-              Today
-            </Typography>
-            <Typography
-              variant='subtitle2'
-              component='p'
-              sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
-            >
-              <Link href='#' underline='none' color='unset'>
-                Show All
-              </Link>
-            </Typography>
-          </Box>
-          <Grid container spacing={2} sx={{ paddingY: 1 }}>
-            {ImagesArr.filter((_, i) => i < 4).map((el, i) => (
-              <Grid
-                item
-                key={i}
-                md={3}
-                xs={6}
-                sx={{
-                  display: i > 1 ? { xs: 'none', md: 'block' } : null,
-                }}
-              >
-                <Link href={`/posteredit/${i}`} underline='none'>
-                  <Card elevation={2}>
-                    <Image src={el.img} alt='img' layout='responsive' />
-                  </Card>
-                </Link>
-                <Typography
-                  variant='body1'
-                  component='p'
-                  sx={{
-                    marginTop: 1,
-                    fontSize: { md: '1.2rem', xs: '1rem' },
-                    color: 'gray',
-                  }}
-                >
-                  {el.title}
-                </Typography>
-                <Typography
-                  variant='subtitle2'
-                  component='p'
-                  sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
-                >
-                  {el.designation}
-                </Typography>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
+        <PosterCards
+          heading='Today'
+          list={ImagesArr.filter((_, i) => i < 4)}
+          inc={0} //TODO only static
+        />
         {/*
          Stories 
         */}
-        <Box sx={{ paddingX: 3, paddingTop: 1 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'baseline',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Typography variant='h6' component='p' sx={{ color: 'black' }}>
-              Stories
-            </Typography>
-            <Typography
-              variant='subtitle2'
-              component='p'
-              sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
-            >
-              <Link href='#' underline='none' color='unset'>
-                Show All
-              </Link>
-            </Typography>
-          </Box>
-          <Grid container spacing={2} sx={{ paddingY: 1 }}>
-            {ImagesArr.filter((_, i) => i >= 4 && i < 8).map((el, i) => (
-              <Grid
-                item
-                key={i}
-                md={3}
-                xs={6}
-                sx={{
-                  display: i > 1 ? { xs: 'none', md: 'block' } : null,
-                }}
-              >
-                <Link href={`/posteredit/${i}`} underline='none'>
-                  <Card elevation={2}>
-                    <Image src={el.img} alt='img' layout='responsive' />
-                  </Card>
-                </Link>
-                <Typography
-                  variant='body1'
-                  component='p'
-                  sx={{
-                    marginTop: 1,
-                    fontSize: { md: '1.2rem', xs: '1rem' },
-                    color: 'gray',
-                  }}
-                >
-                  {el.title}
-                </Typography>
-                <Typography
-                  variant='subtitle2'
-                  component='p'
-                  sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
-                >
-                  {el.designation}
-                </Typography>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
+        <PosterCards
+          heading='Stories'
+          list={ImagesArr.filter((_, i) => i >= 4 && i < 8)}
+          inc={4} //TODO only static
+        />
         {/*
          Quotes
         */}
-        <Box sx={{ paddingX: 3, paddingTop: 1 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'baseline',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Typography variant='h6' component='p' sx={{ color: 'black' }}>
-              Quotes
-            </Typography>
-            <Typography
-              variant='subtitle2'
-              component='p'
-              sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
-            >
-              <Link href='#' underline='none' color='unset'>
-                Show All
-              </Link>
-            </Typography>
-          </Box>
-          <Grid container spacing={2} sx={{ paddingY: 1 }}>
-            {ImagesArr.filter((_, i) => i >= 8 && i < 12).map((el, i) => (
-              <Grid
-                item
-                key={i}
-                md={3}
-                xs={6}
-                sx={{
-                  display: i > 1 ? { xs: 'none', md: 'block' } : null,
-                }}
-              >
-                <Link href={`/posteredit/${i}`} underline='none'>
-                  <Card elevation={2}>
-                    <Image src={el.img} alt='img' layout='responsive' />
-                  </Card>
-                </Link>
-                <Typography
-                  variant='body1'
-                  component='p'
-                  sx={{
-                    marginTop: 1,
-                    fontSize: { md: '1.2rem', xs: '1rem' },
-                    color: 'gray',
-                  }}
-                >
-                  {el.title}
-                </Typography>
-                <Typography
-                  variant='subtitle2'
-                  component='p'
-                  sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
-                >
-                  {el.designation}
-                </Typography>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
+        <PosterCards
+          heading='Quotes'
+          list={ImagesArr.filter((_, i) => i >= 8 && i < 12)}
+          inc={8} //TODO only static
+        />
         {/*
          Tomorrow
         */}
-        <Box
-          sx={{ paddingX: 3, paddingTop: 1, marginBottom: { xs: 8, md: 0 } }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'baseline',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Typography variant='h6' component='p' sx={{ color: 'black' }}>
-              Tomorrow
-            </Typography>
-            <Typography
-              variant='subtitle2'
-              component='p'
-              sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
-            >
-              <Link href='#' underline='none' color='unset'>
-                Show All
-              </Link>
-            </Typography>
-          </Box>
-          <Grid container spacing={2} sx={{ paddingY: 1 }}>
-            {ImagesArr.filter((_, i) => i >= 12 && i < 16).map((el, i) => (
-              <Grid
-                item
-                key={i}
-                md={3}
-                xs={6}
-                sx={{
-                  display: i > 1 ? { xs: 'none', md: 'block' } : null,
-                }}
-              >
-                <Link href={`/posteredit/${i}`} underline='none'>
-                  <Card elevation={2}>
-                    <Image src={el.img} alt='img' layout='responsive' />
-                  </Card>
-                </Link>
-                <Typography
-                  variant='body1'
-                  component='p'
-                  sx={{
-                    marginTop: 1,
-                    fontSize: { md: '1.2rem', xs: '1rem' },
-                    color: 'gray',
-                  }}
-                >
-                  {el.title}
-                </Typography>
-                <Typography
-                  variant='subtitle2'
-                  component='p'
-                  sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
-                >
-                  {el.designation}
-                </Typography>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
+        <PosterCards
+          heading='Tomorrow'
+          list={ImagesArr.filter((_, i) => i >= 12 && i < 16)}
+          inc={12} //TODO only static
+        />
       </Box>
     </main>
   );
