@@ -26,9 +26,7 @@ export interface UserAuth extends express.Request {
 
 ///awsconfig////////////////
 
-const BUCKET_NAME = 'hindavidatabucket'; 
-
- const s3 = new S3({
+const s3 = new S3({
     accessKeyId: process.env.AWSAccessKeyId,
     secretAccessKey: process.env.AWSSecretKey,
     region: "ap-south-1"
@@ -166,7 +164,34 @@ app.post('/upload-profile', async (req, res) => {
 
     res.json("updated successfully");
 
+})
 
+app.get("/image", (req, res) => {
+    const deleteParams = {
+        Bucket: process.env.BUCKET_NAME,
+        Key:  'next-s3-uploads/186d7ded-e3cf-41c2-853a-bb9047c863b2/wall.png'
+    }
+
+    s3.getObject(deleteParams, (err, data) => {
+        if(err) return console.log(err, err.stack);
+        console.log(data);
+    })
+})
+
+app.get('/delete', (req, res) => {
+    const imageurl = "sdf";
+
+    const deleteParams = {
+        Bucket: process.env.BUCKET_NAME,
+        Key: 'next-s3-uploads/0b4cf6b1-2aa1-4a89-bf83-7b298fd011e7/first%20ace.png'
+    }
+
+    s3.deleteObject(deleteParams, (err, data) => {
+        if(err) return console.log(err, err.stack);
+        console.log(data);
+    })
+    
+    
 })
 
 app.post('/forgotpassword', async (req, res) => {
