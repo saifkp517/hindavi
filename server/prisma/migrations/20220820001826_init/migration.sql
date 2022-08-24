@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
-    "profilephoto" TEXT NOT NULL,
+    "profilepic" TEXT NOT NULL,
     "username" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
@@ -46,7 +46,6 @@ CREATE TABLE "Photos" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "image" TEXT NOT NULL,
-    "data" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Photos_pkey" PRIMARY KEY ("id")
 );

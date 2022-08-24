@@ -79,5 +79,13 @@ content-type: application/json
 }
 
 ###
-
 GET http://localhost:4000/images
+
+
+###
+
+GET http://172.30.1.75:4000/delete
+
+###
+
+GET http://172.30.1.75:4000/image
