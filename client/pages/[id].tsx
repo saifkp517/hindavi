@@ -10,8 +10,11 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/system/Box';
+import IconButton from '@mui/material/IconButton';
+import Image from 'next/image';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { StaticImageData } from 'next/image';
@@ -38,11 +41,23 @@ import {
 } from '../public/index';
 import { PosterCards } from '../components/PosterCards/PosterCards';
 import { Navbar } from '../components/Navbar/Navbar';
+import { Namaste } from '../public/svg/Namaste';
+import { Shoewear } from '../public/svg/Shoewear';
+import { Jewelry } from '../public/svg/Jewelry';
+import { RealEstate } from '../public/svg/RealEstate';
+import { Bakery } from '../public/svg/Bakery';
+import { Motorcycle } from '../public/svg/Motorcycle';
 
 export interface Design {
   img: StaticImageData;
   title: string;
   designation: string;
+}
+
+interface CategoriesType {
+  svg: any;
+  title: string;
+  color: string;
 }
 
 const Home: NextPage = () => {
@@ -130,6 +145,19 @@ const Home: NextPage = () => {
       designation: 'By Hindavi Graphics',
       img: Img16,
     },
+  ];
+
+  const Categories: CategoriesType[] = [
+    { svg: <Namaste />, title: 'Thank You', color: '#F2994A' },
+    {
+      svg: <Shoewear />,
+      title: 'Footwear',
+      color: '#EB5757',
+    },
+    { svg: <Jewelry />, title: 'Jewelry', color: '#F2C94C' },
+    { svg: <RealEstate />, title: 'Real Estate', color: '#219653' },
+    { svg: <Bakery />, title: 'Bakery', color: '#2D9CDB' },
+    { svg: <Motorcycle />, title: 'Motorcycle', color: '#BB6BD9' },
   ];
 
   return (
@@ -275,6 +303,74 @@ const Home: NextPage = () => {
           </BottomNavigation>
         </Paper>
         {/* 
+          Categories
+        */}
+        <Box sx={{ paddingX: 3, paddingTop: 1 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'baseline',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography variant='h6' component='p' sx={{ color: 'black' }}>
+              Categories
+            </Typography>
+            <Typography
+              variant='subtitle2'
+              component='p'
+              sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
+            >
+              <Link href='#' underline='none' color='unset'>
+                Show All
+              </Link>
+            </Typography>
+          </Box>
+          <Grid
+            container
+            spacing={{ md: 8, xs: 4 }}
+            sx={{ paddingTop: 2, paddingX: { md: 2, xs: 0 } }}
+          >
+            {Categories.map((el, i) => (
+              <Grid
+                item
+                key={i}
+                md={2}
+                xs={3}
+                sx={{
+                  display: i > 3 ? { xs: 'none', md: 'block' } : null,
+                }}
+              >
+                <Link href={`/posteredit/${i}`} underline='none'>
+                  <Paper
+                    elevation={2}
+                    sx={{
+                      padding: { md: 4, xs: 2 },
+                      borderRadius: '50%',
+                      fill: 'white',
+                      backgroundColor: el.color,
+                    }}
+                  >
+                    {el.svg}
+                  </Paper>
+                </Link>
+                <Typography
+                  variant='body1'
+                  component='p'
+                  sx={{
+                    marginTop: 1,
+                    textAlign: 'center',
+                    fontSize: { md: '1.2rem', xs: '0.6rem' },
+                    color: 'gray',
+                  }}
+                >
+                  {el.title}
+                </Typography>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+        {/* 
           Today
         */}
         <PosterCards
@@ -306,6 +402,7 @@ const Home: NextPage = () => {
           list={ImagesArr.filter((_, i) => i >= 12 && i < 16)}
           inc={12} //TODO only static
         />
+        <Box sx={{ height: { xs: '3rem', md: 0 } }}></Box>
       </Box>
     </main>
   );

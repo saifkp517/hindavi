@@ -15,7 +15,7 @@ interface Props {
 
 export const PosterCards: NextPage<Props> = ({ heading, list, inc }) => {
   return (
-    <Box sx={{ paddingX: 3, paddingTop: 1, marginBottom: { xs: 8, md: 0 } }}>
+    <Box sx={{ paddingX: 3, paddingTop: 1 }}>
       <Box
         sx={{
           display: 'flex',
