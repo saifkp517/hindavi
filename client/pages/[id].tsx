@@ -328,8 +328,8 @@ const Home: NextPage = () => {
           </Box>
           <Grid
             container
-            spacing={{ md: 8, xs: 4 }}
-            sx={{ paddingTop: 2, paddingX: { md: 2, xs: 0 } }}
+            spacing={{ md: 4, xs: 1 }}
+            sx={{ paddingX: { md: 2, xs: 0 } }}
           >
             {Categories.map((el, i) => (
               <Grid
@@ -341,24 +341,25 @@ const Home: NextPage = () => {
                   display: i > 3 ? { xs: 'none', md: 'block' } : null,
                 }}
               >
-                <Link href={`/posteredit/${i}`} underline='none'>
-                  <Paper
-                    elevation={2}
-                    sx={{
-                      padding: { md: 4, xs: 2 },
-                      borderRadius: '50%',
-                      fill: 'white',
-                      backgroundColor: el.color,
-                    }}
-                  >
-                    {el.svg}
-                  </Paper>
-                </Link>
+                <Box sx={{ padding: { md: 3, xs: '10%' } }}>
+                  <Link href={`/posteredit/${i}`} underline='none'>
+                    <Paper
+                      elevation={2}
+                      sx={{
+                        padding: { md: 4, xs: '20%' },
+                        borderRadius: '50%',
+                        fill: 'white',
+                        backgroundColor: el.color,
+                      }}
+                    >
+                      {el.svg}
+                    </Paper>
+                  </Link>
+                </Box>
                 <Typography
                   variant='body1'
                   component='p'
                   sx={{
-                    marginTop: 1,
                     textAlign: 'center',
                     fontSize: { md: '1.2rem', xs: '0.6rem' },
                     color: 'gray',

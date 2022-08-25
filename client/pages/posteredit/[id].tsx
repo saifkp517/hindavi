@@ -32,6 +32,7 @@ import {
   Img9,
 } from '../../public/index';
 import { EditTools } from '../../components/EditTools/EditTools';
+import { useEffect, useRef } from 'react';
 
 interface Props {
   id: { id: string };
@@ -39,6 +40,8 @@ interface Props {
 
 const Poster: NextPage<Props> = ({ id }) => {
   const router = useRouter();
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
 
   const ColorButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
     color: theme.palette.getContrastText(deepOrange[500]),
@@ -69,20 +72,30 @@ const Poster: NextPage<Props> = ({ id }) => {
     Img18,
   ];
 
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext('2d');
+    if (context) {
+      const image: any = document.getElementById('img');
+      context.drawImage(image, 0, 0);
+    }
+  }, []);
+
   return (
     <Container
       className='Poster__main'
       maxWidth='lg'
       sx={{
-        marginY: 2,
-        height: '100vh',
+        paddingY: 2,
+        minHeight: '95vh',
+        overflowY: 'hidden',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'column',
       }}
     >
-      <Box sx={{ width: '100%' }}>
+      <Box sx={{ width: '100%', marginBottom: 1 }}>
         <ColorButton onClick={() => router.back()}>
           <ChevronLeft />
         </ColorButton>
@@ -104,8 +117,10 @@ const Poster: NextPage<Props> = ({ id }) => {
           <Image
             src={ImagesArr[Number(id.id)]}
             alt='image'
-            style={{ aspectRatio: '1 / 1' }}
+            id='img'
+            style={{ aspectRatio: '1 / 1', display: 'none' }}
           />
+          <canvas ref={canvasRef} />
         </Card>
       </Box>
       <EditTools />
