@@ -31,6 +31,7 @@ import {
   Img8,
   Img9,
 } from '../../public/index';
+import Frame from '../../public/svg/frame.png';
 import { EditTools } from '../../components/EditTools/EditTools';
 import { useEffect, useRef } from 'react';
 
@@ -41,7 +42,6 @@ interface Props {
 const Poster: NextPage<Props> = ({ id }) => {
   const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const imgRef = useRef<HTMLImageElement>(null);
 
   const ColorButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
     color: theme.palette.getContrastText(deepOrange[500]),
@@ -77,7 +77,9 @@ const Poster: NextPage<Props> = ({ id }) => {
     const context = canvas?.getContext('2d');
     if (context) {
       const image: any = document.getElementById('img');
-      context.drawImage(image, 0, 0);
+      const frame: any = document.getElementById('frame');
+      // context.drawImage(frame, 0, 0);
+      context.drawImage(image, 0, 0, 150, 150);
     }
   }, []);
 
@@ -114,13 +116,9 @@ const Poster: NextPage<Props> = ({ id }) => {
           variant='outlined'
           sx={{ height: '18rem', aspectRatio: '1 / 1' }}
         >
-          <Image
-            src={ImagesArr[Number(id.id)]}
-            alt='image'
-            id='img'
-            style={{ aspectRatio: '1 / 1', display: 'none' }}
-          />
           <canvas ref={canvasRef} />
+          <Image src={ImagesArr[Number(id.id)]} alt='image' id='img' />
+          <Image src={Frame} alt='image' id='frame' />
         </Card>
       </Box>
       <EditTools />
