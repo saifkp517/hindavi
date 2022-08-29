@@ -15,12 +15,14 @@ import Toolbar from '@mui/material/Toolbar';
 import { Navbar } from '../../components/Navbar/Navbar';
 import { NextPage } from 'next';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 interface Props {
   children?: JSX.Element;
 }
 
 export const Layout: NextPage<Props> = ({ children }) => {
+  const router = useRouter();
   const [value, setValue] = useState(0);
 
   return (
@@ -161,7 +163,11 @@ export const Layout: NextPage<Props> = ({ children }) => {
             label='Notifications'
             icon={<Notifications />}
           />
-          <BottomNavigationAction label='User' icon={<AccountCircle />} />
+          <BottomNavigationAction
+            label='User'
+            onClick={() => router.push('/user/userno')}
+            icon={<AccountCircle />}
+          />
         </BottomNavigation>
       </Paper>
       {children}

@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField';
 import Search from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
 import InputAdornment from '@mui/material/InputAdornment';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
@@ -63,16 +64,18 @@ export const Navbar: NextPage = () => {
             250 coins
           </Typography>
         </Typography>
-        <IconButton
-          className='user'
-          size='large'
-          aria-label='account'
-          sx={{
-            marginLeft: 2,
-          }}
-        >
-          <AccountCircle color='primary' fontSize='large' />
-        </IconButton>
+        <Link href='/user/userno' underline='none'>
+          <IconButton
+            className='user'
+            size='large'
+            aria-label='account'
+            sx={{
+              marginLeft: 2,
+            }}
+          >
+            <AccountCircle color='primary' fontSize='large' />
+          </IconButton>
+        </Link>
       </Toolbar>
     </AppBar>
   );

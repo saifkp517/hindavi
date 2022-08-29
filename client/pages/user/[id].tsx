@@ -9,6 +9,8 @@ import Business from '@mui/icons-material/Business';
 import Gavel from '@mui/icons-material/Gavel';
 import Watermark from '@mui/icons-material/BrandingWatermark';
 import ContactUs from '@mui/icons-material/Contacts';
+import Fab from '@mui/material/Fab';
+import Logout from '@mui/icons-material/Logout';
 import { NextPage } from 'next';
 
 type options = {
@@ -80,6 +82,29 @@ const UserPage: NextPage = () => {
           </Link>
         ))}
       </Box>
+      <Fab
+        color='primary'
+        variant='extended'
+        size='large'
+        sx={{
+          position: 'fixed',
+          bottom: { md: '1.5rem', xs: '4rem' },
+          right: { md: '1.8rem', xs: '1rem' },
+        }}
+      >
+        <Logout sx={{ fill: 'white' }} />
+        <Typography
+          variant='body1'
+          component='p'
+          sx={{
+            color: 'white',
+            marginLeft: 1,
+            display: { md: 'block', xs: 'none' },
+          }}
+        >
+          Logout
+        </Typography>
+      </Fab>
     </Container>
   );
 };
