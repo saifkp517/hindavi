@@ -1,20 +1,8 @@
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import HomeIcon from '@mui/icons-material/Home';
-import CurrencyRupee from '@mui/icons-material/CurrencyRupee';
-import Menu from '@mui/icons-material/Menu';
-import Notifications from '@mui/icons-material/Notifications';
-import Share from '@mui/icons-material/Share';
-import AppBar from '@mui/material/AppBar';
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
-import Toolbar from '@mui/material/Toolbar';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/system/Box';
-import IconButton from '@mui/material/IconButton';
-import Image from 'next/image';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { StaticImageData } from 'next/image';
@@ -163,145 +151,6 @@ const Home: NextPage = () => {
   return (
     <main>
       <Box sx={{ flexGrow: 1 }} color='secondary.light'>
-        <Navbar />
-        <AppBar position='static' color='primary' className='menu'>
-          <Toolbar
-            sx={{
-              display: 'flex',
-              gap: 6,
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-            }}
-          >
-            <Menu sx={{ color: '#fff' }} />
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 2,
-              }}
-            >
-              <HomeIcon sx={{ color: '#fff' }} />
-              <Typography
-                variant='h6'
-                component='p'
-                sx={{
-                  textAlign: 'center',
-                  marginRight: 2,
-                  lineHeight: 1,
-                  fontSize: 21,
-                }}
-              >
-                <Link href='#' sx={{ color: '#fff', textDecoration: 'none' }}>
-                  Home
-                </Link>
-              </Typography>
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 2,
-              }}
-            >
-              <CurrencyRupee sx={{ color: '#fff' }} />
-              <Typography
-                variant='h6'
-                component='p'
-                sx={{
-                  textAlign: 'center',
-                  marginRight: 2,
-                  lineHeight: 1,
-                  fontSize: 21,
-                }}
-              >
-                <Link href='#' sx={{ color: '#fff', textDecoration: 'none' }}>
-                  Recharge
-                </Link>
-              </Typography>
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 2,
-              }}
-            >
-              <Share sx={{ color: '#fff' }} />
-              <Typography
-                variant='h6'
-                component='p'
-                sx={{
-                  textAlign: 'center',
-                  marginRight: 2,
-                  lineHeight: 1,
-                  fontSize: 21,
-                }}
-              >
-                <Link href='#' sx={{ color: '#fff', textDecoration: 'none' }}>
-                  Refer and Earn
-                </Link>
-              </Typography>
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 2,
-              }}
-            >
-              <Notifications sx={{ color: '#fff' }} />
-              <Typography
-                variant='h6'
-                component='p'
-                sx={{
-                  textAlign: 'center',
-                  marginRight: 2,
-                  lineHeight: 1,
-                  fontSize: 21,
-                }}
-              >
-                <Link href='#' sx={{ color: '#fff', textDecoration: 'none' }}>
-                  Notifications
-                </Link>
-              </Typography>
-            </Box>
-          </Toolbar>
-        </AppBar>
-        <Paper
-          sx={{
-            width: '100%',
-            position: 'fixed',
-            bottom: 0,
-            boxShadow: '0 -1px 2px rgba(0, 0, 0, 0.2)',
-            zIndex: 100,
-          }}
-        >
-          <BottomNavigation
-            className='bottomNav'
-            showLabels={false}
-            value={value}
-            onChange={(_, newValue) => {
-              setValue(newValue);
-            }}
-            sx={{
-              paddingY: '1.6rem',
-            }}
-          >
-            <BottomNavigationAction label='Home' icon={<HomeIcon />} />
-            <BottomNavigationAction label='Recharge' icon={<CurrencyRupee />} />
-            <BottomNavigationAction label='Refer' icon={<Share />} />
-            <BottomNavigationAction
-              label='Notifications'
-              icon={<Notifications />}
-            />
-            <BottomNavigationAction label='User' icon={<AccountCircle />} />
-          </BottomNavigation>
-        </Paper>
         {/* 
           Categories
         */}
@@ -337,12 +186,12 @@ const Home: NextPage = () => {
                   display: i > 3 ? { xs: 'none', md: 'block' } : null,
                 }}
               >
-                <Box sx={{ padding: { md: 4, xs: '15%' } }}>
+                <Box sx={{ padding: { md: 4, xs: 1, xl: 10 } }}>
                   <Link href={`/posteredit/${i}`} underline='none'>
                     <Paper
                       elevation={2}
                       sx={{
-                        padding: { md: 4, xs: '20%' },
+                        padding: { md: 2.5, lg: 5, xl: 6, xs: '20%' },
                         borderRadius: '50%',
                         fill: 'white',
                         backgroundColor: el.color,
@@ -400,7 +249,6 @@ const Home: NextPage = () => {
           list={ImagesArr.filter((_, i) => i >= 12 && i < 16)}
           inc={12} //TODO only static
         />
-        <Box sx={{ height: { xs: '3rem', md: 0 } }}></Box>
       </Box>
     </main>
   );

@@ -77,9 +77,7 @@ const Poster: NextPage<Props> = ({ id }) => {
     const context = canvas?.getContext('2d');
     if (context) {
       const image: any = document.getElementById('img');
-      const frame: any = document.getElementById('frame');
-      // context.drawImage(frame, 0, 0);
-      context.drawImage(image, 0, 0, 150, 150);
+      context.drawImage(image, 0, 0);
     }
   }, []);
 
@@ -118,7 +116,6 @@ const Poster: NextPage<Props> = ({ id }) => {
         >
           <canvas ref={canvasRef} />
           <Image src={ImagesArr[Number(id.id)]} alt='image' id='img' />
-          <Image src={Frame} alt='image' id='frame' />
         </Card>
       </Box>
       <EditTools />

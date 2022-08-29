@@ -11,7 +11,7 @@ import ChevronLeft from '@mui/icons-material/ChevronLeft';
 export const EditTools: NextPage = () => {
   return (
     <>
-      <Box sx={{ width: '100%', textAlign: 'center' }}>
+      <Box sx={{ width: '100%', textAlign: 'center', marginTop: 1 }}>
         <FormControlLabel
           value='start'
           control={<Switch color='primary' />}
