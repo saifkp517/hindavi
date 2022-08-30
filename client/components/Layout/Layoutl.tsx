@@ -23,7 +23,7 @@ interface Props {
 
 export const Layout: NextPage<Props> = ({ children }) => {
   const router = useRouter();
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState('Home');
 
   return (
     <>
@@ -57,7 +57,7 @@ export const Layout: NextPage<Props> = ({ children }) => {
                 fontSize: 21,
               }}
             >
-              <Link href='#' sx={{ color: '#fff', textDecoration: 'none' }}>
+              <Link href='/123' sx={{ color: '#fff', textDecoration: 'none' }}>
                 Home
               </Link>
             </Typography>
@@ -156,15 +156,30 @@ export const Layout: NextPage<Props> = ({ children }) => {
             paddingY: '1.6rem',
           }}
         >
-          <BottomNavigationAction label='Home' icon={<HomeIcon />} />
-          <BottomNavigationAction label='Recharge' icon={<CurrencyRupee />} />
-          <BottomNavigationAction label='Refer' icon={<Share />} />
+          <BottomNavigationAction
+            label='Home'
+            value='Home'
+            icon={<HomeIcon />}
+            onClick={() => router.push('/123')}
+          />
+          <BottomNavigationAction
+            label='Recharge'
+            value='Recharge'
+            icon={<CurrencyRupee />}
+          />
+          <BottomNavigationAction
+            label='Refer'
+            value='Refer'
+            icon={<Share />}
+          />
           <BottomNavigationAction
             label='Notifications'
+            value='Notifications'
             icon={<Notifications />}
           />
           <BottomNavigationAction
             label='User'
+            value='User'
             onClick={() => router.push('/user/userno')}
             icon={<AccountCircle />}
           />

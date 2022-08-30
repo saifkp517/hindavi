@@ -175,7 +175,7 @@ const Home: NextPage = () => {
               </Link>
             </Typography>
           </Box>
-          <Grid container spacing={0} sx={{ paddingX: { md: 2, xs: 0 } }}>
+          <Grid container spacing={0} sx={{ paddingX: { md: 1, xs: 0 } }}>
             {Categories.map((el, i) => (
               <Grid
                 item
@@ -186,16 +186,18 @@ const Home: NextPage = () => {
                   display: i > 3 ? { xs: 'none', md: 'block' } : null,
                 }}
               >
-                <Box sx={{ padding: { md: 4, xs: 1, xl: 10 } }}>
+                <Box sx={{ marginTop: 2, marginBottom: 1 }}>
                   <Link href={`/posteredit/${i}`} underline='none'>
                     <Paper
                       elevation={2}
                       sx={{
-                        padding: { md: 2.5, lg: 5, xl: 6, xs: '20%' },
+                        width: { md: '6rem', xs: '3.5rem' },
+                        height: { md: '6rem', xs: '3.5rem' },
                         borderRadius: '50%',
+                        padding: { md: 3, xs: 2 },
+                        marginX: 'auto',
                         fill: 'white',
                         backgroundColor: el.color,
-                        aspectRatio: '1 /1',
                       }}
                     >
                       {el.svg}
@@ -207,7 +209,7 @@ const Home: NextPage = () => {
                   component='p'
                   sx={{
                     textAlign: 'center',
-                    fontSize: { md: '1.2rem', xs: '0.6rem' },
+                    fontSize: { md: '1.4rem', xs: '0.8rem' },
                     color: 'gray',
                   }}
                 >
