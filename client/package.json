@@ -2,6 +2,11 @@
   "name": "nextjs-with-typescript",
   "version": "5.0.0",
   "private": true,
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -22,12 +27,16 @@
     "fs": "^0.0.1-security",
     "http-proxy-middleware": "^2.0.6",
     "jwt-decode": "^3.1.2",
+    "net": "^1.0.2",
     "next": "latest",
     "next-s3-upload": "^0.2.2",
+    "razorpay": "^2.8.3",
     "react": "latest",
     "react-dom": "latest",
+    "react-razorpay": "^1.1.5",
     "react-router-dom": "^6.3.0",
     "sass": "^1.54.0",
+    "tls": "^0.0.1",
     "universal-cookie": "^4.0.4"
   },
   "devDependencies": {
