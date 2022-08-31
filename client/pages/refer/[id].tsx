@@ -22,7 +22,7 @@ const Refer: NextPage = () => {
   };
 
   return (
-    <Container maxWidth='xs'>
+    <Container maxWidth='sm'>
       <Typography
         variant='h5'
         component='h2'

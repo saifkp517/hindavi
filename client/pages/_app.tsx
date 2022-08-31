@@ -20,7 +20,9 @@ export default function MyApp(props: MyAppProps) {
 
   const allowLayout = () => {
     if (
-      ['/[id]', '/user/[id]', '/refer/[id]'].includes(props.router.pathname)
+      ['/[id]', '/user/[id]', '/refer/[id]', '/user/contact'].includes(
+        props.router.pathname
+      )
     ) {
       return (
         <Layout>

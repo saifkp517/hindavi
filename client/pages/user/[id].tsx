@@ -16,15 +16,16 @@ import { NextPage } from 'next';
 type options = {
   title: string;
   icon: JSX.Element;
+  link: string;
 };
 
 const UserPage: NextPage = () => {
   const optionsArr: options[] = [
-    { title: 'Edit your profile', icon: <Edit /> },
-    { title: 'Create business profile', icon: <Business /> },
-    { title: 'Create political profile', icon: <Gavel /> },
-    { title: 'Create watermark', icon: <Watermark /> },
-    { title: 'Contact us', icon: <ContactUs /> },
+    { title: 'Edit your profile', icon: <Edit />, link: '#' },
+    { title: 'Create business profile', icon: <Business />, link: '#' },
+    { title: 'Create political profile', icon: <Gavel />, link: '#' },
+    { title: 'Create watermark', icon: <Watermark />, link: '#' },
+    { title: 'Contact us', icon: <ContactUs />, link: './contact' },
   ];
 
   return (
@@ -61,7 +62,7 @@ const UserPage: NextPage = () => {
       </Box>
       <Box>
         {optionsArr.map((el, i) => (
-          <Link key={i} href='#' underline='none'>
+          <Link key={i} href={el.link} underline='none'>
             <Paper
               sx={{
                 padding: 2,
