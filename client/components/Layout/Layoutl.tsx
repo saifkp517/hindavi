@@ -174,6 +174,7 @@ export const Layout: NextPage<Props> = ({ children }) => {
             label='Refer'
             value='Refer'
             icon={<Share />}
+            onClick={() => router.push('/refer/userno')}
           />
           <BottomNavigationAction
             label='Notifications'

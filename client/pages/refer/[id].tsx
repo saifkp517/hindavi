@@ -5,9 +5,22 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import ContentCopy from '@mui/icons-material/ContentCopy';
 import { NextPage } from 'next';
+import { useState } from 'react';
 
 const Refer: NextPage = () => {
+  const [copied, setCopied] = useState(false);
+
+  const copyText = () => {
+    navigator.clipboard.writeText('mvm1f3');
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 500);
+  };
+
   return (
     <Container maxWidth='xs'>
       <Typography
@@ -40,17 +53,35 @@ const Refer: NextPage = () => {
           <StepLabel>You earn 20 coins</StepLabel>
         </Step>
       </Stepper>
-      <Paper
-        sx={{
-          border: '2px solid #F27C35',
-          padding: 1,
-          textAlign: 'center',
-        }}
+      <Tooltip
+        title='Copied'
+        disableHoverListener
+        placement='top-end'
+        open={copied}
       >
-        <Typography variant='body1' component='p'>
-          Referral code: mvm1f3
-        </Typography>
-      </Paper>
+        <Paper
+          sx={{
+            border: '2px solid #F27C35',
+            padding: 1,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: 2,
+          }}
+        >
+          <Typography
+            variant='body1'
+            component='p'
+            sx={{ flex: '100%', textAlign: 'center' }}
+          >
+            Referral code: mvm1f3
+          </Typography>
+          <ContentCopy
+            sx={{ '&:hover': { cursor: 'pointer' } }}
+            onClick={() => copyText()}
+          />
+        </Paper>
+      </Tooltip>
       <Button
         variant='contained'
         sx={{ width: '100%', marginTop: 3, color: 'white', padding: 1 }}
