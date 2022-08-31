@@ -17,6 +17,21 @@ interface MyAppProps extends AppProps {
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+
+  const allowLayout = () => {
+    if (
+      ['/[id]', '/user/[id]', '/refer/[id]'].includes(props.router.pathname)
+    ) {
+      return (
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      );
+    } else {
+      return <Component {...pageProps} />;
+    }
+  };
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -25,9 +40,7 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        {allowLayout()}
       </ThemeProvider>
     </CacheProvider>
   );

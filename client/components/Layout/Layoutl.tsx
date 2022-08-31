@@ -105,7 +105,10 @@ export const Layout: NextPage<Props> = ({ children }) => {
                 fontSize: 21,
               }}
             >
-              <Link href='#' sx={{ color: '#fff', textDecoration: 'none' }}>
+              <Link
+                href='/refer/userno'
+                sx={{ color: '#fff', textDecoration: 'none' }}
+              >
                 Refer and Earn
               </Link>
             </Typography>
