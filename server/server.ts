@@ -391,8 +391,8 @@ app.post('/add/business', async (req, res) => {
 app.post('/orders', async (req, res) => {
     try {
         const instance = new Razorpay({
-            key_id: "rzp_test_E4Bsww3mEFYv4e",
-            key_secret: "1iXAY2Z4S4cwHC5mP6wlwnV0"
+            key_id: "key_id",
+            key_secret: "key_secret"
         })
 
         const options = {
@@ -423,7 +423,7 @@ app.post('/verify-success', async (req, res) => {
             razorpaySignature,
         } = req.body;
 
-        const shasum = crypto.createHmac("sha256", "1iXAY2Z4S4cwHC5mP6wlwnV0");
+        const shasum = crypto.createHmac("sha256", "key_secret");
 
         shasum.update(`${orderCreationId}|${razorpayPaymentId}`);
 
