@@ -1,10 +1,10 @@
 import express, { NextFunction } from "express";
 import S3 from "aws-sdk/clients/s3"
 import fs from "fs";
+import Razorpay from "razorpay"
 require('dotenv').config()
-import session from "express-session"
 import bodyParser from "body-parser";
-import path from "path"
+import crypto from "crypto"
 import nodemailer from "nodemailer"
 import cookieParser from "cookie-parser"
 import { PrismaClient } from '@prisma/client'
@@ -34,12 +34,12 @@ const s3 = new S3({
 
 ///awsconfig////////////////
 
-app.use(session({
-    secret: "asdfkhjf324kner9p8u423p93hf9e830rt8uerfh",
-    saveUninitialized: true,
-    cookie: { maxAge: 1000 * 60, secure: false },
-    resave: true,
-}));
+// app.use(session({
+//     secret: "asdfkhjf324kner9p8u423p93hf9e830rt8uerfh",
+//     saveUninitialized: true,
+//     cookie: { maxAge: 1000 * 60, secure: false },
+//     resave: true,
+// }));
 
 //parsing incoming data and parsing cookies
 app.use(express.json())
@@ -50,7 +50,6 @@ app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true,
 }))
-
 
 ////cors options//////
 
@@ -127,7 +126,7 @@ app.post('/signin', async (req, res) => {
     })
 
     if (userPassword) {
-        
+
         const ValidPassword = await bcrypt.compare(password, userPassword.password)
 
         if (ValidPassword) {
@@ -149,7 +148,7 @@ app.post('/signin', async (req, res) => {
 
 app.post('/upload-profile', async (req, res) => {
 
-    const {email, profilephoto} = req.body;
+    const { email, profilephoto } = req.body;
 
     const updateprofile = await prisma.user.update({
 
@@ -169,11 +168,11 @@ app.post('/upload-profile', async (req, res) => {
 app.get("/image", (req, res) => {
     const deleteParams = {
         Bucket: process.env.BUCKET_NAME,
-        Key:  'next-s3-uploads/186d7ded-e3cf-41c2-853a-bb9047c863b2/wall.png'
+        Key: 'next-s3-uploads/186d7ded-e3cf-41c2-853a-bb9047c863b2/wall.png'
     }
 
     s3.getObject(deleteParams, (err, data) => {
-        if(err) return console.log(err, err.stack);
+        if (err) return console.log(err, err.stack);
         console.log(data);
     })
 })
@@ -187,11 +186,11 @@ app.get('/delete', (req, res) => {
     }
 
     s3.deleteObject(deleteParams, (err, data) => {
-        if(err) return console.log(err, err.stack);
+        if (err) return console.log(err, err.stack);
         console.log(data);
     })
-    
-    
+
+
 })
 
 app.post('/forgotpassword', async (req, res) => {
@@ -386,6 +385,67 @@ app.post('/add/business', async (req, res) => {
     res.json(addBusiness)
 })
 
+
+/////////////razorpay integration and intialization///////////////////////*  */
+
+app.post('/orders', async (req, res) => {
+    try {
+        const instance = new Razorpay({
+            key_id: "rzp_test_E4Bsww3mEFYv4e",
+            key_secret: "1iXAY2Z4S4cwHC5mP6wlwnV0"
+        })
+
+        const options = {
+            amount: 5000,
+            currency: "INR",
+            receipt: "receipt_order 1232",
+        }
+
+        const order = await instance.orders.create(options);
+
+        if(!order) return res.status(500).send("some error has ocurred");
+
+        res.json(order);
+
+    } catch(err) {
+        console.log(err);
+    }
+})
+
+//verify payment to confirm signature
+app.post('/verify-success', async (req, res) => {
+
+    try {
+        const {
+            orderCreationId,
+            razorpayPaymentId,
+            razorpayOrderId,
+            razorpaySignature,
+        } = req.body;
+
+        const shasum = crypto.createHmac("sha256", "1iXAY2Z4S4cwHC5mP6wlwnV0");
+
+        shasum.update(`${orderCreationId}|${razorpayPaymentId}`);
+
+        const digest = shasum.digest("hex");
+
+        if (digest !== razorpaySignature) {
+            return res.status(400).json({msg: "Transaction is illicit!"});
+        }
+
+        res.json({
+            msg: "success",
+            orderId: razorpayOrderId,
+            paymentId: razorpayPaymentId,
+        });
+
+    } catch(err) {
+        console.log(err)
+    }
+
+})
+
+/////////////razorpay integration and intialization//////////////////////
 
 
 ////////////////port initialization///////////////////////
