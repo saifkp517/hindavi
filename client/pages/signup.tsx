@@ -15,10 +15,13 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Link from '@mui/material/Link';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import Avatar from '@mui/material/Avatar';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import Phone from '@mui/icons-material/Phone';
 import Email from '@mui/icons-material/Email';
 import Lock from '@mui/icons-material/Lock';
+import Upload from '@mui/icons-material/Upload';
+import HomeIcon from '@mui/icons-material/Home';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
@@ -33,6 +36,7 @@ const Home: NextPage = () => {
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
+  const addressRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
@@ -111,7 +115,7 @@ const Home: NextPage = () => {
       setErr(err.response.data);
       setState({ ...state, error: err.message, showError: true });
     }
-  }
+  };
 
   return (
     <Container
@@ -139,7 +143,6 @@ const Home: NextPage = () => {
         >
           Sign up
         </Typography>
-
         <Typography
           color='secondary.light'
           variant='body1'
@@ -152,6 +155,25 @@ const Home: NextPage = () => {
         >
           Please sign up to continue
         </Typography>
+        <Box sx={{ marginY: 2, textAlign: 'center' }}>
+          <Avatar
+            alt='User Profile Photo'
+            sx={{
+              width: { md: '10rem', xs: '8rem' },
+              height: { md: '10rem', xs: '8rem' },
+              marginX: 'auto',
+            }}
+          />
+          <Button
+            variant='contained'
+            startIcon={<Upload />}
+            color='secondary'
+            sx={{ color: 'white', marginTop: 2 }}
+          >
+            Upload Profile Picture
+            <input hidden accept='image/*' type='file' />
+          </Button>
+        </Box>
         <Box
           sx={{
             width: '100%',
@@ -238,6 +260,27 @@ const Home: NextPage = () => {
                 marginTop: 2,
               }}
             >
+              <InputLabel htmlFor='phone'>Address</InputLabel>
+              <OutlinedInput
+                id='address'
+                label='address'
+                fullWidth={true}
+                inputRef={addressRef}
+                required
+                startAdornment={
+                  <InputAdornment position='start'>
+                    <HomeIcon />
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <FormControl
+              fullWidth={true}
+              variant='outlined'
+              sx={{
+                marginTop: 2,
+              }}
+            >
               <InputLabel htmlFor='password'>Password</InputLabel>
               <OutlinedInput
                 id='password'
@@ -311,7 +354,7 @@ const Home: NextPage = () => {
       <Typography
         variant='body1'
         component='p'
-        sx={{ placeSelf: 'end center', marginTop: 6 }}
+        sx={{ placeSelf: 'end center', marginTop: 6, marginBottom: 3 }}
       >
         Already have an account
         <Link href='/' sx={{ marginLeft: 1, textDecoration: 'none' }}>
