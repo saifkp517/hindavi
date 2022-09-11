@@ -57,6 +57,7 @@ const Home: NextPage = () => {
       title: 'स्वातंत्र्यदिनाच्या शुभेच्छा',
       designation: 'By Hindavi Graphics',
       img: Img1,
+      //https://hindavidatabucket.s3.ap-south-1.amazonaws.com/next-s3-uploads/2010ab96-eb96-4d51-8b38-6b886213bf5d/first%2520ace.png
     },
     {
       title: 'हिंदवी ग्राफिक्स',
