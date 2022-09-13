@@ -49,7 +49,7 @@ export const PosterCards: NextPage<Props> = ({ heading, list, inc }) => {
           >
             <Link href={`/posteredit/${i + inc}`} underline='none'>
               <Card elevation={2}>
-                <Image src={el.img} alt='img' layout='responsive' />
+                <Image src={el.img} alt='img' layout='responsive' width='100%' height='100%' />
               </Card>
             </Link>
             <Typography
