@@ -26,6 +26,8 @@ declare global {
 const DashBoard: NextPage = () => {
 
   const [email, setEmail] = useState("");
+  const [title, setTitle] = useState("")
+  const [designation, setDesignation] = useState("")
   const [password, setPassword] = useState("");
   const [error, setError] = useState('')
   const [imagelocation, setImageLocation] = useState('')
@@ -75,6 +77,26 @@ const DashBoard: NextPage = () => {
     }
   }
 
+  const ImageHandleChange = async (event: any) => {
+    try {
+      let file = event.target.files[0];
+      let { url } = await uploadToS3(file)
+      setImageUrl(url)
+      axios.post("http://localhost:4000/upload-image", {
+        email: email,
+        title: "this is a image title",
+        designation: "By Hindavi Graphics",
+        image: JSON.stringify(imageUrl)
+
+      })
+        .then(data => console.log(data))
+        .catch(err => console.log("lmao"))
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+
   const loadScript = (src: string) => {
     return new Promise((resolve) => {
       const script = document.createElement('script');
@@ -88,6 +110,8 @@ const DashBoard: NextPage = () => {
       document.body.appendChild(script);
     })
   }
+
+
 
   const displayRazorpay = async () => {
 
@@ -112,7 +136,7 @@ const DashBoard: NextPage = () => {
       "description": "Test Transaction",
       "image": "https://example.com/your_logo",
       "order_id": order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-      "handler":async function (response: any) {
+      "handler": async function (response: any) {
         const data = {
           orderCreationId: order_id,
           razorpayPaymentId: response.razorpay_payment_id,
@@ -162,7 +186,20 @@ const DashBoard: NextPage = () => {
 
       <button className="App-link" onClick={displayRazorpay}>
         Pay ₹500
-      </button>
+      </button><br/>
+
+      upload an Image<br/>
+
+
+
+      <input type="file" onChange={ImageHandleChange} />
+      {files.map((file, index) => (
+        <div key={index}>
+          File #{index} progress: {file.progress}%
+        </div>
+      ))}
+      {imageUrl && <img src={imageUrl} height="100%" width="100%" />}
+
 
     </div>
   );
