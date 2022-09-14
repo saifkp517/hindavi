@@ -20,21 +20,17 @@ export default function MyApp(props: MyAppProps) {
 
   const allowLayout = () => {
     if (
-      [
-        '/[id]',
-        '/user/[id]',
-        '/refer/[id]',
-        '/user/contact',
-        '/user/watermark',
-      ].includes(props.router.pathname)
+      ['/', '/signup', '/emailverify', '/forgotpassword'].includes(
+        props.router.pathname
+      )
     ) {
+      return <Component {...pageProps} />;
+    } else {
       return (
         <Layout>
           <Component {...pageProps} />
         </Layout>
       );
-    } else {
-      return <Component {...pageProps} />;
     }
   };
 

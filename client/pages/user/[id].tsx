@@ -21,7 +21,7 @@ type options = {
 
 const UserPage: NextPage = () => {
   const optionsArr: options[] = [
-    { title: 'Edit your profile', icon: <Edit />, link: '#' },
+    { title: 'Edit your profile', icon: <Edit />, link: './edit/123' },
     { title: 'Create business profile', icon: <Business />, link: '#' },
     { title: 'Create political profile', icon: <Gavel />, link: '#' },
     { title: 'Create watermark', icon: <Watermark />, link: './watermark' },

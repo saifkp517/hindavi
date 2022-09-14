@@ -4,14 +4,9 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { setCookie } from 'cookies-next';
 import Container from '@mui/material/Container';
-import FormControl from '@mui/material/FormControl';
-import InputAdornment from '@mui/material/InputAdornment';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/system/Box';
-import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import Link from '@mui/material/Link';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
@@ -22,10 +17,12 @@ import Email from '@mui/icons-material/Email';
 import Lock from '@mui/icons-material/Lock';
 import Upload from '@mui/icons-material/Upload';
 import HomeIcon from '@mui/icons-material/Home';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import {
+  InputFields,
+  InputFieldType,
+} from '../components/InputFields/InputFields';
 
-interface State {
+export interface State {
   showPassword: boolean;
   showError: boolean;
   error: string;
@@ -49,6 +46,68 @@ const Home: NextPage = () => {
 
   const [id, setId] = useState('null');
   const [err, setErr] = useState('');
+
+  const fieldsArr: InputFieldType[] = [
+    {
+      icon: <AccountCircle />,
+      label: 'Username',
+      id: 'username',
+      type: 'text',
+      inputProps: {
+        maxLength: 25,
+      },
+      ref: usernameRef,
+    },
+    {
+      icon: <Email />,
+      label: 'Email Address',
+      id: 'email',
+      type: 'email',
+      inputProps: {},
+      ref: emailRef,
+    },
+    {
+      icon: <Phone />,
+      label: 'Phone number',
+      id: 'phone',
+      type: 'number',
+      inputProps: {
+        minLength: 10,
+      },
+      ref: phoneRef,
+    },
+    {
+      icon: <HomeIcon />,
+      label: 'Address',
+      id: 'address',
+      type: 'text',
+      inputProps: {},
+      ref: addressRef,
+    },
+    {
+      icon: <Lock />,
+      label: 'Password',
+      id: 'password',
+      type: '',
+      inputProps: {
+        minLength: 8,
+      },
+      ref: passwordRef,
+      displayVisibility: true,
+      state,
+      setState,
+    },
+    {
+      icon: <Lock />,
+      label: 'Confirm Password',
+      id: 'confirm-password',
+      type: 'text',
+      inputProps: {
+        minLength: 8,
+      },
+      ref: confirmPasswordRef,
+    },
+  ];
 
   const otp = Math.floor(100000 + Math.random() * 900000);
 
@@ -182,159 +241,36 @@ const Home: NextPage = () => {
           }}
         >
           <form onSubmit={Register}>
-            <FormControl
-              fullWidth={true}
-              variant='outlined'
-              sx={{
-                marginTop: 2,
-              }}
-            >
-              <p color='red'>{err}</p>
-              <InputLabel htmlFor='username'>Username</InputLabel>
-              <OutlinedInput
-                id='username'
-                label='Username'
-                fullWidth={true}
-                inputRef={usernameRef}
-                inputProps={{
-                  maxLength: 25,
-                }}
-                required={true}
-                startAdornment={
-                  <InputAdornment position='start'>
-                    <AccountCircle />
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <FormControl
-              fullWidth={true}
-              variant='outlined'
-              sx={{
-                marginTop: 2,
-              }}
-            >
-              <InputLabel htmlFor='email'>Email Address</InputLabel>
-              <OutlinedInput
-                id='email'
-                type='email'
-                label='email address'
-                fullWidth={true}
-                inputRef={emailRef}
-                required
-                startAdornment={
-                  <InputAdornment position='start'>
-                    <Email />
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <FormControl
-              fullWidth={true}
-              variant='outlined'
-              sx={{
-                marginTop: 2,
-              }}
-            >
-              <InputLabel htmlFor='phone'>Phone number</InputLabel>
-              <OutlinedInput
-                id='phone'
-                label='phone number'
-                fullWidth={true}
-                inputRef={phoneRef}
-                inputProps={{
-                  minLength: 10,
-                }}
-                required
-                startAdornment={
-                  <InputAdornment position='start'>
-                    <Phone />
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <FormControl
-              fullWidth={true}
-              variant='outlined'
-              sx={{
-                marginTop: 2,
-              }}
-            >
-              <InputLabel htmlFor='phone'>Address</InputLabel>
-              <OutlinedInput
-                id='address'
-                label='address'
-                fullWidth={true}
-                inputRef={addressRef}
-                required
-                startAdornment={
-                  <InputAdornment position='start'>
-                    <HomeIcon />
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <FormControl
-              fullWidth={true}
-              variant='outlined'
-              sx={{
-                marginTop: 2,
-              }}
-            >
-              <InputLabel htmlFor='password'>Password</InputLabel>
-              <OutlinedInput
-                id='password'
-                label='Password'
-                fullWidth={true}
-                inputRef={passwordRef}
-                required
-                inputProps={{
-                  minLength: 8,
-                }}
-                type={state.showPassword ? 'text' : 'password'}
-                startAdornment={
-                  <InputAdornment position='start'>
-                    <Lock />
-                  </InputAdornment>
-                }
-                endAdornment={
-                  <InputAdornment position='end'>
-                    <IconButton
-                      aria-label='toggle password visibility'
-                      onClick={() =>
-                        setState({
-                          ...state,
-                          showPassword: !state.showPassword,
-                        })
-                      }
-                    >
-                      {state.showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <FormControl
-              fullWidth={true}
-              variant='outlined'
-              sx={{
-                marginTop: 2,
-              }}
-            >
-              <InputLabel htmlFor='confirm'>Confirm Password</InputLabel>
-              <OutlinedInput
-                id='confirm'
-                label='confirm password'
-                fullWidth={true}
-                inputRef={confirmPasswordRef}
-                required
-                startAdornment={
-                  <InputAdornment position='start'>
-                    <Lock />
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
+            <p color='red'>{err}</p>
+            {fieldsArr.map((el: InputFieldType, i) => {
+              if (el.displayVisibility) {
+                return (
+                  <InputFields
+                    key={i}
+                    icon={el.icon}
+                    label={el.label}
+                    id={el.id}
+                    type={el.type}
+                    ref={el.ref}
+                    inputProps={el.inputProps}
+                    displayVisibility={el.displayVisibility}
+                    state={el.state}
+                    setState={el.setState}
+                  />
+                );
+              }
+              return (
+                <InputFields
+                  key={i}
+                  icon={el.icon}
+                  label={el.label}
+                  id={el.id}
+                  type={el.type}
+                  ref={el.ref}
+                  inputProps={el.inputProps}
+                />
+              );
+            })}
             <Button
               type='submit'
               fullWidth={true}
