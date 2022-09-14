@@ -165,6 +165,21 @@ app.post('/upload-profile', async (req, res) => {
 
 })
 
+app.post('/upload-image', async(req, res) => {
+    const {email, image, title, designation} = req.body;
+
+    await prisma.photos.create({
+        data: {
+            userId: email,
+            title: title,
+            designation: designation,
+            image: image
+        }
+    }).then(() => {
+        console.log("successfully uploaded the image");
+    }).catch(err => console.log(err));
+})
+
 app.get("/image", (req, res) => {
     const deleteParams = {
         Bucket: process.env.BUCKET_NAME,
@@ -280,7 +295,9 @@ app.post('/signup/:id', async (req, res) => {
                     phoneno: phoneno,
                     photos: {
                         create: {
-                            image: "None"
+                            image: "None",
+                            designation: "none",
+                            title: "none"
                         }
                     },
                     coins: 0,
@@ -303,7 +320,9 @@ app.post('/signup/:id', async (req, res) => {
                     phoneno: phoneno,
                     photos: {
                         create: {
-                            image: "None"
+                            image: "None",
+                            designation: "none",
+                            title: "none"
                         }
                     },
                     coins: 0,

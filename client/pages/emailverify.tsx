@@ -41,6 +41,7 @@ const Verify: NextPage = () => {
           })
           .then((data) => {
             console.log(data);
+            router.push('/home');
           })
           .catch((err) => console.log(err));
       }
