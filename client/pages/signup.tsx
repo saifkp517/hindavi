@@ -26,17 +26,22 @@ export interface State {
   showPassword: boolean;
   showError: boolean;
   error: string;
+  usernameValue?: string;
+  emailValue?: string;
+  phoneValue?: string;
+  addressValue?: string;
+  passwordValue?: string;
 }
 
 const Home: NextPage = () => {
   const router = useRouter();
 
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
-  const addressRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const confirmPasswordRef = useRef<HTMLInputElement>(null);
-  const phoneRef = useRef<HTMLInputElement>(null);
+  const usernamereference = useRef<HTMLInputElement>(null);
+  const emailreference = useRef<HTMLInputElement>(null);
+  const addressreference = useRef<HTMLInputElement>(null);
+  const passwordreference = useRef<HTMLInputElement>(null);
+  const confirmPasswordreference = useRef<HTMLInputElement>(null);
+  const phonereference = useRef<HTMLInputElement>(null);
 
   const [state, setState] = useState<State>({
     showPassword: false,
@@ -56,7 +61,7 @@ const Home: NextPage = () => {
       inputProps: {
         maxLength: 25,
       },
-      ref: usernameRef,
+      reference: usernamereference,
     },
     {
       icon: <Email />,
@@ -64,7 +69,7 @@ const Home: NextPage = () => {
       id: 'email',
       type: 'email',
       inputProps: {},
-      ref: emailRef,
+      reference: emailreference,
     },
     {
       icon: <Phone />,
@@ -74,7 +79,7 @@ const Home: NextPage = () => {
       inputProps: {
         minLength: 10,
       },
-      ref: phoneRef,
+      reference: phonereference,
     },
     {
       icon: <HomeIcon />,
@@ -82,7 +87,7 @@ const Home: NextPage = () => {
       id: 'address',
       type: 'text',
       inputProps: {},
-      ref: addressRef,
+      reference: addressreference,
     },
     {
       icon: <Lock />,
@@ -92,7 +97,7 @@ const Home: NextPage = () => {
       inputProps: {
         minLength: 8,
       },
-      ref: passwordRef,
+      reference: passwordreference,
       displayVisibility: true,
       state,
       setState,
@@ -105,7 +110,7 @@ const Home: NextPage = () => {
       inputProps: {
         minLength: 8,
       },
-      ref: confirmPasswordRef,
+      reference: confirmPasswordreference,
     },
   ];
 
@@ -113,10 +118,10 @@ const Home: NextPage = () => {
 
   const sendEmail = async () => {
     try {
-      if (emailRef.current) {
+      if (emailreference.current) {
         await axios
           .post('http://localhost:4000/email', {
-            email: emailRef.current.value,
+            email: emailreference.current.value,
             otp: otp,
           })
           .then((data) => {
@@ -135,13 +140,16 @@ const Home: NextPage = () => {
 
     try {
       if (
-        usernameRef.current &&
-        passwordRef.current &&
-        confirmPasswordRef.current &&
-        emailRef.current &&
-        phoneRef.current
+        usernamereference.current &&
+        passwordreference.current &&
+        confirmPasswordreference.current &&
+        emailreference.current &&
+        phonereference.current
       ) {
-        if (passwordRef.current.value !== confirmPasswordRef.current.value) {
+        if (
+          passwordreference.current.value !==
+          confirmPasswordreference.current.value
+        ) {
           console.log('error');
           setState({
             ...state,
@@ -150,13 +158,13 @@ const Home: NextPage = () => {
           });
         } else {
           setCookie('otp', otp);
-          setCookie('userref', emailRef.current.value);
+          setCookie('userreference', emailreference.current.value);
 
           const data = await axios.post(`http://localhost:4000/signup/${id}`, {
-            username: usernameRef.current.value,
-            email: emailRef.current.value,
-            password: passwordRef.current.value,
-            phoneno: phoneRef.current.value,
+            username: usernamereference.current.value,
+            email: emailreference.current.value,
+            password: passwordreference.current.value,
+            phoneno: phonereference.current.value,
           });
           try {
             if (data) {
@@ -251,7 +259,7 @@ const Home: NextPage = () => {
                     label={el.label}
                     id={el.id}
                     type={el.type}
-                    ref={el.ref}
+                    reference={el.reference}
                     inputProps={el.inputProps}
                     displayVisibility={el.displayVisibility}
                     state={el.state}
@@ -266,7 +274,7 @@ const Home: NextPage = () => {
                   label={el.label}
                   id={el.id}
                   type={el.type}
-                  ref={el.ref}
+                  reference={el.reference}
                   inputProps={el.inputProps}
                 />
               );

@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { NextPage } from 'next';
-import { RefObject, Dispatch, SetStateAction } from 'react';
+import { RefObject, Dispatch, SetStateAction, ChangeEvent } from 'react';
 import { State } from '../../pages/signup';
 
 export type InputFieldType = {
@@ -14,9 +14,11 @@ export type InputFieldType = {
   id: string;
   type: string;
   icon: JSX.Element;
-  ref: RefObject<HTMLInputElement>;
+  reference: RefObject<HTMLInputElement>;
   inputProps: Object;
+  value?: string;
   displayVisibility?: boolean;
+  changeValue?: (value: string, id: string) => void;
   state?: State;
   setState?: Dispatch<SetStateAction<State>>;
 };
@@ -25,13 +27,23 @@ export const InputFields: NextPage<InputFieldType> = ({
   label,
   id,
   icon,
-  ref,
+  reference,
   type,
+  value,
+  changeValue,
   inputProps,
   displayVisibility,
   state,
   setState,
 }) => {
+  const changeValueInp = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    if (changeValue) {
+      changeValue(id, e.target.value);
+    }
+  };
+
   if (displayVisibility && state && setState) {
     return (
       <FormControl
@@ -46,8 +58,10 @@ export const InputFields: NextPage<InputFieldType> = ({
           id={id}
           label={label}
           fullWidth={true}
-          inputRef={ref}
+          inputRef={reference}
           required
+          value={value}
+          onChange={(e) => changeValueInp(e)}
           inputProps={inputProps}
           type={state.showPassword ? 'text' : 'password'}
           startAdornment={
@@ -87,8 +101,10 @@ export const InputFields: NextPage<InputFieldType> = ({
         type={type}
         label={label}
         fullWidth={true}
-        inputRef={ref}
+        inputRef={reference}
         inputProps={inputProps}
+        value={value}
+        onChange={(e) => changeValueInp(e)}
         required
         startAdornment={
           <InputAdornment position='start'>{icon}</InputAdornment>
