@@ -44,7 +44,6 @@ const DashBoard: NextPage = () => {
       token: token
     })
       .then(data => {
-        console.log(data);
         setEmail(JSON.stringify(data.data))
       })
       .catch(err => {
@@ -61,21 +60,21 @@ const DashBoard: NextPage = () => {
   const [imageUrl, setImageUrl] = useState("");
   const { uploadToS3, files } = useS3Upload();
 
-  const fileHandleChange = async (event: any) => {
-    try {
-      let file = event.target.files[0];
-      let { url } = await uploadToS3(file)
-      setImageUrl(url)
-      axios.post("http://localhost:4000/upload-profile", {
-        email: email,
-        profilephoto: JSON.stringify(imageUrl)
-      })
-        .then(data => console.log(data))
-        .catch(err => console.log("lmao"))
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  // const fileHandleChange = async (event: any) => {
+  //   try {
+  //     let file = event.target.files[0];
+  //     let { url } = await uploadToS3(file)
+  //     setImageUrl(url)
+  //     axios.post("http://localhost:4000/upload-profile", {
+  //       email: email,
+  //       profilephoto: JSON.stringify(imageUrl)
+  //     })
+  //       .then(data => console.log(data))
+  //       .catch(err => console.log("lmao"))
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
 
   const ImageHandleChange = async (event: any) => {
     try {
@@ -83,10 +82,9 @@ const DashBoard: NextPage = () => {
       let { url } = await uploadToS3(file)
       setImageUrl(url)
       axios.post("http://localhost:4000/upload-image", {
-        email: email,
         title: "this is a image title",
         designation: "By Hindavi Graphics",
-        image: JSON.stringify(imageUrl)
+        image: url
 
       })
         .then(data => console.log(data))
@@ -170,7 +168,7 @@ const DashBoard: NextPage = () => {
       <h1>DashBoard</h1>
       <p>{email}</p>
       <p style={{ color: "red" }}>{error}</p>
-
+{/* 
       <input type="file" onChange={fileHandleChange} />
 
       <div>
@@ -180,7 +178,7 @@ const DashBoard: NextPage = () => {
           </div>
         ))}
         {imageUrl && <img src={imageUrl} height="100%" width="100%" />}
-      </div>
+      </div> */}
 
       <p>payment</p>
 

@@ -101,3 +101,6 @@ Content-Type: application/json
     "email": "saifkhan501721@gmail.com",
     "image": "https://hindavidatabucket.s3.ap-south-1.amazonaws.com/next-s3-uploads/2010ab96-eb96-4d51-8b38-6b886213bf5d/first%2520ace.png"
 }
+
+###
+GET http://172.22.251.148:4000/images

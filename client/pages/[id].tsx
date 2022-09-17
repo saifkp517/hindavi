@@ -6,7 +6,8 @@ import Box from '@mui/system/Box';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { StaticImageData } from 'next/image';
-import { useState } from 'react';
+import axios from "axios";
+import { useEffect, useState } from 'react';
 import {
   Img18,
   Img1,
@@ -48,9 +49,21 @@ interface CategoriesType {
   color: string;
 }
 
+
+
 const Home: NextPage = () => {
   const router = useRouter();
   const [value, setValue] = useState(0);
+  const [data, setData] = useState<any[]>([])
+
+  useEffect(() => {
+    fetch("http://localhost:4000/images")
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        setData(data)
+      })
+  }, [])
 
   const ImagesArr: Design[] = [
     {
@@ -151,6 +164,15 @@ const Home: NextPage = () => {
 
   return (
     <main>
+      <ul>
+        {data.map(data => (
+          <div>
+            <p>{data.title}</p>
+            <p>{data.designation}</p>
+            <img src={data.image} alt="" />
+          </div>
+        ))}
+      </ul>
       <Box sx={{ flexGrow: 1 }} color='secondary.light'>
         {/* 
           Categories
@@ -256,5 +278,4 @@ const Home: NextPage = () => {
     </main>
   );
 };
-
 export default Home;

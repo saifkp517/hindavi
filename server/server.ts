@@ -166,11 +166,10 @@ app.post('/upload-profile', async (req, res) => {
 })
 
 app.post('/upload-image', async(req, res) => {
-    const {email, image, title, designation} = req.body;
+    const {image, title, designation} = req.body;
 
     await prisma.photos.create({
         data: {
-            userId: email,
             title: title,
             designation: designation,
             image: image
@@ -190,6 +189,15 @@ app.get("/image", (req, res) => {
         if (err) return console.log(err, err.stack);
         console.log(data);
     })
+})
+
+app.get('/images', async (req, res) => {
+
+    await prisma.photos.findMany()
+    .then(data => {
+        res.json(data)
+    })
+
 })
 
 app.get('/delete', (req, res) => {
@@ -293,13 +301,6 @@ app.post('/signup/:id', async (req, res) => {
 
                     password: EncryptedPassword,
                     phoneno: phoneno,
-                    photos: {
-                        create: {
-                            image: "None",
-                            designation: "none",
-                            title: "none"
-                        }
-                    },
                     coins: 0,
                     verified: false,
                     refcode: uuidv4()
@@ -318,13 +319,6 @@ app.post('/signup/:id', async (req, res) => {
                     email: email,
                     password: EncryptedPassword,
                     phoneno: phoneno,
-                    photos: {
-                        create: {
-                            image: "None",
-                            designation: "none",
-                            title: "none"
-                        }
-                    },
                     coins: 0,
                     verified: false,
                     refcode: uuidv4()
