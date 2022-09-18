@@ -69,7 +69,6 @@ const EditProfile: NextPage = () => {
       },
       reference: usernamereference,
       state,
-      setState,
     },
     {
       icon: <Email />,
@@ -80,7 +79,6 @@ const EditProfile: NextPage = () => {
       inputProps: {},
       reference: emailreference,
       state,
-      setState,
     },
     {
       icon: <Phone />,
@@ -93,7 +91,6 @@ const EditProfile: NextPage = () => {
       },
       reference: phonereference,
       state,
-      setState,
     },
     {
       icon: <HomeIcon />,
@@ -104,7 +101,6 @@ const EditProfile: NextPage = () => {
       inputProps: {},
       reference: addressreference,
       state,
-      setState,
     },
     {
       icon: <Lock />,

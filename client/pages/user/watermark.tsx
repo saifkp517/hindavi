@@ -20,34 +20,12 @@ const watermark: NextPage = () => {
         placeholder='Enter watermark text'
         sx={{ width: '100%' }}
       />
-      <Typography
-        variant='body1'
-        component='p'
-        color='primary'
-        sx={{ textAlign: 'center', marginY: { md: 2, xs: 1 } }}
-      >
-        or
-      </Typography>
-      <Button
-        variant='contained'
-        color='secondary'
-        startIcon={<Upload sx={{ fontSize: 40 }} />}
-        sx={{
-          color: 'white',
-          width: '100%',
-          marginTop: 1,
-          paddingY: { md: 1.5, xs: 1 },
-        }}
-      >
-        Upload watermark image
-        <input hidden accept='image/*' type='file' />
-      </Button>
       <Button
         variant='contained'
         sx={{
           color: 'white',
           marginTop: { md: 4, xs: 3 },
-          paddingY: { md: 2, xs: 1.2 },
+          paddingY: { md: 1.5, xs: 1.2 },
           width: '100%',
         }}
       >
