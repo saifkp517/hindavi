@@ -27,7 +27,7 @@ const UserPage: NextPage = () => {
       icon: <Business />,
       link: './business',
     },
-    { title: 'Create political profile', icon: <Gavel />, link: '#' },
+    { title: 'Create political profile', icon: <Gavel />, link: './political' },
     { title: 'Create watermark', icon: <Watermark />, link: './watermark' },
     { title: 'Contact us', icon: <ContactUs />, link: './contact' },
   ];
