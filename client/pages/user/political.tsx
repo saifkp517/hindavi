@@ -13,6 +13,9 @@ import {
   InputFieldType,
 } from '../../components/InputFields/InputFields';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Upload from '@mui/icons-material/Upload';
+import Avatar from '@mui/material/Avatar';
 
 const PoliticalProfile: NextPage = () => {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -89,6 +92,72 @@ const PoliticalProfile: NextPage = () => {
       <Typography variant='h5' component='h2' sx={{ marginY: 2 }}>
         Political Profile
       </Typography>
+      <Box
+        sx={{
+          marginY: 2,
+          textAlign: 'center',
+          display: 'flex',
+          justifyContent: { md: 'space-evenly', xs: 'space-between' },
+          alignItems: 'center',
+          gap: {
+            md: 0,
+            xs: '0.5rem',
+          },
+        }}
+      >
+        <Box>
+          <Avatar
+            alt='User Profile Photo'
+            sx={{
+              width: { md: '10rem', xs: '7rem' },
+              height: { md: '10rem', xs: '7rem' },
+              marginX: 'auto',
+            }}
+          />
+          <Button
+            variant='contained'
+            startIcon={<Upload />}
+            color='secondary'
+            sx={{
+              color: 'white',
+              marginTop: 2,
+              fontSize: {
+                md: '0.9rem',
+                xs: '0.6rem',
+              },
+            }}
+          >
+            Upload Profile 1
+            <input hidden accept='image/*' type='file' />
+          </Button>
+        </Box>
+        <Box>
+          <Avatar
+            alt='User Profile Photo'
+            sx={{
+              width: { md: '10rem', xs: '7rem' },
+              height: { md: '10rem', xs: '7rem' },
+              marginX: 'auto',
+            }}
+          />
+          <Button
+            variant='contained'
+            startIcon={<Upload />}
+            color='secondary'
+            sx={{
+              color: 'white',
+              marginTop: 2,
+              fontSize: {
+                md: '0.9rem',
+                xs: '0.6rem',
+              },
+            }}
+          >
+            Upload Profile 2
+            <input hidden accept='image/*' type='file' />
+          </Button>
+        </Box>
+      </Box>
       <form>
         {inputsArr.map((el: InputFieldType) => (
           <InputFields
