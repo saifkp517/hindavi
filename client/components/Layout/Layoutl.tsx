@@ -183,6 +183,7 @@ export const Layout: NextPage<Props> = ({ children }) => {
           <BottomNavigationAction
             label='Notifications'
             value='Notifications'
+            onClick={() => router.push('/notifications')}
             icon={<Notifications />}
           />
           <BottomNavigationAction
