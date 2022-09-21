@@ -127,7 +127,7 @@ const PoliticalProfile: NextPage = () => {
               },
             }}
           >
-            Upload Profile 1
+            Upload Profile
             <input hidden accept='image/*' type='file' />
           </Button>
         </Box>
@@ -153,7 +153,7 @@ const PoliticalProfile: NextPage = () => {
               },
             }}
           >
-            Upload Profile 2
+            Upload Party Icon
             <input hidden accept='image/*' type='file' />
           </Button>
         </Box>
