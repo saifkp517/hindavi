@@ -57,7 +57,7 @@ export const Layout: NextPage<Props> = ({ children }) => {
                 fontSize: 21,
               }}
             >
-              <Link href='/123' sx={{ color: '#fff', textDecoration: 'none' }}>
+              <Link href='/home' sx={{ color: '#fff', textDecoration: 'none' }}>
                 Home
               </Link>
             </Typography>
@@ -189,7 +189,7 @@ export const Layout: NextPage<Props> = ({ children }) => {
           <BottomNavigationAction
             label='User'
             value='User'
-            onClick={() => router.push('/user/userno')}
+            onClick={() => router.push('/user')}
             icon={<AccountCircle />}
           />
         </BottomNavigation>

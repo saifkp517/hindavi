@@ -64,7 +64,7 @@ export const Navbar: NextPage = () => {
             250 coins
           </Typography>
         </Typography>
-        <Link href='/user/userno' underline='none'>
+        <Link href='/user' underline='none'>
           <IconButton
             className='user'
             size='large'
