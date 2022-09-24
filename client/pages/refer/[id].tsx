@@ -26,7 +26,7 @@ const Refer: NextPage = () => {
       <Typography
         variant='h5'
         component='h2'
-        sx={{ color: 'black', marginTop: 2 }}
+        sx={{ color: 'black', marginTop: 2, fontWeight: 500 }}
       >
         Refer and earn reward
       </Typography>

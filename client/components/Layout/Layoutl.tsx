@@ -81,7 +81,10 @@ export const Layout: NextPage<Props> = ({ children }) => {
                 fontSize: 21,
               }}
             >
-              <Link href='#' sx={{ color: '#fff', textDecoration: 'none' }}>
+              <Link
+                href='/recharge'
+                sx={{ color: '#fff', textDecoration: 'none' }}
+              >
                 Recharge
               </Link>
             </Typography>
@@ -168,6 +171,7 @@ export const Layout: NextPage<Props> = ({ children }) => {
           <BottomNavigationAction
             label='Recharge'
             value='Recharge'
+            onClick={() => router.push('/recharge')}
             icon={<CurrencyRupee />}
           />
           <BottomNavigationAction
@@ -179,6 +183,7 @@ export const Layout: NextPage<Props> = ({ children }) => {
           <BottomNavigationAction
             label='Notifications'
             value='Notifications'
+            onClick={() => router.push('/notifications')}
             icon={<Notifications />}
           />
           <BottomNavigationAction
