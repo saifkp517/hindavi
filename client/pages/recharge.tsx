@@ -1,19 +1,27 @@
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import FormLabel from '@mui/material/FormLabel';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import Typography from '@mui/material/Typography';
 import { NextPage } from 'next';
+import { useState } from 'react';
 
 const Recharge: NextPage = () => {
+  const [value, setValue] = useState('79 coins');
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue((event.target as HTMLInputElement).value);
+  };
+
   return (
     <Container maxWidth='sm'>
       <Typography
         variant='h5'
         component='h2'
-        sx={{ marginY: 2, fontWeight: 500 }}
+        sx={{ marginTop: { xs: 1.5, md: 2 }, fontWeight: 500 }}
       >
         Recharge
       </Typography>
@@ -24,6 +32,7 @@ const Recharge: NextPage = () => {
           borderRadius: '5px',
           backgroundColor: '#F27C35',
           color: 'white',
+          marginTop: 2,
         }}
       >
         <Typography
@@ -33,7 +42,12 @@ const Recharge: NextPage = () => {
         >
           Choose Plans
         </Typography>
-        <RadioGroup aria-labelledby='recharge plans' defaultValue='female'>
+        <RadioGroup
+          aria-labelledby='recharge plans'
+          defaultValue='79 coins'
+          value={value}
+          onChange={handleChange}
+        >
           <FormControlLabel
             value='79 coins'
             control={<Radio color='secondary' sx={{ color: 'white' }} />}
@@ -103,6 +117,18 @@ const Recharge: NextPage = () => {
           />
         </RadioGroup>
       </FormControl>
+      <Box sx={{ width: '100%', textAlign: 'center' }}>
+        <Button
+          variant='contained'
+          color='secondary'
+          sx={{ color: 'white', paddingX: 3, marginY: 2, fontSize: '1.1rem' }}
+        >
+          Recharge
+        </Button>
+      </Box>
+      <Typography variant='h6' component='h3'>
+        Payment History :-
+      </Typography>
     </Container>
   );
 };
