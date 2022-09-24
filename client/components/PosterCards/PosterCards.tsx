@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { Design } from '../../pages/[id]';
+import { Design } from '../../pages/home';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
@@ -49,7 +49,13 @@ export const PosterCards: NextPage<Props> = ({ heading, list, inc }) => {
           >
             <Link href={`/posteredit/${i + inc}`} underline='none'>
               <Card elevation={2}>
-                <Image src={el.img} alt='img' layout='responsive' width='100%' height='100%' />
+                <Image
+                  src={el.img}
+                  alt='img'
+                  layout='responsive'
+                  width='100%'
+                  height='100%'
+                />
               </Card>
             </Link>
             <Typography
