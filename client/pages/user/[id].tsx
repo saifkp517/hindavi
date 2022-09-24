@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
+import { useS3Upload } from 'next-s3-upload';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
@@ -12,12 +13,16 @@ import ContactUs from '@mui/icons-material/Contacts';
 import Fab from '@mui/material/Fab';
 import Logout from '@mui/icons-material/Logout';
 import { NextPage } from 'next';
+import { getCookie } from 'cookies-next';
+import axios from "axios"
+import React, { useState, useEffect } from 'react'
 
 type options = {
   title: string;
   icon: JSX.Element;
   link: string;
 };
+
 
 const UserPage: NextPage = () => {
   const optionsArr: options[] = [
@@ -31,6 +36,48 @@ const UserPage: NextPage = () => {
     { title: 'Create watermark', icon: <Watermark />, link: './watermark' },
     { title: 'Contact us', icon: <ContactUs />, link: './contact' },
   ];
+
+  const [email, setEmail] = useState('');
+  const [coins, setCoins] = useState(0);
+  const [name, setName] = useState('');
+  const [id, setId] = useState<any>('');
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    Verify();
+  }, [])
+
+  const Verify = async () => {
+    const token = getCookie('key');
+    axios.post("http://localhost:4000/protected", {
+      token: token
+    })
+      .then(data => {
+        console.log(data)
+        UserInfo(data.data)
+      })
+      .catch(err => {
+        console.log(err)
+        if (err.response.status === 401) {
+          setError("Please Login again!")
+        }
+      })
+  }
+
+  const UserInfo = async (id: any) => {
+    if (id !== "") {
+      console.log("sa")
+      axios.post("http://localhost:4000/userinfo", {
+        id: id
+      })
+        .then(res => {
+          setEmail("Saif Khan")
+          setName(res.data.username)
+          setCoins(res.data.coins)
+        })
+        .catch(err => console.log(err))
+    }
+  }
 
   return (
     <Container maxWidth='xl'>
@@ -54,15 +101,17 @@ const UserPage: NextPage = () => {
           component='h2'
           sx={{ marginTop: 2, fontSize: { xs: '1.8rem', md: '2rem' } }}
         >
-          Mark Sepcter
+          {name}
         </Typography>
         <Typography
           variant='h6'
           component='p'
           sx={{ fontSize: { xs: '1rem', md: '1.4rem' } }}
         >
-          marksepcter2002@gmail.com
+          {email}<br />
+          Balance: {coins}
         </Typography>
+        <h1 style={{ color: "red" }}>{error}</h1>
       </Box>
       <Box>
         {optionsArr.map((el, i) => (
