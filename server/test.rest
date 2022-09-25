@@ -10,7 +10,7 @@ content-type: application/json
 
 ###
 
-POST http://localhost:4000/add/business HTTP/1.1
+POST http://172.23.179.217:4000/add/business HTTP/1.1
 content-type: application/json
 
 {
@@ -25,11 +25,12 @@ content-type: application/json
 
 ###
 
-POST http://localhost:4000/add/political HTTP/1.1
+POST http://172.23.179.217:4000/add/political HTTP/1.1
 content-type: application/json
 
 {
     "email": "test2@gmail.com",
+    "profilelogo": "asdasda.jpg",
     "partylogo": "dafwersfdfassdfsdf.jpg",
     "facebook": "facebook",
     "twitter": "facebook",
@@ -41,23 +42,30 @@ content-type: application/json
 
 ###
 
-POST http://127.0.0.1:4000/signin HTTP/1.1
+POST http://172.22.247.184:4000/signin HTTP/1.1
 content-type: application/json
 
 {
-    "email": "saif501721@gmail.com",
-    "password": "pass123"
+    "email": "saifkhan501721@gmail.com",
+    "password": "pass12345"
 }
 
 ###
 
-POST http://localhost:4000/protected
+POST http://172.22.247.184:4000/protected
 Content-Type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhaWY1MDE3MjFAZ21haWwuY29tIiwiaWF0IjoxNjU5NzYzMzYzLCJleHAiOjE2NTk3NjMzNzh9.6RBVdCcx1uDnJf1V_6bvO_7AbpqdFWM7MM8n7PXWilg"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiJiMTk5OTE4Yi1kZTlhLTRlYzgtYTBmMy00ZGUwZGEyMDIzN2UiLCJpYXQiOjE2NjM1MzE2NTQsImV4cCI6MTY2MzU0OTY1NH0.vTD7y_ffXlJIXS-qv2e9O3KjXY8fU7ZyIfujluZuXb0"
 }
 
+###
+POST http://172.22.251.9:4000/userinfo
+Content-Type: application/json
+
+{
+    "id": "b199918b-de9a-4ec8-a0f3-4de0da20237e"
+}
 
 ###
 

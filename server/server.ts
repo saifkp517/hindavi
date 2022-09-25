@@ -21,7 +21,7 @@ const prisma = new PrismaClient()
 const app = express();
 
 export interface UserAuth extends express.Request {
-    email: string | JwtPayload
+    userid: string | JwtPayload
 }
 
 ///awsconfig////////////////
@@ -86,7 +86,7 @@ function verifyToken(req: UserAuth, res: express.Response, next: NextFunction) {
             if (err) {
                 res.status(401).json({ message: 'Unauthorized: Invalid token' });
             } else {
-                req.email = decoded.email;
+                req.userid = decoded.userid;
                 next();
             }
         });
@@ -94,7 +94,27 @@ function verifyToken(req: UserAuth, res: express.Response, next: NextFunction) {
 }
 
 app.post('/protected', verifyToken, (req: UserAuth, res) => {
-    res.send(req.email);
+    res.send(req.userid)
+})
+
+app.post('/userinfo', async (req, res) => {
+
+    const { id } = req.body;
+
+    const userinfo = await prisma.user.findUnique({
+        where: {
+            id: id
+        },
+        select: {
+            username: true,
+            email: true,
+            coins: true,
+            profilephoto: true,
+
+        }
+    }).then(data => {
+        res.json(data)
+    })
 })
 
 app.post('/emailverify', async (req, res) => {
@@ -125,13 +145,25 @@ app.post('/signin', async (req, res) => {
         }
     })
 
+    const userId = await prisma.user.findUnique({
+        where: {
+            email: email
+        },
+        select: {
+            id: true
+        }
+    })
+
+    const userid = userId.id
+
+
     if (userPassword) {
 
         const ValidPassword = await bcrypt.compare(password, userPassword.password)
 
         if (ValidPassword) {
 
-            const token = jwt.sign({ email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5hr' });
+            const token = jwt.sign({ userid }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5hr' });
 
             res.json({ token: token });
 
@@ -150,23 +182,36 @@ app.post('/upload-profile', async (req, res) => {
 
     const { email, profilephoto } = req.body;
 
-    const updateprofile = await prisma.user.update({
 
-        where: {
-            email: JSON.parse(email)
-        },
-        data: {
-            profilephoto: JSON.parse(profilephoto)
-        }
+    const target = profilephoto.replace("https://hindavidatabucket.s3.ap-south-1.amazonaws.com/", "")
 
+    const deleteParams = {
+        Bucket: process.env.BUCKET_NAME,
+        Key: target
+    }
+
+    s3.deleteObject(deleteParams, (err, data) => {
+        if (err) return console.log(err, err.stack);
+        console.log(data);
     })
 
-    res.json("updated successfully");
+    await prisma.user.update({
+
+        where: {
+            email: email
+        },
+        data: {
+            profilephoto: profilephoto
+        }
+
+    }).then(data => {
+        res.json("updated successfully");
+    })
 
 })
 
-app.post('/upload-image', async(req, res) => {
-    const {image, title, designation} = req.body;
+app.post('/upload-image', async (req, res) => {
+    const { image, title, designation } = req.body;
 
     await prisma.photos.create({
         data: {
@@ -194,9 +239,9 @@ app.get("/image", (req, res) => {
 app.get('/images', async (req, res) => {
 
     await prisma.photos.findMany()
-    .then(data => {
-        res.json(data)
-    })
+        .then(data => {
+            res.json(data)
+        })
 
 })
 
@@ -226,7 +271,6 @@ app.post('/forgotpassword', async (req, res) => {
         data: {
             password: newpassword
         }
-
     })
 
     res.status(200).json({ message: "updates email" })
@@ -348,23 +392,18 @@ app.post('/signup/:id', async (req, res) => {
 //switch user to political  user
 app.post('/add/political', async (req, res) => {
 
-    const { email, partylogo, facebook, instagram, designation1, designation2, twitter } = req.body
+    const { email, profilelogo, partylogo, facebook, instagram, designation1, designation2, twitter } = req.body
 
-    const addPolitical = await prisma.user.update({
-        where: {
-            email: email
-        },
+    const addPolitical = await prisma.politicalProfile.create({
         data: {
-            politicalprofiles: {
-                create: {
-                    partylogo: partylogo,
-                    facebook: facebook,
-                    instagram: instagram,
-                    twitter: twitter,
-                    designation1: designation1,
-                    deisgnation2: designation2
-                }
-            }
+            email: email,
+            profilelogo: profilelogo,
+            partylogo: partylogo,
+            facebook: facebook,
+            instagram: instagram,
+            twitter: twitter,
+            designation1: designation1,
+            deisgnation2: designation2
         }
     })
 
@@ -377,21 +416,16 @@ app.post('/add/business', async (req, res) => {
 
     const { email, businessname, tagline, whatsappno, address, websiteurl } = req.body
 
-    const addBusiness = await prisma.user.update({
-        where: {
-            email: email
-        },
+    const addBusiness = await prisma.businessProfile.create({
         data: {
-            businessprofiles: {
-                create: {
-                    businessname: businessname,
-                    tagline: tagline,
-                    whatsappno: whatsappno,
-                    address: address,
-                    websiteurl: websiteurl
-                }
-            }
+            email: email,
+            businessname: businessname,
+            tagline: tagline,
+            whatsappno: whatsappno,
+            address: address,
+            websiteurl: websiteurl
         }
+
     })
 
     console.log(addBusiness)
@@ -416,11 +450,11 @@ app.post('/orders', async (req, res) => {
 
         const order = await instance.orders.create(options);
 
-        if(!order) return res.status(500).send("some error has ocurred");
+        if (!order) return res.status(500).send("some error has ocurred");
 
         res.json(order);
 
-    } catch(err) {
+    } catch (err) {
         console.log(err);
     }
 })
@@ -443,7 +477,7 @@ app.post('/verify-success', async (req, res) => {
         const digest = shasum.digest("hex");
 
         if (digest !== razorpaySignature) {
-            return res.status(400).json({msg: "Transaction is illicit!"});
+            return res.status(400).json({ msg: "Transaction is illicit!" });
         }
 
         res.json({
@@ -452,7 +486,7 @@ app.post('/verify-success', async (req, res) => {
             paymentId: razorpayPaymentId,
         });
 
-    } catch(err) {
+    } catch (err) {
         console.log(err)
     }
 

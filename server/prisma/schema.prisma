@@ -11,24 +11,21 @@ datasource db {
 }
 
 model User {
-  id                String            @id @default(uuid())
-  profilephoto      String
-  username          String
-  businessprofiles  BusinessProfile?
-  politicalprofiles PoliticalProfile?
-  email             String            @unique
-  password          String
-  phoneno           String
-  coins             Int
-  verified          Boolean
-  refcode           String
-  Token             String?
+  id           String  @id @default(uuid())
+  profilephoto String
+  username     String
+  email        String  @unique
+  password     String
+  phoneno      String
+  coins        Int
+  verified     Boolean
+  refcode      String
+  Token        String?
 }
 
 model BusinessProfile {
   id           String @id @default(uuid())
-  user         User?  @relation(fields: [userId], references: [email])
-  userId       String @unique
+  email        String
   businessname String
   tagline      String
   whatsappno   String
@@ -38,8 +35,8 @@ model BusinessProfile {
 
 model PoliticalProfile {
   id           String @id @default(uuid())
-  user         User?  @relation(fields: [userId], references: [email])
-  userId       String @unique
+  email        String
+  profilelogo  String
   partylogo    String
   facebook     String
   instagram    String

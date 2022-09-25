@@ -17,6 +17,10 @@ import Box from '@mui/material/Box';
 import Upload from '@mui/icons-material/Upload';
 import Avatar from '@mui/material/Avatar';
 
+import axios from 'axios';
+import { useState, useEffect } from "react";
+import { useS3Upload } from "next-s3-upload";
+
 const PoliticalProfile: NextPage = () => {
   const nameRef = useRef<HTMLInputElement>(null);
   const des1Ref = useRef<HTMLInputElement>(null);
@@ -87,6 +91,52 @@ const PoliticalProfile: NextPage = () => {
     },
   ];
 
+  const { uploadToS3, files } = useS3Upload();
+  const [profileImage, setProfileImage] = useState("");
+  const [partyLogo, setPartyLogo] = useState("");
+
+  const profileChange = async (event: any) => {
+    try {
+
+      let file = event.target.files[0];
+      let {url} = await uploadToS3(file);
+      setProfileImage(url)
+
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  const partylogoChange = async (event: any) => {
+    try {
+
+      let file = event.target.files[0];
+      let {url} = await uploadToS3(file);
+      setPartyLogo(url)
+
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  const addPolitical = async () => {
+    if (fbRef.current && instaRef.current && twitterRef.current && des1Ref.current && des2Ref.current) {
+      axios.post("http://localhost:4000/add/political", {
+        email: "saifkhan501721@gmail.com",
+        partylogo: partyLogo,
+        profilelogo: profileImage,
+        facebook: fbRef.current.value,
+        instagram: instaRef.current.value,
+        twitter: twitterRef.current.value,
+        designation1: des1Ref.current.value,
+        designation2: des2Ref.current.value,
+      })
+        .then(data => console.log(data))
+        .catch(err => console.log)
+    }
+
+  }
+
   return (
     <Container maxWidth='sm'>
       <Typography variant='h5' component='h2' sx={{ marginY: 2 }}>
@@ -113,6 +163,7 @@ const PoliticalProfile: NextPage = () => {
               height: { md: '10rem', xs: '7rem' },
               marginX: 'auto',
             }}
+            src={profileImage}
           />
           <Button
             variant='contained'
@@ -130,6 +181,7 @@ const PoliticalProfile: NextPage = () => {
             Upload Profile
             <input hidden accept='image/*' type='file' />
           </Button>
+          <input type="file" onChange={profileChange} />
         </Box>
         <Box>
           <Avatar
@@ -139,6 +191,7 @@ const PoliticalProfile: NextPage = () => {
               height: { md: '10rem', xs: '7rem' },
               marginX: 'auto',
             }}
+            src={partyLogo}
           />
           <Button
             variant='contained'
@@ -156,9 +209,10 @@ const PoliticalProfile: NextPage = () => {
             Upload Party Icon
             <input hidden accept='image/*' type='file' />
           </Button>
+          <input type="file" onChange={partylogoChange} />
         </Box>
       </Box>
-      <form>
+      <form onSubmit={addPolitical}>
         {inputsArr.map((el: InputFieldType) => (
           <InputFields
             key={el.id}

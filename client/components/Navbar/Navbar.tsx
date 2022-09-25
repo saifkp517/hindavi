@@ -11,7 +11,31 @@ import Link from '@mui/material/Link';
 import InputAdornment from '@mui/material/InputAdornment';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
+import axios, { AxiosResponse } from "axios";
+import React, { useState, useEffect } from 'react'
+
 export const Navbar: NextPage = () => {
+
+  const [email, setEmail] = useState('');
+  const [coins, setCoins] = useState(0);
+  const [name, setName] = useState('');
+  const [id, setId] = useState<any>('');
+
+  const UserInfo = async (id: any) => {
+    if (id !== "") {
+      console.log("sa")
+      axios.post("http://localhost:4000/userinfo", {
+        id: id
+      })
+        .then(res => {
+          setEmail("Saif Khan")
+          setName(res.data.username)
+          setCoins(res.data.coins)
+        })
+        .catch(err => console.log(err))
+    }
+  }
+
   return (
     <AppBar
       position='static'
@@ -61,7 +85,7 @@ export const Navbar: NextPage = () => {
             component='span'
             sx={{ flexGrow: 1, display: 'block' }}
           >
-            250 coins
+            {coins} coins
           </Typography>
         </Typography>
         <Link href='/user/userno' underline='none'>

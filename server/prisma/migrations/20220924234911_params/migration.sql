@@ -17,7 +17,7 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "BusinessProfile" (
     "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
     "businessname" TEXT NOT NULL,
     "tagline" TEXT NOT NULL,
     "whatsappno" TEXT NOT NULL,
@@ -30,7 +30,8 @@ CREATE TABLE "BusinessProfile" (
 -- CreateTable
 CREATE TABLE "PoliticalProfile" (
     "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "profilelogo" TEXT NOT NULL,
     "partylogo" TEXT NOT NULL,
     "facebook" TEXT NOT NULL,
     "instagram" TEXT NOT NULL,
@@ -44,26 +45,12 @@ CREATE TABLE "PoliticalProfile" (
 -- CreateTable
 CREATE TABLE "Photos" (
     "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
     "image" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "designation" TEXT NOT NULL,
 
     CONSTRAINT "Photos_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "BusinessProfile_userId_key" ON "BusinessProfile"("userId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "PoliticalProfile_userId_key" ON "PoliticalProfile"("userId");
-
--- AddForeignKey
-ALTER TABLE "BusinessProfile" ADD CONSTRAINT "BusinessProfile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "PoliticalProfile" ADD CONSTRAINT "PoliticalProfile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Photos" ADD CONSTRAINT "Photos_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
