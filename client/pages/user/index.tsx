@@ -14,8 +14,8 @@ import Fab from '@mui/material/Fab';
 import Logout from '@mui/icons-material/Logout';
 import { NextPage } from 'next';
 import { getCookie } from 'cookies-next';
-import axios from "axios"
-import React, { useState, useEffect } from 'react'
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 
 type options = {
   title: string;
@@ -23,61 +23,70 @@ type options = {
   link: string;
 };
 
-
 const UserPage: NextPage = () => {
   const optionsArr: options[] = [
-    { title: 'Edit your profile', icon: <Edit />, link: './edit/123' },
+    { title: 'Edit your profile', icon: <Edit />, link: './user/edit' },
     {
       title: 'Create business profile',
       icon: <Business />,
-      link: './business',
+      link: './user/business',
     },
-    { title: 'Create political profile', icon: <Gavel />, link: './political' },
-    { title: 'Create watermark', icon: <Watermark />, link: './watermark' },
-    { title: 'Contact us', icon: <ContactUs />, link: './contact' },
+    {
+      title: 'Create political profile',
+      icon: <Gavel />,
+      link: './user/political',
+    },
+    {
+      title: 'Create watermark',
+      icon: <Watermark />,
+      link: './user/watermark',
+    },
+    { title: 'Contact us', icon: <ContactUs />, link: './user/contact' },
   ];
 
   const [email, setEmail] = useState('');
   const [coins, setCoins] = useState(0);
   const [name, setName] = useState('');
   const [id, setId] = useState<any>('');
-  const [error, setError] = useState('')
+  const [error, setError] = useState('');
 
   useEffect(() => {
     Verify();
-  }, [])
+  }, []);
 
   const Verify = async () => {
     const token = getCookie('key');
-    axios.post("http://localhost:4000/protected", {
-      token: token
-    })
-      .then(data => {
-        console.log(data)
-        UserInfo(data.data)
+    axios
+      .post('http://localhost:4000/protected', {
+        token: token,
       })
-      .catch(err => {
-        console.log(err)
+      .then((data) => {
+        console.log(data);
+        UserInfo(data.data);
+      })
+      .catch((err) => {
+        console.log(err);
         if (err.response.status === 401) {
-          setError("Please Login again!")
+          setError('Please Login again!');
         }
-      })
-  }
+      });
+  };
 
   const UserInfo = async (id: any) => {
-    if (id !== "") {
-      console.log("sa")
-      axios.post("http://localhost:4000/userinfo", {
-        id: id
-      })
-        .then(res => {
-          setEmail("Saif Khan")
-          setName(res.data.username)
-          setCoins(res.data.coins)
+    if (id !== '') {
+      console.log('sa');
+      axios
+        .post('http://localhost:4000/userinfo', {
+          id: id,
         })
-        .catch(err => console.log(err))
+        .then((res) => {
+          setEmail('Saif Khan');
+          setName(res.data.username);
+          setCoins(res.data.coins);
+        })
+        .catch((err) => console.log(err));
     }
-  }
+  };
 
   return (
     <Container maxWidth='xl'>
@@ -108,10 +117,9 @@ const UserPage: NextPage = () => {
           component='p'
           sx={{ fontSize: { xs: '1rem', md: '1.4rem' } }}
         >
-          {email}<br />
-          Balance: {coins}
+          {email}
         </Typography>
-        <h1 style={{ color: "red" }}>{error}</h1>
+        <h1 style={{ color: 'red' }}>{error}</h1>
       </Box>
       <Box>
         {optionsArr.map((el, i) => (
