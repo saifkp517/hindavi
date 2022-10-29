@@ -7,8 +7,19 @@ import Switch from '@mui/material/Switch';
 import IconButton from '@mui/material/IconButton';
 import ChevronRight from '@mui/icons-material/ChevronRight';
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import { Dispatch, SetStateAction } from 'react';
 
-export const EditTools: NextPage = () => {
+type Props = {
+  frameIndex: number;
+  setFrameIndex: Dispatch<SetStateAction<number>>;
+  framesLength: number;
+};
+
+export const EditTools: NextPage<Props> = ({
+  frameIndex,
+  setFrameIndex,
+  framesLength,
+}) => {
   return (
     <>
       <Box sx={{ width: '100%', textAlign: 'center', marginTop: 1 }}>
@@ -72,13 +83,27 @@ export const EditTools: NextPage = () => {
               border: '2px solid #F27C35',
             }}
           >
-            <IconButton aria-label='previous'>
+            <IconButton
+              aria-label='previous'
+              onClick={() =>
+                setFrameIndex(
+                  frameIndex === 0 ? framesLength - 1 : frameIndex - 1
+                )
+              }
+            >
               <ChevronLeft color='primary' />
             </IconButton>
             <Typography color='primary' variant='body1' component='p'>
-              No Frame
+              Frame {frameIndex + 1}
             </Typography>
-            <IconButton aria-label='next'>
+            <IconButton
+              aria-label='next'
+              onClick={() =>
+                setFrameIndex(
+                  frameIndex === framesLength - 1 ? 0 : frameIndex + 1
+                )
+              }
+            >
               <ChevronRight color='primary' />
             </IconButton>
           </Paper>
