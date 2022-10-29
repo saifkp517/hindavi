@@ -50,7 +50,7 @@ const Home: NextPage = () => {
           })
           .then((data: any) => {
             setCookie('key', data.data.token);
-            router.push('/user/userno');
+            router.push('/user/edit');
           })
           .catch((err) => {
             console.log(err);

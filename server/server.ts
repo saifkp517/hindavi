@@ -154,7 +154,14 @@ app.post('/signin', async (req, res) => {
         }
     })
 
-    const userid = userId.id
+    let userid;
+
+    if(userId) {
+        userid = userId.id
+    }
+    else {
+        return res.status(404).json("User Not found")
+    }
 
 
     if (userPassword) {
@@ -174,7 +181,7 @@ app.post('/signin', async (req, res) => {
         }
 
     } else {
-        res.status(404).json("Email not Found")
+        return res.status(404).json("Email not Found")
     }
 })
 
@@ -241,6 +248,7 @@ app.get('/images', async (req, res) => {
     await prisma.photos.findMany()
         .then(data => {
             res.json(data)
+            console.log(data)
         })
 
 })
