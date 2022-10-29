@@ -10,7 +10,6 @@ import Container from '@mui/system/Container';
 import { deepOrange } from '@mui/material/colors';
 import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import {
   Img18,
   Img1,
@@ -31,9 +30,20 @@ import {
   Img8,
   Img9,
 } from '../../public/index';
-import Frame from '../../public/svg/frame.png';
+import {
+  Frame1,
+  Frame10,
+  Frame2,
+  Frame3,
+  Frame4,
+  Frame5,
+  Frame6,
+  Frame7,
+  Frame8,
+  Frame9,
+} from '../../public/svg/index';
 import { EditTools } from '../../components/EditTools/EditTools';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Props {
   id: { id: string };
@@ -42,6 +52,8 @@ interface Props {
 const Poster: NextPage<Props> = ({ id }) => {
   const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const [frameIndex, setFrameIndex] = useState(0);
 
   const ColorButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
     color: theme.palette.getContrastText(deepOrange[500]),
@@ -72,14 +84,55 @@ const Poster: NextPage<Props> = ({ id }) => {
     Img18,
   ];
 
+  const framesArr = [
+    Frame1,
+    Frame2,
+    Frame3,
+    Frame4,
+    Frame5,
+    Frame6,
+    Frame7,
+    Frame8,
+    Frame9,
+    Frame10,
+  ];
+
+  const frameHeights = [80, 100, 155, 141, 160, 160, 160, 100, 50, 850];
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas?.getContext('2d');
     if (context) {
-      const image: any = document.getElementById('img');
-      context.drawImage(image, 0, 0);
+      const image: HTMLImageElement = new (window as any).Image();
+      const frame: HTMLImageElement = new (window as any).Image();
+      image.src = ImagesArr[Number(id.id)].src;
+      frame.src = framesArr[frameIndex].src;
+      image.addEventListener(
+        'load',
+        () => {
+          if (canvas?.width && canvas.height) {
+            canvas.width = image.naturalWidth;
+            canvas.height = image.naturalHeight;
+            context.drawImage(image, 0, 0, canvas?.width, canvas?.height);
+          }
+        },
+        false
+      );
+      frame.addEventListener(
+        'load',
+        () => {
+          if (canvas?.width && canvas?.height) {
+            context.drawImage(
+              frame,
+              0,
+              canvas.height - frame.naturalHeight - frameHeights[frameIndex]
+            );
+          }
+        },
+        false
+      );
     }
-  }, []);
+  }, [frameIndex]);
 
   return (
     <Container
@@ -115,10 +168,14 @@ const Poster: NextPage<Props> = ({ id }) => {
           sx={{ height: '18rem', aspectRatio: '1 / 1' }}
         >
           <canvas ref={canvasRef} />
-          <Image src={ImagesArr[Number(id.id)]} alt='image' id='img' />
+          {/* <Image src={ImagesArr[Number(id.id)]} alt='image' id='img' /> */}
         </Card>
       </Box>
-      <EditTools />
+      <EditTools
+        frameIndex={frameIndex}
+        setFrameIndex={setFrameIndex}
+        framesLength={framesArr.length}
+      />
       <Button
         variant='contained'
         fullWidth={true}

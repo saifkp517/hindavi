@@ -37,7 +37,7 @@ const Home: NextPage = () => {
     showPassword: false,
   });
 
-  const [err, setErr] = useState("")
+  const [err, setErr] = useState('');
 
   const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -54,7 +54,7 @@ const Home: NextPage = () => {
           })
           .catch((err) => {
             console.log(err);
-            setErr(err.response.data)
+            setErr(err.response.data);
           });
       }
     } catch (err: any) {
