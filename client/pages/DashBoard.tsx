@@ -65,7 +65,7 @@ const DashBoard: NextPage = () => {
   //     let file = event.target.files[0];
   //     let { url } = await uploadToS3(file)
   //     setImageUrl(url)
-  //     axios.post("http://localhost:4000/upload-profile", {
+  //     axios.post("http://3.89.137.234:4000/upload-profile", {
   //       email: email,
   //       profilephoto: JSON.stringify(imageUrl)
   //     })
@@ -81,7 +81,7 @@ const DashBoard: NextPage = () => {
       let file = event.target.files[0];
       let { url } = await uploadToS3(file)
       setImageUrl(url)
-      axios.post("http://localhost:4000/upload-image", {
+      axios.post("http://3.89.137.234:4000/upload-image", {
         title: "this is a image title",
         designation: "By Hindavi Graphics",
         image: url
@@ -117,7 +117,7 @@ const DashBoard: NextPage = () => {
 
     if (!res) return alert("Razorpay SDK failed, Check your internet connection.....");
 
-    const result = await axios.post("http://localhost:4000/orders");
+    const result = await axios.post("http://3.89.137.234:4000/orders");
 
     if (!result) {
       alert('Server Error, Please Wait until the servers are back online...')
@@ -143,7 +143,7 @@ const DashBoard: NextPage = () => {
         };
 
         //verifyying signature confirmation
-        const result = await axios.post("http://localhost:4000/verify-success", data);
+        const result = await axios.post("http://3.89.137.234:4000/verify-success", data);
 
         alert(result.data.msg);
       },
