@@ -47,7 +47,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'http://54.173.27.98:3000',
     credentials: true,
 }))
 
