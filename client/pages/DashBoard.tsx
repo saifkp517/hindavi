@@ -40,7 +40,7 @@ const DashBoard: NextPage = () => {
   const Verify = async () => {
 
     const token = getCookie('key')
-    axios.post("http://localhost:4000/protected", {
+    axios.post("http://3.89.137.234:4000/protected", {
       token: token
     })
       .then(data => {
