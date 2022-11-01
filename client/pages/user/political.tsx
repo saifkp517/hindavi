@@ -121,7 +121,7 @@ const PoliticalProfile: NextPage = () => {
 
   const addPolitical = async () => {
     if (fbRef.current && instaRef.current && twitterRef.current && des1Ref.current && des2Ref.current) {
-      axios.post("http://localhost:4000/add/political", {
+      axios.post("3.89.137.234:4000:4000/add/political", {
         email: "saifkhan501721@gmail.com",
         partylogo: partyLogo,
         profilelogo: profileImage,
