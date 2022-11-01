@@ -1,0 +1,23 @@
+{
+  "/_app": "pages/_app.js",
+  "/_document": "pages/_document.js",
+  "/DashBoard": "pages/DashBoard.html",
+  "/api/s3-upload": "pages/api/s3-upload.js",
+  "/emailverify": "pages/emailverify.html",
+  "/forgotpassword": "pages/forgotpassword.html",
+  "/home": "pages/home.html",
+  "/": "pages/index.html",
+  "/notifications": "pages/notifications.html",
+  "/recharge": "pages/recharge.html",
+  "/refer/[id]": "pages/refer/[id].html",
+  "/signup": "pages/signup.html",
+  "/user/business": "pages/user/business.html",
+  "/user/contact": "pages/user/contact.html",
+  "/user/edit": "pages/user/edit.html",
+  "/user": "pages/user.html",
+  "/user/political": "pages/user/political.html",
+  "/user/watermark": "pages/user/watermark.html",
+  "/_error": "pages/_error.js",
+  "/posteredit/[id]": "pages/posteredit/[id].js",
+  "/404": "pages/404.html"
+}
