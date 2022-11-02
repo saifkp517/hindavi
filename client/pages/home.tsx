@@ -57,7 +57,7 @@ const Home: NextPage = () => {
   const [data, setData] = useState<any[]>([])
 
   // useEffect(() => {
-  //   fetch("http://3.89.137.234:4000/images")
+  //   fetch("https://3.89.137.234:4000/images")
   //     .then(res => res.json())
   //     .then(data => {
   //       console.log(data)

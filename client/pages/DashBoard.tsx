@@ -40,7 +40,7 @@ const DashBoard: NextPage = () => {
   const Verify = async () => {
 
     const token = getCookie('key')
-    axios.post("http://3.89.137.234:4000/protected", {
+    axios.post("https://3.89.137.234:4000/protected", {
       token: token
     })
       .then(data => {
@@ -81,7 +81,7 @@ const DashBoard: NextPage = () => {
       let file = event.target.files[0];
       let { url } = await uploadToS3(file)
       setImageUrl(url)
-      axios.post("http://3.89.137.234:4000/upload-image", {
+      axios.post("https://3.89.137.234:4000/upload-image", {
         title: "this is a image title",
         designation: "By Hindavi Graphics",
         image: url
