@@ -509,8 +509,8 @@ app.post('/verify-success', async (req, res) => {
 const port = process.env.PORT || 4000;
 
 const httpsServer = https.createServer({
-    key: fs.readFileSync('key.pem'),
-    cert: fs.readFileSync('cert.pem'),
+    key: fs.readFileSync(process.env.keyfile),
+    cert: fs.readFileSync(process.env.cert),
 }, app);
 
 httpsServer.listen(4000, () => console.log("app listening on port " + port))
