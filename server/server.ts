@@ -1,5 +1,6 @@
 import express, { NextFunction } from "express";
 import S3 from "aws-sdk/clients/s3"
+import https from "https"
 import fs from "fs";
 import Razorpay from "razorpay"
 require('dotenv').config()
@@ -47,7 +48,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 
 app.use(cors({
-    origin: 'http://54.173.27.98:3000',
+    origin: 'https://hindavi.vercel.app/',
     credentials: true,
 }))
 
@@ -506,5 +507,13 @@ app.post('/verify-success', async (req, res) => {
 ////////////////port initialization///////////////////////
 
 const port = process.env.PORT || 4000;
-app.listen(port, () => console.log('App listening on port ' + port));
+
+const httpsServer = https.createServer({
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem'),
+}, app);
+
+httpsServer.listen(4000, () => console.log("app listening on port " + port))
+
+//app.listen(port, () => console.log('App listening on port ' + port));
 

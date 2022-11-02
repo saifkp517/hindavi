@@ -117,7 +117,7 @@ const DashBoard: NextPage = () => {
 
     if (!res) return alert("Razorpay SDK failed, Check your internet connection.....");
 
-    const result = await axios.post("http://3.89.137.234:4000/orders");
+    const result = await axios.post("https://3.89.137.234:4000/orders");
 
     if (!result) {
       alert('Server Error, Please Wait until the servers are back online...')
@@ -143,7 +143,7 @@ const DashBoard: NextPage = () => {
         };
 
         //verifyying signature confirmation
-        const result = await axios.post("http://3.89.137.234:4000/verify-success", data);
+        const result = await axios.post("https://3.89.137.234:4000/verify-success", data);
 
         alert(result.data.msg);
       },
