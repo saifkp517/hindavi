@@ -32,7 +32,7 @@ const Verify: NextPage = () => {
     e.preventDefault();
     if (otpRef.current) {
       const otp = getCookie('otp');
-      const email = getCookie('userref');
+      const email = getCookie('userreference');
 
       if (otpRef.current.value === otp) {
         axios
