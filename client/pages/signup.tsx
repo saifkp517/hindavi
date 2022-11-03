@@ -120,7 +120,7 @@ const Home: NextPage = () => {
     try {
       if (emailreference.current) {
         await axios
-          .post('https://3.89.137.234:4000/email', {
+          .post('http://3.89.137.234:4000/email', {
             email: emailreference.current.value,
             otp: otp,
           })
