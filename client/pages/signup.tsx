@@ -160,7 +160,7 @@ const Home: NextPage = () => {
           setCookie('otp', otp);
           setCookie('userreference', emailreference.current.value);
 
-          const data = await axios.post(`https://3.89.137.234:4000/signup/${id}`, {
+          const data = await axios.post(`http://3.89.137.234:4000/signup/${id}`, {
             username: usernamereference.current.value,
             email: emailreference.current.value,
             password: passwordreference.current.value,
