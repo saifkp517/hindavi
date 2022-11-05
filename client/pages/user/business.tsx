@@ -89,7 +89,7 @@ const BusinessProfile: NextPage = () => {
 
   const addBusiness = async () => {
     if (taglineRef.current && emailRef.current && phoneRef.current && addressRef.current && websiteRef.current) {
-      axios.post("http://localhost:4000/add/political", {
+      axios.post("http://3.89.137.234:4000/add/political", {
         email: emailRef.current.value,
         tagline: taglineRef.current.value,
         whatsappno: phoneRef.current.value,

@@ -1,5 +1,6 @@
 import express, { NextFunction } from "express";
 import S3 from "aws-sdk/clients/s3"
+import https from "https"
 import fs from "fs";
 import Razorpay from "razorpay"
 require('dotenv').config()
@@ -47,7 +48,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://hindavi.vercel.app/',
     credentials: true,
 }))
 
@@ -154,7 +155,14 @@ app.post('/signin', async (req, res) => {
         }
     })
 
-    const userid = userId.id
+    let userid;
+
+    if(userId) {
+        userid = userId.id
+    }
+    else {
+        return res.status(404).json("User Not found")
+    }
 
 
     if (userPassword) {
@@ -174,7 +182,7 @@ app.post('/signin', async (req, res) => {
         }
 
     } else {
-        res.status(404).json("Email not Found")
+        return res.status(404).json("Email not Found")
     }
 })
 
@@ -241,6 +249,7 @@ app.get('/images', async (req, res) => {
     await prisma.photos.findMany()
         .then(data => {
             res.json(data)
+            console.log(data)
         })
 
 })
@@ -498,5 +507,13 @@ app.post('/verify-success', async (req, res) => {
 ////////////////port initialization///////////////////////
 
 const port = process.env.PORT || 4000;
-app.listen(port, () => console.log('App listening on port ' + port));
+
+const httpsServer = https.createServer({
+    key: fs.readFileSync(process.env.keyfile),
+    cert: fs.readFileSync(process.env.cert),
+}, app);
+
+httpsServer.listen(4000, () => console.log("app listening on port " + port))
+
+//app.listen(port, () => console.log('App listening on port ' + port));
 

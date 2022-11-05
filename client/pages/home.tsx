@@ -54,6 +54,14 @@ const Home: NextPage = () => {
   const [value, setValue] = useState(0);
   const [data, setData] = useState<any[]>([]);
 
+  // useEffect(() => {
+  //   fetch("https://3.89.137.234:4000/images")
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       console.log(data)
+  //       setData(data)
+  //     })
+  // }, [])
   useEffect(() => {
     // fetch('http://localhost:4000/images')
     //   .then((res) => res.json())
@@ -64,12 +72,12 @@ const Home: NextPage = () => {
   }, []);
 
   const ImagesArr: Design[] = [
-    {
-      title: 'स्वातंत्र्यदिनाच्या शुभेच्छा',
-      designation: 'By Hindavi Graphics',
-      img: 'https://hindavidatabucket.s3.ap-south-1.amazonaws.com/next-s3-uploads/2010ab96-eb96-4d51-8b38-6b886213bf5d/first%2520ace.png',
-      // https://hindavidatabucket.s3.ap-south-1.amazonaws.com/next-s3-uploads/2010ab96-eb96-4d51-8b38-6b886213bf5d/first%2520ace.png
-    },
+    // {
+    //   title: 'स्वातंत्र्यदिनाच्या शुभेच्छा',
+    //   designation: 'By Hindavi Graphics',
+    //   img: 'https://hindavidatabucket.s3.ap-south-1.amazonaws.com/next-s3-uploads/2010ab96-eb96-4d51-8b38-6b886213bf5d/first%2520ace.png',
+    //   // https://hindavidatabucket.s3.ap-south-1.amazonaws.com/next-s3-uploads/2010ab96-eb96-4d51-8b38-6b886213bf5d/first%2520ace.png
+    // },
     {
       title: 'हिंदवी ग्राफिक्स',
       designation: 'By Hindavi Graphics',
