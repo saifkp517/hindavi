@@ -6,7 +6,7 @@ import Box from '@mui/system/Box';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { StaticImageData } from 'next/image';
-import axios from "axios";
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {
   Img18,
@@ -49,21 +49,19 @@ interface CategoriesType {
   color: string;
 }
 
-
-
 const Home: NextPage = () => {
   const router = useRouter();
   const [value, setValue] = useState(0);
-  const [data, setData] = useState<any[]>([])
+  const [data, setData] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:4000/images")
-      .then(res => res.json())
-      .then(data => {
-        console.log(data)
-        setData(data)
-      })
-  }, [])
+    // fetch('http://localhost:4000/images')
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     console.log(data);
+    //     setData(data);
+    //   });
+  }, []);
 
   const ImagesArr: Design[] = [
     {
@@ -165,11 +163,11 @@ const Home: NextPage = () => {
   return (
     <main>
       <ul>
-        {data.map(data => (
+        {data.map((data) => (
           <div>
             <p>{data.title}</p>
             <p>{data.designation}</p>
-            <img src={data.image} alt="" />
+            <img src={data.image} alt='' />
           </div>
         ))}
       </ul>
@@ -193,7 +191,7 @@ const Home: NextPage = () => {
               component='p'
               sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
             >
-              <Link href='#' underline='none' color='unset'>
+              <Link href='/categories' underline='none' color='unset'>
                 Show All
               </Link>
             </Typography>
