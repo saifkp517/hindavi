@@ -54,14 +54,6 @@ const Home: NextPage = () => {
   const [value, setValue] = useState(0);
   const [data, setData] = useState<any[]>([]);
 
-  // useEffect(() => {
-  //   fetch("https://3.89.137.234:4000/images")
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       console.log(data)
-  //       setData(data)
-  //     })
-  // }, [])
   useEffect(() => {
     // fetch('http://localhost:4000/images')
     //   .then((res) => res.json())
