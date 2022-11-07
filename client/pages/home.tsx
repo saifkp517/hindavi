@@ -8,6 +8,8 @@ import { useRouter } from 'next/router';
 import { StaticImageData } from 'next/image';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+// import Image from 'next/image';
+// import PocketBase from 'pocketbase';
 import {
   Img18,
   Img1,
@@ -49,9 +51,16 @@ interface CategoriesType {
   color: string;
 }
 
+export type CategoryType = {
+  title: string;
+  id: string;
+  icon: string;
+};
+
 const Home: NextPage = () => {
   const router = useRouter();
   const [value, setValue] = useState(0);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
   const [data, setData] = useState<any[]>([]);
 
   useEffect(() => {
@@ -61,6 +70,16 @@ const Home: NextPage = () => {
     //     console.log(data);
     //     setData(data);
     //   });
+    (async () => {
+      try {
+        const result = await axios
+          .get('http://127.0.0.1:8090/api/collections/categories/records')
+          .then((res) => res.data);
+        setCategories(result.items);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
   }, []);
 
   const ImagesArr: Design[] = [
@@ -197,47 +216,53 @@ const Home: NextPage = () => {
             </Typography>
           </Box>
           <Grid container spacing={0} sx={{ paddingX: { md: 1, xs: 0 } }}>
-            {Categories.map((el, i) => (
-              <Grid
-                item
-                key={i}
-                md={2}
-                xs={3}
-                sx={{
-                  display: i > 3 ? { xs: 'none', md: 'block' } : null,
-                }}
-              >
-                <Box sx={{ marginTop: 2, marginBottom: 1 }}>
-                  <Link href={`/posteredit/${i}`} underline='none'>
-                    <Paper
-                      elevation={2}
-                      sx={{
-                        width: { md: '6rem', xs: '3.5rem' },
-                        height: { md: '6rem', xs: '3.5rem' },
-                        borderRadius: '50%',
-                        padding: { md: 3, xs: 2 },
-                        marginX: 'auto',
-                        fill: 'white',
-                        backgroundColor: el.color,
-                      }}
-                    >
-                      {el.svg}
-                    </Paper>
-                  </Link>
-                </Box>
-                <Typography
-                  variant='body1'
-                  component='p'
+            {categories
+              .filter((el, i) => i < 6)
+              .map((el, i) => (
+                <Grid
+                  item
+                  key={el.id}
+                  md={2}
+                  xs={3}
                   sx={{
-                    textAlign: 'center',
-                    fontSize: { md: '1.4rem', xs: '0.8rem' },
-                    color: 'gray',
+                    display: i > 3 ? { xs: 'none', md: 'block' } : null,
                   }}
                 >
-                  {el.title}
-                </Typography>
-              </Grid>
-            ))}
+                  <Box sx={{ marginTop: 2, marginBottom: 1 }}>
+                    <Link href={`/posteredit/${i}`} underline='none'>
+                      <Paper
+                        elevation={2}
+                        sx={{
+                          width: { md: '6rem', xs: '3.5rem' },
+                          height: { md: '6rem', xs: '3.5rem' },
+                          borderRadius: '50%',
+                          padding: { md: 3, xs: 2 },
+                          marginX: 'auto',
+                          fill: 'white',
+                          backgroundColor: 'grey',
+                        }}
+                      >
+                        <img
+                          src={`http://127.0.0.1:8090/api/files/categories/${el.id}/${el.icon}`}
+                          alt='category image'
+                          style={{ width: '100%', height: '100%' }}
+                        />
+                      </Paper>
+                    </Link>
+                  </Box>
+                  <Typography
+                    variant='body1'
+                    component='p'
+                    sx={{
+                      textAlign: 'center',
+                      fontSize: { md: '1.2rem', xs: '1rem' },
+                      color: 'gray',
+                    }}
+                  >
+                    {el.title}
+                  </Typography>
+                </Grid>
+              ))}
           </Grid>
         </Box>
         {/* 
@@ -276,4 +301,5 @@ const Home: NextPage = () => {
     </main>
   );
 };
+
 export default Home;
