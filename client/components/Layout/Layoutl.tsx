@@ -135,7 +135,10 @@ export const Layout: NextPage<Props> = ({ children }) => {
                 fontSize: 21,
               }}
             >
-              <Link href='#' sx={{ color: '#fff', textDecoration: 'none' }}>
+              <Link
+                href='/notifications'
+                sx={{ color: '#fff', textDecoration: 'none' }}
+              >
                 Notifications
               </Link>
             </Typography>
@@ -166,7 +169,7 @@ export const Layout: NextPage<Props> = ({ children }) => {
             label='Home'
             value='Home'
             icon={<HomeIcon />}
-            onClick={() => router.push('/123')}
+            onClick={() => router.push('/home')}
           />
           <BottomNavigationAction
             label='Recharge'
