@@ -44,7 +44,7 @@ const Home: NextPage = () => {
     try {
       if (emailRef.current && passwordRef.current) {
         await axios
-          .post('http://3.89.137.234:4000/signin', {
+          .post('http://localhost:4000/signin', {
             email: emailRef.current.value,
             password: passwordRef.current.value,
           })

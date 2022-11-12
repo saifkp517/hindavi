@@ -1,13 +1,13 @@
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/system/Box';
-import { NextPage } from 'next';
-import { useRouter } from 'next/router';
-import { StaticImageData } from 'next/image';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import Link from "@mui/material/Link";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/system/Box";
+import { NextPage } from "next";
+import { useRouter } from "next/router";
+import { StaticImageData } from "next/image";
+import axios from "axios";
+import { useEffect, useState } from "react";
 // import Image from 'next/image';
 // import PocketBase from 'pocketbase';
 import {
@@ -29,17 +29,17 @@ import {
   Img7,
   Img8,
   Img9,
-} from '../public/index';
-import { PosterCards } from '../components/PosterCards/PosterCards';
-import { Navbar } from '../components/Navbar/Navbar';
-import { Namaste } from '../public/svg/Namaste';
-import { Shoewear } from '../public/svg/Shoewear';
-import { Jewelry } from '../public/svg/Jewelry';
-import { RealEstate } from '../public/svg/RealEstate';
-import { Bakery } from '../public/svg/Bakery';
-import { Motorcycle } from '../public/svg/Motorcycle';
+} from "../public/index";
+import { PosterCards } from "../components/PosterCards/PosterCards";
+import { Navbar } from "../components/Navbar/Navbar";
+import { Namaste } from "../public/svg/Namaste";
+import { Shoewear } from "../public/svg/Shoewear";
+import { Jewelry } from "../public/svg/Jewelry";
+import { RealEstate } from "../public/svg/RealEstate";
+import { Bakery } from "../public/svg/Bakery";
+import { Motorcycle } from "../public/svg/Motorcycle";
 
-export interface Design {
+interface Design {
   img: StaticImageData | string;
   title: string;
   designation: string;
@@ -57,30 +57,38 @@ export type CategoryType = {
   icon: string;
 };
 
+export type ImageType = {
+  title: string;
+  description: string;
+  img: any;
+}
+
 const Home: NextPage = () => {
   const router = useRouter();
   const [value, setValue] = useState(0);
   const [categories, setCategories] = useState<CategoryType[]>([]);
+  const [images, setImages] = useState<ImageType[]>([]);
   const [data, setData] = useState<any[]>([]);
 
   useEffect(() => {
-    // fetch('http://localhost:4000/images')
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //     setData(data);
-    //   });
     (async () => {
       try {
-        const result = await axios
-          .get(
-            'https://hindavi-pocketbase.herokuapp.com/api/collections/categories/records'
-          )
-          .then((res) => res.data);
+        const result = await axios.get("https://hindavi-pocketbase.herokuapp.com/api/collections/categories/records")
+        .then((res) => res.data);
         setCategories(result.items);
+
+        const images = await axios.get("https://hindavi-pocketbase.herokuapp.com/api/collections/images/records")
+        .then(res => console.log(res.data))
+        .catch(err => console.log(err));
+        setImages(images.items);
+
+
+
       } catch (error) {
         console.log(error);
       }
+
+
     })();
   }, []);
 
@@ -92,93 +100,93 @@ const Home: NextPage = () => {
     //   // https://hindavidatabucket.s3.ap-south-1.amazonaws.com/next-s3-uploads/2010ab96-eb96-4d51-8b38-6b886213bf5d/first%2520ace.png
     // },
     {
-      title: 'हिंदवी ग्राफिक्स',
-      designation: 'By Hindavi Graphics',
+      title: "हिंदवी ग्राफिक्स",
+      designation: "By Hindavi Graphics",
       img: Img2,
     },
     {
-      title: 'वापरण्यास सोपे',
-      designation: 'By Hindavi Graphics',
+      title: "वापरण्यास सोपे",
+      designation: "By Hindavi Graphics",
       img: Img3,
     },
     {
-      title: 'एकाच दिनविशेष',
-      designation: 'By Hindavi Graphics',
+      title: "एकाच दिनविशेष",
+      designation: "By Hindavi Graphics",
       img: Img4,
     },
     {
-      title: 'आमची वैशिष्ट्ये',
-      designation: 'By Hindavi Graphics',
+      title: "आमची वैशिष्ट्ये",
+      designation: "By Hindavi Graphics",
       img: Img5,
     },
     {
-      title: 'स्वातंत्र्यदिनाच्या शुभेच्छा',
-      designation: 'By Hindavi Graphics',
+      title: "स्वातंत्र्यदिनाच्या शुभेच्छा",
+      designation: "By Hindavi Graphics",
       img: Img6,
     },
     {
-      title: 'हिंदवी ग्राफिक्स',
-      designation: 'By Hindavi Graphics',
+      title: "हिंदवी ग्राफिक्स",
+      designation: "By Hindavi Graphics",
       img: Img7,
     },
     {
-      title: 'वापरण्यास सोपे',
-      designation: 'By Hindavi Graphics',
+      title: "वापरण्यास सोपे",
+      designation: "By Hindavi Graphics",
       img: Img8,
     },
     {
-      title: 'एकाच दिनविशेष',
-      designation: 'By Hindavi Graphics',
+      title: "एकाच दिनविशेष",
+      designation: "By Hindavi Graphics",
       img: Img9,
     },
     {
-      title: 'आमची वैशिष्ट्ये',
-      designation: 'By Hindavi Graphics',
+      title: "आमची वैशिष्ट्ये",
+      designation: "By Hindavi Graphics",
       img: Img10,
     },
     {
-      title: 'स्वातंत्र्यदिनाच्या शुभेच्छा',
-      designation: 'By Hindavi Graphics',
+      title: "स्वातंत्र्यदिनाच्या शुभेच्छा",
+      designation: "By Hindavi Graphics",
       img: Img11,
     },
     {
-      title: 'हिंदवी ग्राफिक्स',
-      designation: 'By Hindavi Graphics',
+      title: "हिंदवी ग्राफिक्स",
+      designation: "By Hindavi Graphics",
       img: Img12,
     },
     {
-      title: 'वापरण्यास सोपे',
-      designation: 'By Hindavi Graphics',
+      title: "वापरण्यास सोपे",
+      designation: "By Hindavi Graphics",
       img: Img13,
     },
     {
-      title: 'एकाच दिनविशेष',
-      designation: 'By Hindavi Graphics',
+      title: "एकाच दिनविशेष",
+      designation: "By Hindavi Graphics",
       img: Img14,
     },
     {
-      title: 'आमची वैशिष्ट्ये',
-      designation: 'By Hindavi Graphics',
+      title: "आमची वैशिष्ट्ये",
+      designation: "By Hindavi Graphics",
       img: Img15,
     },
     {
-      title: 'आमची वैशिष्ट्ये',
-      designation: 'By Hindavi Graphics',
+      title: "आमची वैशिष्ट्ये",
+      designation: "By Hindavi Graphics",
       img: Img16,
     },
   ];
 
   const Categories: CategoriesType[] = [
-    { svg: <Namaste />, title: 'Thank You', color: '#F2994A' },
+    { svg: <Namaste />, title: "Thank You", color: "#F2994A" },
     {
       svg: <Shoewear />,
-      title: 'Footwear',
-      color: '#EB5757',
+      title: "Footwear",
+      color: "#EB5757",
     },
-    { svg: <Jewelry />, title: 'Jewelry', color: '#F2C94C' },
-    { svg: <RealEstate />, title: 'Real Estate', color: '#219653' },
-    { svg: <Bakery />, title: 'Bakery', color: '#2D9CDB' },
-    { svg: <Motorcycle />, title: 'Motorcycle', color: '#BB6BD9' },
+    { svg: <Jewelry />, title: "Jewelry", color: "#F2C94C" },
+    { svg: <RealEstate />, title: "Real Estate", color: "#219653" },
+    { svg: <Bakery />, title: "Bakery", color: "#2D9CDB" },
+    { svg: <Motorcycle />, title: "Motorcycle", color: "#BB6BD9" },
   ];
 
   return (
@@ -188,31 +196,31 @@ const Home: NextPage = () => {
           <div>
             <p>{data.title}</p>
             <p>{data.designation}</p>
-            <img src={data.image} alt='' />
+            <img src={data.image} alt="" />
           </div>
         ))}
       </ul>
-      <Box sx={{ flexGrow: 1 }} color='secondary.light'>
+      <Box sx={{ flexGrow: 1 }} color="secondary.light">
         {/* 
           Categories
         */}
         <Box sx={{ paddingX: 3, paddingTop: 1 }}>
           <Box
             sx={{
-              display: 'flex',
-              alignItems: 'baseline',
-              justifyContent: 'space-between',
+              display: "flex",
+              alignItems: "baseline",
+              justifyContent: "space-between",
             }}
           >
-            <Typography variant='h6' component='p' sx={{ color: 'black' }}>
+            <Typography variant="h6" component="p" sx={{ color: "black" }}>
               Categories
             </Typography>
             <Typography
-              variant='subtitle2'
-              component='p'
-              sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
+              variant="subtitle2"
+              component="p"
+              sx={{ fontSize: { md: "0.9rem", xs: "0.8rem" } }}
             >
-              <Link href='/categories' underline='none' color='unset'>
+              <Link href="/categories" underline="none" color="unset">
                 Show All
               </Link>
             </Typography>
@@ -227,51 +235,102 @@ const Home: NextPage = () => {
                   md={2}
                   xs={3}
                   sx={{
-                    display: i > 3 ? { xs: 'none', md: 'block' } : null,
+                    display: i > 3 ? { xs: "none", md: "block" } : null,
                   }}
                 >
                   <Box sx={{ marginTop: 2, marginBottom: 1 }}>
-                    <Link href={`/posteredit/${i}`} underline='none'>
+                    <Link href={`/posteredit/${i}`} underline="none">
                       <Paper
                         elevation={2}
                         sx={{
-                          width: { md: '6rem', xs: '3.5rem' },
-                          height: { md: '6rem', xs: '3.5rem' },
-                          borderRadius: '50%',
+                          width: { md: "6rem", xs: "3.5rem" },
+                          height: { md: "6rem", xs: "3.5rem" },
+                          borderRadius: "50%",
                           padding: { md: 3, xs: 2 },
-                          marginX: 'auto',
-                          fill: 'white',
-                          backgroundColor: 'grey',
+                          marginX: "auto",
+                          fill: "white",
+                          backgroundColor: "grey",
                         }}
                       >
                         <img
                           src={`https://hindavi-pocketbase.herokuapp.com/api/files/categories/${el.id}/${el.icon}`}
-                          alt='category image'
-                          style={{ width: '100%', height: '100%' }}
+                          alt="category image"
+                          style={{ width: "100%", height: "100%" }}
                         />
                       </Paper>
                     </Link>
                   </Box>
                   <Typography
-                    variant='body1'
-                    component='p'
+                    variant="body1"
+                    component="p"
                     sx={{
-                      textAlign: 'center',
-                      fontSize: { md: '1.2rem', xs: '1rem' },
-                      color: 'gray',
+                      textAlign: "center",
+                      fontSize: { md: "1.2rem", xs: "1rem" },
+                      color: "gray",
                     }}
                   >
                     {el.title}
                   </Typography>
                 </Grid>
               ))}
+              
+          </Grid>
+          <Grid container spacing={0} sx={{ paddingX: { md: 1, xs: 0 } }}>
+          {images
+              .filter((el, i) => i < 6)
+              .map((el, i) => (
+                <Grid
+                  item
+                  key={el.title}
+                  md={2}
+                  xs={3}
+                  sx={{
+                    display: i > 3 ? { xs: "none", md: "block" } : null,
+                  }}
+                >
+                  <Box sx={{ marginTop: 2, marginBottom: 1 }}>
+                    <Link href={`/posteredit/${i}`} underline="none">
+                      <Paper
+                        elevation={2}
+                        sx={{
+                          width: { md: "6rem", xs: "3.5rem" },
+                          height: { md: "6rem", xs: "3.5rem" },
+                          borderRadius: "50%",
+                          padding: { md: 3, xs: 2 },
+                          marginX: "auto",
+                          fill: "white",
+                          backgroundColor: "grey",
+                        }}
+                      >
+                        <img
+                          src={el.img}
+                          alt="category image"
+                          style={{ width: "100%", height: "100%" }}
+                        />
+                      </Paper>
+                    </Link>
+                  </Box>
+                  <Typography
+                    variant="body1"
+                    component="p"
+                    sx={{
+                      textAlign: "center",
+                      fontSize: { md: "1.2rem", xs: "1rem" },
+                      color: "gray",
+                    }}
+                  >
+                    {el.title}
+                  </Typography>
+                </Grid>
+              ))}
+              
           </Grid>
         </Box>
         {/* 
           Today
         */}
         <PosterCards
-          heading='Today'
+          heading="Today"
           list={ImagesArr.filter((_, i) => i < 4)}
           inc={0} //TODO only static
         />
@@ -279,7 +338,7 @@ const Home: NextPage = () => {
          Stories 
         */}
         <PosterCards
-          heading='Stories'
+          heading="Stories"
           list={ImagesArr.filter((_, i) => i >= 4 && i < 8)}
           inc={4} //TODO only static
         />
@@ -287,7 +346,7 @@ const Home: NextPage = () => {
          Quotes
         */}
         <PosterCards
-          heading='Quotes'
+          heading="Quotes"
           list={ImagesArr.filter((_, i) => i >= 8 && i < 12)}
           inc={8} //TODO only static
         />
@@ -295,7 +354,7 @@ const Home: NextPage = () => {
          Tomorrow
         */}
         <PosterCards
-          heading='Tomorrow'
+          heading="Tomorrow"
           list={ImagesArr.filter((_, i) => i >= 12 && i < 16)}
           inc={12} //TODO only static
         />

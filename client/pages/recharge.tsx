@@ -4,17 +4,93 @@ import Container from '@mui/material/Container';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
+import axios from "axios";
 import RadioGroup from '@mui/material/RadioGroup';
 import Typography from '@mui/material/Typography';
 import { NextPage } from 'next';
 import { useState } from 'react';
 
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
 const Recharge: NextPage = () => {
-  const [value, setValue] = useState('79 coins');
+  const [value, setValue] = useState('79');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event.target as HTMLInputElement).value);
   };
+
+  const loadScript = (src: string) => {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      }
+      script.onerror = () => {
+        resolve(false);
+      }
+      document.body.appendChild(script);
+    })
+  }
+
+
+
+  const displayRazorpay = async () => {
+
+
+    const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js")
+
+    if (!res) return alert("Razorpay SDK failed, Check your internet connection.....");
+
+    const result = await axios.post(`http://localhost:4000/orders/${value}`);
+
+    if (!result) {
+      alert('Server Error, Please Wait until the servers are back online...')
+      return;
+    }
+
+    const { amount, id: order_id, currency } = result.data;
+
+    const options = {
+      "key": "rzp_test_ZDiZoAdUC8Q9ol", // Enter the Key ID generated from the Dashboard
+      "amount": amount.toString(), // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      "currency": currency,
+      "name": "Hindavi Graphics",
+      "description": "Test Transaction",
+      "image": "http://example.com/your_logo",
+      "order_id": order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      "handler": async function (response: any) {
+        const data = {
+          orderCreationId: order_id,
+          razorpayPaymentId: response.razorpay_payment_id,
+          razorpayOrderId: response.razorpay_order_id,
+          razorpaySignature: response.razorpay_signature,
+        };
+
+        //verifyying signature confirmation
+        const result = await axios.post("http://localhost:4000/verify-success", data);
+
+        alert(result.data.msg);
+      },
+      "prefill": {
+        "name": "Gaurav Kumar",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9999999999"
+      },
+      "notes": {
+        "address": "Razorpay Corporate Office"
+      },
+      "theme": {
+        "color": "orange"
+      }
+    };
+    var razorpay = new window.Razorpay(options);;
+    razorpay.open();
+  }
 
   return (
     <Container maxWidth='sm'>
@@ -44,12 +120,12 @@ const Recharge: NextPage = () => {
         </Typography>
         <RadioGroup
           aria-labelledby='recharge plans'
-          defaultValue='79 coins'
+          defaultValue='79'
           value={value}
           onChange={handleChange}
         >
           <FormControlLabel
-            value='79 coins'
+            value='79'
             control={<Radio color='secondary' sx={{ color: 'white' }} />}
             label='79 coins'
             color='secondary.light'
@@ -72,7 +148,7 @@ const Recharge: NextPage = () => {
             }}
           />
           <FormControlLabel
-            value='449 coins'
+            value='449'
             control={<Radio color='secondary' sx={{ color: 'white' }} />}
             label='449 coins'
             sx={{
@@ -94,7 +170,7 @@ const Recharge: NextPage = () => {
             }}
           />
           <FormControlLabel
-            value='999 coins'
+            value='999'
             control={<Radio color='secondary' sx={{ color: 'white' }} />}
             label='999 coins'
             sx={{
@@ -122,6 +198,7 @@ const Recharge: NextPage = () => {
           variant='contained'
           color='secondary'
           sx={{ color: 'white', paddingX: 3, marginY: 2, fontSize: '1.1rem' }}
+          onClick={displayRazorpay}
         >
           Recharge
         </Button>

@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import type { NextPage } from 'next';
 import { Tag } from '@mui/icons-material';
+import { useRouter } from 'next/router';
 
 declare global {
   interface Window {
@@ -24,6 +25,8 @@ declare global {
 }
 
 const DashBoard: NextPage = () => {
+
+  const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [title, setTitle] = useState("")
@@ -40,7 +43,7 @@ const DashBoard: NextPage = () => {
   const Verify = async () => {
 
     const token = getCookie('key')
-    axios.post("https://3.89.137.234:4000/protected", {
+    axios.post("http://localhost:4000/protected", {
       token: token
     })
       .then(data => {
@@ -49,7 +52,7 @@ const DashBoard: NextPage = () => {
       .catch(err => {
         console.log(err)
         if (err.response.status === 401) {
-          setError("Please Login again!")
+          router.push('/');
         }
       })
 
@@ -65,7 +68,7 @@ const DashBoard: NextPage = () => {
   //     let file = event.target.files[0];
   //     let { url } = await uploadToS3(file)
   //     setImageUrl(url)
-  //     axios.post("http://3.89.137.234:4000/upload-profile", {
+  //     axios.post("htt://localhost:4000/upload-profile", {
   //       email: email,
   //       profilephoto: JSON.stringify(imageUrl)
   //     })
@@ -81,7 +84,7 @@ const DashBoard: NextPage = () => {
       let file = event.target.files[0];
       let { url } = await uploadToS3(file)
       setImageUrl(url)
-      axios.post("https://3.89.137.234:4000/upload-image", {
+      axios.post("http://localhost:4000/upload-image", {
         title: "this is a image title",
         designation: "By Hindavi Graphics",
         image: url
@@ -104,6 +107,7 @@ const DashBoard: NextPage = () => {
       }
       script.onerror = () => {
         resolve(false);
+        console.log("lmao")
       }
       document.body.appendChild(script);
     })
@@ -117,7 +121,7 @@ const DashBoard: NextPage = () => {
 
     if (!res) return alert("Razorpay SDK failed, Check your internet connection.....");
 
-    const result = await axios.post("https://3.89.137.234:4000/orders");
+    const result = await axios.post("http://localhost:4000/orders");
 
     if (!result) {
       alert('Server Error, Please Wait until the servers are back online...')
@@ -127,7 +131,7 @@ const DashBoard: NextPage = () => {
     const { amount, id: order_id, currency } = result.data;
 
     const options = {
-      "key": "rzp_test_E4Bsww3mEFYv4e", // Enter the Key ID generated from the Dashboard
+      "key": "rzp_test_ZDiZoAdUC8Q9ol", // Enter the Key ID generated from the Dashboard
       "amount": amount.toString(), // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
       "currency": currency,
       "name": "Hindavi Graphics",
@@ -143,7 +147,7 @@ const DashBoard: NextPage = () => {
         };
 
         //verifyying signature confirmation
-        const result = await axios.post("https://3.89.137.234:4000/verify-success", data);
+        const result = await axios.post("http://localhost:4000/verify-success", data);
 
         alert(result.data.msg);
       },
@@ -166,7 +170,6 @@ const DashBoard: NextPage = () => {
   return (
     <div>
       <h1>DashBoard</h1>
-      <p>{email}</p>
       <p style={{ color: "red" }}>{error}</p>
 {/* 
       <input type="file" onChange={fileHandleChange} />

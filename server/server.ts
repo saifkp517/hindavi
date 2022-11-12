@@ -48,7 +48,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 
 app.use(cors({
-    origin: 'https://hindavi.vercel.app/',
+    origin: 'http://localhost:3000',
     credentials: true,
 }))
 
@@ -444,15 +444,18 @@ app.post('/add/business', async (req, res) => {
 
 /////////////razorpay integration and intialization///////////////////////*  */
 
-app.post('/orders', async (req, res) => {
+app.post('/orders/:value', async (req, res) => {
     try {
         const instance = new Razorpay({
-            key_id: "key_id",
-            key_secret: "key_secret"
+            key_id: "rzp_test_ZDiZoAdUC8Q9ol",
+            key_secret: "Xx2feJm5eGoBwHF5kMFuFd3l"
         })
 
+        const amount = parseInt(req.params.value)
+
+
         const options = {
-            amount: 5000,
+            amount: amount * 100,
             currency: "INR",
             receipt: "receipt_order 1232",
         }
@@ -486,7 +489,7 @@ app.post('/verify-success', async (req, res) => {
         const digest = shasum.digest("hex");
 
         if (digest !== razorpaySignature) {
-            return res.status(400).json({ msg: "Transaction is illicit!" });
+            return res.status(400).json({ msg: "Transaction is illicit my dude!" });
         }
 
         res.json({
@@ -508,12 +511,5 @@ app.post('/verify-success', async (req, res) => {
 
 const port = process.env.PORT || 4000;
 
-const httpsServer = https.createServer({
-    key: fs.readFileSync(process.env.keyfile),
-    cert: fs.readFileSync(process.env.cert),
-}, app);
-
-httpsServer.listen(4000, () => console.log("app listening on port " + port))
-
-//app.listen(port, () => console.log('App listening on port ' + port));
+app.listen(port, () => console.log('App listening on port ' + port));
 
