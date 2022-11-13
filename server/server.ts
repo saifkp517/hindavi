@@ -527,7 +527,32 @@ app.post("/update-coins", async (req, res) => {
         }
     })
 
-    res.status(200).json({ message: "updates email" })
+    res.status(200).json({ message: "added coins to wallet" })
+})
+
+app.post('/payment-history', async (req, res) => {
+    const {buyer, paymentamount, coinspurchased} = req.body;
+
+    await prisma.paymenthistory.create({
+        data: {
+            buyer: buyer,
+            paymentamount: parseInt(paymentamount),
+            coinspurchased: coinspurchased
+        }
+    })
+
+    res.status(200).json({ message: "updated payment" })
+})
+
+app.get('/payment-history/:id', async (req, res) => {
+
+    const payments = await prisma.paymenthistory.findMany({
+        where: {
+            buyer: req.params.id
+        }
+    })
+    res.status(200).json(payments)
+
 })
 
 /////////////razorpay integration and intialization//////////////////////

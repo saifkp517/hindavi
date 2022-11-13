@@ -134,102 +134,102 @@ const Home: NextPage = () => {
     return posters;
   };
 
-  const ImagesArr: Design[] = [
-    // {
-    //   title: 'स्वातंत्र्यदिनाच्या शुभेच्छा',
-    //   designation: 'By Hindavi Graphics',
-    //   img: 'https://hindavidatabucket.s3.ap-south-1.amazonaws.com/next-s3-uploads/2010ab96-eb96-4d51-8b38-6b886213bf5d/first%2520ace.png',
-    //   // https://hindavidatabucket.s3.ap-south-1.amazonaws.com/next-s3-uploads/2010ab96-eb96-4d51-8b38-6b886213bf5d/first%2520ace.png
-    // },
-    {
-      title: 'हिंदवी ग्राफिक्स',
-      designation: 'By Hindavi Graphics',
-      img: Img2,
-    },
-    {
-      title: 'वापरण्यास सोपे',
-      designation: 'By Hindavi Graphics',
-      img: Img3,
-    },
-    {
-      title: 'एकाच दिनविशेष',
-      designation: 'By Hindavi Graphics',
-      img: Img4,
-    },
-    {
-      title: 'आमची वैशिष्ट्ये',
-      designation: 'By Hindavi Graphics',
-      img: Img5,
-    },
-    {
-      title: 'स्वातंत्र्यदिनाच्या शुभेच्छा',
-      designation: 'By Hindavi Graphics',
-      img: Img6,
-    },
-    {
-      title: 'हिंदवी ग्राफिक्स',
-      designation: 'By Hindavi Graphics',
-      img: Img7,
-    },
-    {
-      title: 'वापरण्यास सोपे',
-      designation: 'By Hindavi Graphics',
-      img: Img8,
-    },
-    {
-      title: 'एकाच दिनविशेष',
-      designation: 'By Hindavi Graphics',
-      img: Img9,
-    },
-    {
-      title: 'आमची वैशिष्ट्ये',
-      designation: 'By Hindavi Graphics',
-      img: Img10,
-    },
-    {
-      title: 'स्वातंत्र्यदिनाच्या शुभेच्छा',
-      designation: 'By Hindavi Graphics',
-      img: Img11,
-    },
-    {
-      title: 'हिंदवी ग्राफिक्स',
-      designation: 'By Hindavi Graphics',
-      img: Img12,
-    },
-    {
-      title: 'वापरण्यास सोपे',
-      designation: 'By Hindavi Graphics',
-      img: Img13,
-    },
-    {
-      title: 'एकाच दिनविशेष',
-      designation: 'By Hindavi Graphics',
-      img: Img14,
-    },
-    {
-      title: 'आमची वैशिष्ट्ये',
-      designation: 'By Hindavi Graphics',
-      img: Img15,
-    },
-    {
-      title: 'आमची वैशिष्ट्ये',
-      designation: 'By Hindavi Graphics',
-      img: Img16,
-    },
-  ];
+  // const ImagesArr: Design[] = [
+  //   // {
+  //   //   title: 'स्वातंत्र्यदिनाच्या शुभेच्छा',
+  //   //   designation: 'By Hindavi Graphics',
+  //   //   img: 'https://hindavidatabucket.s3.ap-south-1.amazonaws.com/next-s3-uploads/2010ab96-eb96-4d51-8b38-6b886213bf5d/first%2520ace.png',
+  //   //   // https://hindavidatabucket.s3.ap-south-1.amazonaws.com/next-s3-uploads/2010ab96-eb96-4d51-8b38-6b886213bf5d/first%2520ace.png
+  //   // },
+  //   {
+  //     title: 'हिंदवी ग्राफिक्स',
+  //     designation: 'By Hindavi Graphics',
+  //     img: Img2,
+  //   },
+  //   {
+  //     title: 'वापरण्यास सोपे',
+  //     designation: 'By Hindavi Graphics',
+  //     img: Img3,
+  //   },
+  //   {
+  //     title: 'एकाच दिनविशेष',
+  //     designation: 'By Hindavi Graphics',
+  //     img: Img4,
+  //   },
+  //   {
+  //     title: 'आमची वैशिष्ट्ये',
+  //     designation: 'By Hindavi Graphics',
+  //     img: Img5,
+  //   },
+  //   {
+  //     title: 'स्वातंत्र्यदिनाच्या शुभेच्छा',
+  //     designation: 'By Hindavi Graphics',
+  //     img: Img6,
+  //   },
+  //   {
+  //     title: 'हिंदवी ग्राफिक्स',
+  //     designation: 'By Hindavi Graphics',
+  //     img: Img7,
+  //   },
+  //   {
+  //     title: 'वापरण्यास सोपे',
+  //     designation: 'By Hindavi Graphics',
+  //     img: Img8,
+  //   },
+  //   {
+  //     title: 'एकाच दिनविशेष',
+  //     designation: 'By Hindavi Graphics',
+  //     img: Img9,
+  //   },
+  //   {
+  //     title: 'आमची वैशिष्ट्ये',
+  //     designation: 'By Hindavi Graphics',
+  //     img: Img10,
+  //   },
+  //   {
+  //     title: 'स्वातंत्र्यदिनाच्या शुभेच्छा',
+  //     designation: 'By Hindavi Graphics',
+  //     img: Img11,
+  //   },
+  //   {
+  //     title: 'हिंदवी ग्राफिक्स',
+  //     designation: 'By Hindavi Graphics',
+  //     img: Img12,
+  //   },
+  //   {
+  //     title: 'वापरण्यास सोपे',
+  //     designation: 'By Hindavi Graphics',
+  //     img: Img13,
+  //   },
+  //   {
+  //     title: 'एकाच दिनविशेष',
+  //     designation: 'By Hindavi Graphics',
+  //     img: Img14,
+  //   },
+  //   {
+  //     title: 'आमची वैशिष्ट्ये',
+  //     designation: 'By Hindavi Graphics',
+  //     img: Img15,
+  //   },
+  //   {
+  //     title: 'आमची वैशिष्ट्ये',
+  //     designation: 'By Hindavi Graphics',
+  //     img: Img16,
+  //   },
+  // ];
 
-  const Categories: CategoriesType[] = [
-    { svg: <Namaste />, title: 'Thank You', color: '#F2994A' },
-    {
-      svg: <Shoewear />,
-      title: 'Footwear',
-      color: '#EB5757',
-    },
-    { svg: <Jewelry />, title: 'Jewelry', color: '#F2C94C' },
-    { svg: <RealEstate />, title: 'Real Estate', color: '#219653' },
-    { svg: <Bakery />, title: 'Bakery', color: '#2D9CDB' },
-    { svg: <Motorcycle />, title: 'Motorcycle', color: '#BB6BD9' },
-  ];
+  // const Categories: CategoriesType[] = [
+  //   { svg: <Namaste />, title: 'Thank You', color: '#F2994A' },
+  //   {
+  //     svg: <Shoewear />,
+  //     title: 'Footwear',
+  //     color: '#EB5757',
+  //   },
+  //   { svg: <Jewelry />, title: 'Jewelry', color: '#F2C94C' },
+  //   { svg: <RealEstate />, title: 'Real Estate', color: '#219653' },
+  //   { svg: <Bakery />, title: 'Bakery', color: '#2D9CDB' },
+  //   { svg: <Motorcycle />, title: 'Motorcycle', color: '#BB6BD9' },
+  // ];
 
   return (
     <main>

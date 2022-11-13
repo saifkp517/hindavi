@@ -45,6 +45,20 @@ model PoliticalProfile {
   deisgnation2 String
 }
 
+model Paymenthistory {
+  id             String @id @default(uuid())
+  paymentamount  Int
+  buyer          String
+  coinspurchased Int
+}
+
+model Purchasehistory {
+  id      String @id @default(uuid())
+  buyer   String
+  imageid String
+  price   Int
+}
+
 model Photos {
   id          String @id @default(uuid())
   image       String
