@@ -447,8 +447,8 @@ app.post('/add/business', async (req, res) => {
 app.post('/orders/:value', async (req, res) => {
     try {
         const instance = new Razorpay({
-            key_id: "rzp_test_ZDiZoAdUC8Q9ol",
-            key_secret: "Xx2feJm5eGoBwHF5kMFuFd3l"
+            key_id: process.env.key_id,
+            key_secret: process.env.key_secret
         })
 
         const amount = parseInt(req.params.value)
@@ -482,7 +482,7 @@ app.post('/verify-success', async (req, res) => {
             razorpaySignature,
         } = req.body;
 
-        const shasum = crypto.createHmac("sha256", "key_secret");
+        const shasum = crypto.createHmac("sha256", process.env.key_secret);
 
         shasum.update(`${orderCreationId}|${razorpayPaymentId}`);
 
@@ -502,6 +502,32 @@ app.post('/verify-success', async (req, res) => {
         console.log(err)
     }
 
+})
+
+app.post("/update-coins", async (req, res) => {
+    const { id, coins } = req.body;
+
+    const userinfo = await prisma.user.findUnique({
+        where: {
+            id: id
+        },
+        select: {
+            coins: true
+        }
+    })
+
+    const currentValue = userinfo.coins;
+
+    await prisma.user.update({
+        where: {
+            id: id
+        },
+        data: {
+            coins: currentValue + parseInt(coins)
+        }
+    })
+
+    res.status(200).json({ message: "updates email" })
 })
 
 /////////////razorpay integration and intialization//////////////////////

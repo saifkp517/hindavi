@@ -8,7 +8,9 @@ import axios from "axios";
 import RadioGroup from '@mui/material/RadioGroup';
 import Typography from '@mui/material/Typography';
 import { NextPage } from 'next';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/router';
+import { getCookie } from 'cookies-next';
 
 declare global {
   interface Window {
@@ -18,6 +20,31 @@ declare global {
 
 const Recharge: NextPage = () => {
   const [value, setValue] = useState('79');
+  const [id, setId] = useState("");
+
+  const router = useRouter();
+
+  useEffect(() => {
+    Verify();
+  }, []);
+
+  const Verify = async () => {
+
+    const token = getCookie('key')
+    axios.post("http://localhost:4000/protected", {
+      token: token
+    })
+      .then(data => {
+        setId(data.data)
+      })
+      .catch(err => {
+        console.log(err)
+        if (err.response.status === 401) {
+          router.push('/');
+        }
+      })
+
+  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event.target as HTMLInputElement).value);
@@ -73,6 +100,15 @@ const Recharge: NextPage = () => {
 
         //verifyying signature confirmation
         const result = await axios.post("http://localhost:4000/verify-success", data);
+
+        if (result) {
+          axios.post('http://localhost:4000/update-coins', {
+            id: id,
+            coins: value
+          })
+          .then(data => console.log(data))
+          .catch(err => console.log(err))
+        }
 
         alert(result.data.msg);
       },
