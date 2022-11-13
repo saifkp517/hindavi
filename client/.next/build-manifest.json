@@ -30,10 +30,17 @@
       "static/chunks/main.js",
       "static/chunks/pages/home.js"
     ],
+<<<<<<< HEAD
     "/recharge": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/recharge.js"
+=======
+    "/notifications": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/notifications.js"
+>>>>>>> ca1be6d66a9775ab678c7ece8dbbed7ccbbafbf6
     ]
   },
   "ampFirstPages": []
