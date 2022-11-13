@@ -25,10 +25,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/refer/[id]": [
+    "/recharge": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/refer/[id].js"
+      "static/chunks/pages/recharge.js"
     ],
     "/signup": [
       "static/chunks/webpack.js",
