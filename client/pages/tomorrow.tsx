@@ -7,7 +7,6 @@ import axios from 'axios';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
-
 import CardMedia from '@mui/material/CardMedia';
 
 const TomorrowPage: NextPage = () => {
@@ -49,15 +48,7 @@ const TomorrowPage: NextPage = () => {
       <Grid container spacing={2} sx={{ paddingY: 1 }}>
         {posters.map((el, i) => {
           return (
-            <Grid
-              item
-              key={i}
-              md={3}
-              xs={6}
-              sx={{
-                display: i > 1 ? { xs: 'none', md: 'block' } : null,
-              }}
-            >
+            <Grid item key={i} md={3} xs={6}>
               <Link href={`/posteredit/${el.id}`} underline='none'>
                 <Card elevation={2}>
                   <CardMedia

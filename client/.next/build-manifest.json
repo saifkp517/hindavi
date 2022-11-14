@@ -30,15 +30,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/home.js"
     ],
-    "/today": [
+    "/posteredit/[id]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/today.js"
-    ],
-    "/tomorrow": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/tomorrow.js"
+      "static/chunks/pages/posteredit/[id].js"
     ]
   },
   "ampFirstPages": []

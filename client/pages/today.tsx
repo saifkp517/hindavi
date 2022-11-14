@@ -49,15 +49,7 @@ const TodayPage: NextPage = () => {
       <Grid container spacing={2} sx={{ paddingY: 1 }}>
         {posters.map((el, i) => {
           return (
-            <Grid
-              item
-              key={i}
-              md={3}
-              xs={6}
-              sx={{
-                display: i > 1 ? { xs: 'none', md: 'block' } : null,
-              }}
-            >
+            <Grid item key={i} md={3} xs={6}>
               <Link href={`/posteredit/${el.id}`} underline='none'>
                 <Card elevation={2}>
                   <CardMedia

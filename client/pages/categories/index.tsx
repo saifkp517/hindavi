@@ -32,17 +32,9 @@ const Categories: NextPage = () => {
       </Typography>
       <Grid container spacing={2} sx={{ marginBottom: 2 }}>
         {categories.map((el, i) => (
-          <Grid
-            item
-            key={el.id}
-            md={2}
-            xs={3}
-            sx={{
-              display: i > 3 ? { xs: 'none', md: 'block' } : null,
-            }}
-          >
+          <Grid item key={el.id} md={2} xs={3}>
             <Box sx={{ marginTop: 2, marginBottom: 1 }}>
-              <Link href={`/posteredit/${i}`} underline='none'>
+              <Link href={`/categories/${el.id}`} underline='none'>
                 <Paper
                   elevation={2}
                   sx={{

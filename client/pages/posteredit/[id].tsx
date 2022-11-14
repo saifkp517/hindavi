@@ -44,6 +44,8 @@ import {
 } from '../../public/svg/index';
 import { EditTools } from '../../components/EditTools/EditTools';
 import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import { PosterType } from '../home';
 
 interface Props {
   id: { id: string };
@@ -54,6 +56,7 @@ const Poster: NextPage<Props> = ({ id }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [frameIndex, setFrameIndex] = useState(0);
+  const [img, setImg] = useState('');
 
   const ColorButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
     color: theme.palette.getContrastText(deepOrange[500]),
@@ -63,28 +66,8 @@ const Poster: NextPage<Props> = ({ id }) => {
     },
   }));
 
-  const ImagesArr = [
-    Img1,
-    Img2,
-    Img3,
-    Img4,
-    Img5,
-    Img6,
-    Img7,
-    Img8,
-    Img9,
-    Img10,
-    Img11,
-    Img12,
-    Img13,
-    Img14,
-    Img15,
-    Img16,
-    Img17,
-    Img18,
-  ];
-
   const framesArr = [
+    '',
     Frame1,
     Frame2,
     Frame3,
@@ -97,15 +80,25 @@ const Poster: NextPage<Props> = ({ id }) => {
     Frame10,
   ];
 
-  const frameHeights = [80, 100, 155, 141, 160, 160, 160, 100, 50, 850];
+  const frameHeights = [0, 80, 100, 155, 141, 160, 160, 160, 100, 50, 850];
+
+  useEffect(() => {
+    (async () => {
+      console.log(id);
+      const result: PosterType = await axios
+        .get(`http://52.23.195.42:8000/api/collections/posters/records/${id}`)
+        .then((res) => res.data);
+      setImg(result.image);
+    })();
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas?.getContext('2d');
-    if (context) {
+    if (context && img) {
       const image: HTMLImageElement = new (window as any).Image();
       const frame: HTMLImageElement = new (window as any).Image();
-      image.src = ImagesArr[Number(id.id)].src;
+      image.src = `http://52.23.195.42:8000/api/files/posters/${id}/${img}`;
       frame.src = framesArr[frameIndex].src;
       image.addEventListener(
         'load',
@@ -132,7 +125,7 @@ const Poster: NextPage<Props> = ({ id }) => {
         false
       );
     }
-  }, [frameIndex]);
+  }, [frameIndex, img]);
 
   return (
     <Container
@@ -197,9 +190,10 @@ const Poster: NextPage<Props> = ({ id }) => {
 export default Poster;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id } = context.query;
   return {
     props: {
-      id: context.params,
+      id,
     },
   };
 };

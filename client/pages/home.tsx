@@ -35,7 +35,7 @@ export type PosterType = {
   title: string;
   designation: string;
   image: string;
-  posterArr: string[];
+  field: string[];
 };
 
 const Home: NextPage = () => {
@@ -147,7 +147,7 @@ const Home: NextPage = () => {
                   }}
                 >
                   <Box sx={{ marginTop: 2, marginBottom: 1 }}>
-                    <Link href={`/posteredit/${i}`} underline='none'>
+                    <Link href={`/categories/${el.id}`} underline='none'>
                       <Paper
                         elevation={2}
                         sx={{

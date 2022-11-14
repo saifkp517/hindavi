@@ -94,7 +94,7 @@ export const EditTools: NextPage<Props> = ({
               <ChevronLeft color='primary' />
             </IconButton>
             <Typography color='primary' variant='body1' component='p'>
-              Frame {frameIndex + 1}
+              {frameIndex === 0 ? 'No Frame' : `Frame ${frameIndex}`}
             </Typography>
             <IconButton
               aria-label='next'
