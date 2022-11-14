@@ -18,7 +18,7 @@ import Box from '@mui/material/Box';
 import { State } from '../../signup';
 
 import { useS3Upload } from 'next-s3-upload';
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from 'axios';
 
 const EditProfile: NextPage = () => {
   const usernamereference = useRef<HTMLInputElement>(null);
@@ -60,26 +60,27 @@ const EditProfile: NextPage = () => {
     }
   };
 
-  const [imageUrl, setImageUrl] = useState("");
-  const [email, setEmail] = useState("");
+  const [imageUrl, setImageUrl] = useState('');
+  const [email, setEmail] = useState('');
 
   const { uploadToS3, files } = useS3Upload();
 
   const fileHandleChange = async (event: any) => {
     try {
       let file = event.target.files[0];
-      let { url } = await uploadToS3(file)
-      setImageUrl(url)
-      axios.post("https://localhost:4000/upload-profile", {
-        email: "saifkhan501721@gmail.com",
-        profilephoto: url
-      })
-        .then(data => console.log(data))
-        .catch(err => console.log("lmao"))
+      let { url } = await uploadToS3(file);
+      setImageUrl(url);
+      axios
+        .post('http://localhost:4000/upload-profile', {
+          email: 'saifkhan501721@gmail.com',
+          profilephoto: url,
+        })
+        .then((data) => console.log(data))
+        .catch((err) => console.log('lmao'));
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   const inputsArr: InputFieldType[] = [
     {
@@ -164,19 +165,18 @@ const EditProfile: NextPage = () => {
           sx={{ color: 'white', marginTop: 2 }}
         >
           Update Profile Picture
-          <input hidden accept='image/*' type='file'/>
+          <input hidden accept='image/*' type='file' />
         </Button>
-        
-      <input type="file" onChange={fileHandleChange} />
 
-      <div>
-        {files.map((file, index) => (
-          <div key={index}>
-            File #{index} progress: {file.progress}%
-          </div>
-        ))}
-      </div>
-        
+        <input type='file' onChange={fileHandleChange} />
+
+        <div>
+          {files.map((file, index) => (
+            <div key={index}>
+              File #{index} progress: {file.progress}%
+            </div>
+          ))}
+        </div>
       </Box>
       <Box
         sx={{

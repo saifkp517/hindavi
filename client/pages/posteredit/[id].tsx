@@ -11,26 +11,6 @@ import { deepOrange } from '@mui/material/colors';
 import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
-  Img18,
-  Img1,
-  Img10,
-  Img11,
-  Img12,
-  Img13,
-  Img14,
-  Img15,
-  Img16,
-  Img17,
-  Img2,
-  Img3,
-  Img4,
-  Img5,
-  Img6,
-  Img7,
-  Img8,
-  Img9,
-} from '../../public/index';
-import {
   Frame1,
   Frame10,
   Frame2,

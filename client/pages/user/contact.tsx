@@ -19,19 +19,19 @@ const ContactPage: NextPage = () => {
     {
       title: 'Email :',
       heading1: 'teamhindavi@gmail.com',
-      link1: 'https://teamhindavi@gmail.com',
+      link1: 'http://teamhindavi@gmail.com',
     },
     {
       title: 'Website :',
       heading1: 'www.hindavigraphics.com',
-      link1: 'https://www.hindavigraphics.com',
+      link1: 'http://www.hindavigraphics.com',
       heading2: 'www.hindavigraphicsapp.com',
-      link2: 'https://www.hindavigraphicsapp.com',
+      link2: 'http://www.hindavigraphicsapp.com',
     },
     {
       title: 'Whatsapp :',
-      link1: 'https://bit.ly/hgsupportteam',
-      heading1: 'https://bit.ly/hgsupportteam',
+      link1: 'http://bit.ly/hgsupportteam',
+      heading1: 'http://bit.ly/hgsupportteam',
     },
   ];
 

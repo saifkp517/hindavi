@@ -1,16 +1,16 @@
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Radio from "@mui/material/Radio";
-import axios from "axios";
-import RadioGroup from "@mui/material/RadioGroup";
-import Typography from "@mui/material/Typography";
-import { NextPage } from "next";
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { getCookie } from "cookies-next";
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+import axios from 'axios';
+import RadioGroup from '@mui/material/RadioGroup';
+import Typography from '@mui/material/Typography';
+import { NextPage } from 'next';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { getCookie } from 'cookies-next';
 
 declare global {
   interface Window {
@@ -25,10 +25,10 @@ export type PaymentHistoryType = {
 };
 
 const Recharge: NextPage = () => {
-  const [value, setValue] = useState("79");
+  const [value, setValue] = useState('79');
   const [coins, setCoins] = useState(79);
   const [rows, setRows] = useState<PaymentHistoryType[]>([]);
-  const [id, setId] = useState("");
+  const [id, setId] = useState('');
 
   const router = useRouter();
 
@@ -37,9 +37,9 @@ const Recharge: NextPage = () => {
   }, []);
 
   const Verify = async () => {
-    const token = getCookie("key");
+    const token = getCookie('key');
     axios
-      .post("http://localhost:4000/protected", {
+      .post('http://localhost:4000/protected', {
         token: token,
       })
       .then((data) => {
@@ -49,12 +49,12 @@ const Recharge: NextPage = () => {
           .then((data) => {
             setRows(data.data);
           })
-          .catch((err) => console.log("err: " + err));
+          .catch((err) => console.log('err: ' + err));
       })
       .catch((err) => {
         console.log(err);
         if (err.response.status === 401) {
-          router.push("/");
+          router.push('/');
         }
       });
   };
@@ -65,7 +65,7 @@ const Recharge: NextPage = () => {
 
   const loadScript = (src: string) => {
     return new Promise((resolve) => {
-      const script = document.createElement("script");
+      const script = document.createElement('script');
       script.src = src;
       script.onload = () => {
         resolve(true);
@@ -80,29 +80,27 @@ const Recharge: NextPage = () => {
   const displayRazorpay = async () => {
     console.log(value);
 
-    const res = await loadScript(
-      "https://checkout.razorpay.com/v1/checkout.js"
-    );
+    const res = await loadScript('http://checkout.razorpay.com/v1/checkout.js');
 
     if (!res)
-      return alert("Razorpay SDK failed, Check your internet connection.....");
+      return alert('Razorpay SDK failed, Check your internet connection.....');
 
     const result = await axios.post(`http://localhost:4000/orders/${value}`);
 
     if (!result) {
-      alert("Server Error, Please Wait until the servers are back online...");
+      alert('Server Error, Please Wait until the servers are back online...');
       return;
     }
 
     const { amount, id: order_id, currency } = result.data;
 
     const options = {
-      key: "rzp_test_ZDiZoAdUC8Q9ol", // Enter the Key ID generated from the Dashboard
+      key: 'rzp_test_ZDiZoAdUC8Q9ol', // Enter the Key ID generated from the Dashboard
       amount: amount.toString(), // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
       currency: currency,
-      name: "Hindavi Graphics",
-      description: "Test Transaction",
-      image: "http://example.com/your_logo",
+      name: 'Hindavi Graphics',
+      description: 'Test Transaction',
+      image: 'http://example.com/your_logo',
       order_id: order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
       handler: async function (response: any) {
         const data = {
@@ -114,24 +112,24 @@ const Recharge: NextPage = () => {
 
         //verifyying signature confirmation
         const result = await axios.post(
-          "http://localhost:4000/verify-success",
+          'http://localhost:4000/verify-success',
           data
         );
 
         if (result) {
           if (parseInt(value) === 99) {
             setCoins(79);
-            console.log("79");
+            console.log('79');
           } else if (parseInt(value) === 499) {
             setCoins(449);
-            console.log("449");
+            console.log('449');
           } else {
             setCoins(999);
-            console.log("999");
+            console.log('999');
           }
 
           const updateCoins = await axios.post(
-            "http://localhost:4000/update-coins",
+            'http://localhost:4000/update-coins',
             {
               id: id,
               coins: coins,
@@ -140,7 +138,7 @@ const Recharge: NextPage = () => {
 
           if (updateCoins) {
             axios
-              .post("http://localhost:4000/payment-history", {
+              .post('http://localhost:4000/payment-history', {
                 buyer: id,
                 paymentamount: value,
                 coinspurchased: coins,
@@ -159,15 +157,15 @@ const Recharge: NextPage = () => {
         alert(result.data.msg);
       },
       prefill: {
-        name: "Gaurav Kumar",
-        email: "gaurav.kumar@example.com",
-        contact: "9999999999",
+        name: 'Gaurav Kumar',
+        email: 'gaurav.kumar@example.com',
+        contact: '9999999999',
       },
       notes: {
-        address: "Razorpay Corporate Office",
+        address: 'Razorpay Corporate Office',
       },
       theme: {
-        color: "orange",
+        color: 'orange',
       },
     };
     var razorpay = new window.Razorpay(options);
@@ -175,123 +173,126 @@ const Recharge: NextPage = () => {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth='sm'>
       <Typography
-        variant="h5"
-        component="h2"
+        variant='h5'
+        component='h2'
         sx={{ marginTop: { xs: 1.5, md: 2 }, fontWeight: 500 }}
       >
         Recharge
       </Typography>
       <FormControl
         sx={{
-          width: "100%",
-          padding: "1rem",
-          borderRadius: "5px",
-          backgroundColor: "#F27C35",
-          color: "white",
+          width: '100%',
+          padding: '1rem',
+          borderRadius: '5px',
+          backgroundColor: '#F27C35',
+          color: 'white',
           marginTop: 2,
         }}
       >
         <Typography
-          variant="h6"
-          component="h3"
-          sx={{ color: "white", marginBottom: 1 }}
+          variant='h6'
+          component='h3'
+          sx={{ color: 'white', marginBottom: 1 }}
         >
           Choose Plans
         </Typography>
         <RadioGroup
-          aria-labelledby="recharge plans"
-          defaultValue="79"
+          aria-labelledby='recharge plans'
+          defaultValue='79'
           value={value}
           onChange={handleChange}
         >
           <FormControlLabel
-            value="99"
-            control={<Radio color="secondary" sx={{ color: "white" }} />}
-            label="79 coins"
-            color="secondary.light"
+            value='99'
+            control={<Radio color='secondary' sx={{ color: 'white' }} />}
+            label='79 coins'
+            color='secondary.light'
             sx={{
-              width: "100%",
-              display: "block",
-              position: "relative",
-              borderRadius: "5px",
-              margin: "0.25rem 0",
-              border: "2px solid white",
-              "&:after": {
+              width: '100%',
+              display: 'block',
+              position: 'relative',
+              borderRadius: '5px',
+              margin: '0.25rem 0',
+              border: '2px solid white',
+              '&:after': {
                 content: '"R. 99"',
                 fontWeight: 400,
-                fontSize: "1.1rem",
-                position: "absolute",
-                top: "50%",
-                right: "1rem",
-                transform: "translateY(-55%)",
+                fontSize: '1.1rem',
+                position: 'absolute',
+                top: '50%',
+                right: '1rem',
+                transform: 'translateY(-55%)',
               },
             }}
           />
           <FormControlLabel
-            value="499"
-            control={<Radio color="secondary" sx={{ color: "white" }} />}
-            label="449 coins"
+            value='499'
+            control={<Radio color='secondary' sx={{ color: 'white' }} />}
+            label='449 coins'
             sx={{
-              width: "100%",
-              display: "block",
-              position: "relative",
-              borderRadius: "5px",
-              margin: "0.25rem 0",
-              border: "2px solid white",
-              "&:after": {
+              width: '100%',
+              display: 'block',
+              position: 'relative',
+              borderRadius: '5px',
+              margin: '0.25rem 0',
+              border: '2px solid white',
+              '&:after': {
                 content: '"R. 499"',
                 fontWeight: 400,
-                fontSize: "1.1rem",
-                position: "absolute",
-                top: "50%",
-                right: "1rem",
-                transform: "translateY(-55%)",
+                fontSize: '1.1rem',
+                position: 'absolute',
+                top: '50%',
+                right: '1rem',
+                transform: 'translateY(-55%)',
               },
             }}
           />
           <FormControlLabel
-            value="999"
-            control={<Radio color="secondary" sx={{ color: "white" }} />}
-            label="999 coins"
+            value='999'
+            control={<Radio color='secondary' sx={{ color: 'white' }} />}
+            label='999 coins'
             sx={{
-              width: "100%",
-              display: "block",
-              position: "relative",
-              borderRadius: "5px",
-              margin: "0.25rem 0",
-              border: "2px solid white",
-              "&:after": {
+              width: '100%',
+              display: 'block',
+              position: 'relative',
+              borderRadius: '5px',
+              margin: '0.25rem 0',
+              border: '2px solid white',
+              '&:after': {
                 content: '"R. 999"',
                 fontWeight: 400,
-                fontSize: "1.1rem",
-                position: "absolute",
-                top: "50%",
-                right: "1rem",
-                transform: "translateY(-55%)",
+                fontSize: '1.1rem',
+                position: 'absolute',
+                top: '50%',
+                right: '1rem',
+                transform: 'translateY(-55%)',
               },
             }}
           />
         </RadioGroup>
       </FormControl>
-      <Box sx={{ width: "100%", textAlign: "center" }}>
+      <Box sx={{ width: '100%', textAlign: 'center' }}>
         <Button
-          variant="contained"
-          color="secondary"
-          sx={{ color: "white", paddingX: 3, marginY: 2, fontSize: "1.1rem" }}
+          variant='contained'
+          color='secondary'
+          sx={{ color: 'white', paddingX: 3, marginY: 2, fontSize: '1.1rem' }}
           onClick={displayRazorpay}
         >
           Recharge
         </Button>
       </Box>
-      <Typography variant="h6" component="h3">
+      <Typography variant='h6' component='h3'>
         Payment History :-
         {rows.map((row) => {
           return (
             <div id={row.id}>
               <hr />
-              <p>Amount Paid: {row.paymentamount} | Coins Purchased: {row.coinspurchased}</p>
+              <p>
+                Amount Paid: {row.paymentamount} | Coins Purchased:{' '}
+                {row.coinspurchased}
+              </p>
             </div>
           );
         })}

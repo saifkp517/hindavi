@@ -15,6 +15,7 @@ import Logout from '@mui/icons-material/Logout';
 import { NextPage } from 'next';
 import { getCookie } from 'cookies-next';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 
 type options = {
@@ -24,6 +25,8 @@ type options = {
 };
 
 const UserPage: NextPage = () => {
+  const router = useRouter();
+
   const optionsArr: options[] = [
     { title: 'Edit your profile', icon: <Edit />, link: './user/edit' },
     {
@@ -147,6 +150,7 @@ const UserPage: NextPage = () => {
         color='primary'
         variant='extended'
         size='large'
+        onClick={() => router.replace('/')}
         sx={{
           position: 'fixed',
           bottom: { md: '1.5rem', xs: '4rem' },

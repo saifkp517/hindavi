@@ -17,8 +17,8 @@ import {
 } from '../../components/InputFields/InputFields';
 
 import axios from 'axios';
-import { useState, useEffect } from "react";
-import { useS3Upload } from "next-s3-upload";
+import { useState, useEffect } from 'react';
+import { useS3Upload } from 'next-s3-upload';
 
 const BusinessProfile: NextPage = () => {
   const taglineRef = useRef<HTMLInputElement>(null);
@@ -73,35 +73,38 @@ const BusinessProfile: NextPage = () => {
   ];
 
   const { uploadToS3, files } = useS3Upload();
-  const [profileImage, setProfileImage] = useState("");
+  const [profileImage, setProfileImage] = useState('');
 
   const profileImageChange = async (event: any) => {
     try {
-
       let file = event.target.files[0];
-      let {url} = await uploadToS3(file);
-      setProfileImage(url)
-
-    } catch(err) {
-      console.log(err)
+      let { url } = await uploadToS3(file);
+      setProfileImage(url);
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
   const addBusiness = async () => {
-    if (taglineRef.current && emailRef.current && phoneRef.current && addressRef.current && websiteRef.current) {
-      axios.post("http://3.89.137.234:4000/add/political", {
-        email: emailRef.current.value,
-        tagline: taglineRef.current.value,
-        whatsappno: phoneRef.current.value,
-        address: addressRef.current.value,
-        websiteurl: websiteRef.current.value
-      })
-        .then(data => console.log(data))
-        .catch(err => console.log)
+    if (
+      taglineRef.current &&
+      emailRef.current &&
+      phoneRef.current &&
+      addressRef.current &&
+      websiteRef.current
+    ) {
+      axios
+        .post('http://3.89.137.234:4000/add/political', {
+          email: emailRef.current.value,
+          tagline: taglineRef.current.value,
+          whatsappno: phoneRef.current.value,
+          address: addressRef.current.value,
+          websiteurl: websiteRef.current.value,
+        })
+        .then((data) => console.log(data))
+        .catch((err) => console.log);
     }
-
-  }
-
+  };
 
   return (
     <Container maxWidth='sm'>
@@ -127,7 +130,7 @@ const BusinessProfile: NextPage = () => {
           Upload Logo
           <input hidden accept='image/*' type='file' />
         </Button>
-        <input type="file" onChange={profileImageChange} />
+        <input type='file' onChange={profileImageChange} />
       </Box>
       <form onSubmit={addBusiness}>
         {inputsArr.map((el: InputFieldType, i) => (
