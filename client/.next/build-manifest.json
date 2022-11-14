@@ -30,17 +30,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/home.js"
     ],
-<<<<<<< HEAD
-    "/recharge": [
+    "/today": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/recharge.js"
-=======
-    "/notifications": [
+      "static/chunks/pages/today.js"
+    ],
+    "/tomorrow": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/notifications.js"
->>>>>>> ca1be6d66a9775ab678c7ece8dbbed7ccbbafbf6
+      "static/chunks/pages/tomorrow.js"
     ]
   },
   "ampFirstPages": []

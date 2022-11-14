@@ -16,9 +16,7 @@ const Categories: NextPage = () => {
     (async () => {
       try {
         const result = await axios
-          .get(
-            'https://hindavi-pocketbase.herokuapp.com/api/collections/categories/records'
-          )
+          .get('http://52.23.195.42:8000/api/collections/categories/records')
           .then((res) => res.data);
         setCategories(result.items);
       } catch (error) {
@@ -58,7 +56,7 @@ const Categories: NextPage = () => {
                   }}
                 >
                   <img
-                    src={`https://hindavi-pocketbase.herokuapp.com/api/files/categories/${el.id}/${el.icon}`}
+                    src={`http://52.23.195.42:8000/api/files/categories/${el.id}/${el.icon}`}
                     alt='category image'
                     style={{ width: '100%', height: '100%' }}
                   />

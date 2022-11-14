@@ -8,36 +8,7 @@ import { useRouter } from 'next/router';
 import { StaticImageData } from 'next/image';
 import axios from 'axios';
 import Card from '@mui/material/Card';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import {
-  Img18,
-  Img1,
-  Img10,
-  Img11,
-  Img12,
-  Img13,
-  Img14,
-  Img15,
-  Img16,
-  Img17,
-  Img2,
-  Img3,
-  Img4,
-  Img5,
-  Img6,
-  Img7,
-  Img8,
-  Img9,
-} from '../public/index';
-import { PosterCards } from '../components/PosterCards/PosterCards';
-import { Navbar } from '../components/Navbar/Navbar';
-import { Namaste } from '../public/svg/Namaste';
-import { Shoewear } from '../public/svg/Shoewear';
-import { Jewelry } from '../public/svg/Jewelry';
-import { RealEstate } from '../public/svg/RealEstate';
-import { Bakery } from '../public/svg/Bakery';
-import { Motorcycle } from '../public/svg/Motorcycle';
 import CardMedia from '@mui/material/CardMedia';
 
 export interface Design {
@@ -64,6 +35,7 @@ export type PosterType = {
   title: string;
   designation: string;
   image: string;
+  posterArr: string[];
 };
 
 const Home: NextPage = () => {
@@ -133,103 +105,6 @@ const Home: NextPage = () => {
     );
     return posters;
   };
-
-  // const ImagesArr: Design[] = [
-  //   // {
-  //   //   title: 'स्वातंत्र्यदिनाच्या शुभेच्छा',
-  //   //   designation: 'By Hindavi Graphics',
-  //   //   img: 'https://hindavidatabucket.s3.ap-south-1.amazonaws.com/next-s3-uploads/2010ab96-eb96-4d51-8b38-6b886213bf5d/first%2520ace.png',
-  //   //   // https://hindavidatabucket.s3.ap-south-1.amazonaws.com/next-s3-uploads/2010ab96-eb96-4d51-8b38-6b886213bf5d/first%2520ace.png
-  //   // },
-  //   {
-  //     title: 'हिंदवी ग्राफिक्स',
-  //     designation: 'By Hindavi Graphics',
-  //     img: Img2,
-  //   },
-  //   {
-  //     title: 'वापरण्यास सोपे',
-  //     designation: 'By Hindavi Graphics',
-  //     img: Img3,
-  //   },
-  //   {
-  //     title: 'एकाच दिनविशेष',
-  //     designation: 'By Hindavi Graphics',
-  //     img: Img4,
-  //   },
-  //   {
-  //     title: 'आमची वैशिष्ट्ये',
-  //     designation: 'By Hindavi Graphics',
-  //     img: Img5,
-  //   },
-  //   {
-  //     title: 'स्वातंत्र्यदिनाच्या शुभेच्छा',
-  //     designation: 'By Hindavi Graphics',
-  //     img: Img6,
-  //   },
-  //   {
-  //     title: 'हिंदवी ग्राफिक्स',
-  //     designation: 'By Hindavi Graphics',
-  //     img: Img7,
-  //   },
-  //   {
-  //     title: 'वापरण्यास सोपे',
-  //     designation: 'By Hindavi Graphics',
-  //     img: Img8,
-  //   },
-  //   {
-  //     title: 'एकाच दिनविशेष',
-  //     designation: 'By Hindavi Graphics',
-  //     img: Img9,
-  //   },
-  //   {
-  //     title: 'आमची वैशिष्ट्ये',
-  //     designation: 'By Hindavi Graphics',
-  //     img: Img10,
-  //   },
-  //   {
-  //     title: 'स्वातंत्र्यदिनाच्या शुभेच्छा',
-  //     designation: 'By Hindavi Graphics',
-  //     img: Img11,
-  //   },
-  //   {
-  //     title: 'हिंदवी ग्राफिक्स',
-  //     designation: 'By Hindavi Graphics',
-  //     img: Img12,
-  //   },
-  //   {
-  //     title: 'वापरण्यास सोपे',
-  //     designation: 'By Hindavi Graphics',
-  //     img: Img13,
-  //   },
-  //   {
-  //     title: 'एकाच दिनविशेष',
-  //     designation: 'By Hindavi Graphics',
-  //     img: Img14,
-  //   },
-  //   {
-  //     title: 'आमची वैशिष्ट्ये',
-  //     designation: 'By Hindavi Graphics',
-  //     img: Img15,
-  //   },
-  //   {
-  //     title: 'आमची वैशिष्ट्ये',
-  //     designation: 'By Hindavi Graphics',
-  //     img: Img16,
-  //   },
-  // ];
-
-  // const Categories: CategoriesType[] = [
-  //   { svg: <Namaste />, title: 'Thank You', color: '#F2994A' },
-  //   {
-  //     svg: <Shoewear />,
-  //     title: 'Footwear',
-  //     color: '#EB5757',
-  //   },
-  //   { svg: <Jewelry />, title: 'Jewelry', color: '#F2C94C' },
-  //   { svg: <RealEstate />, title: 'Real Estate', color: '#219653' },
-  //   { svg: <Bakery />, title: 'Bakery', color: '#2D9CDB' },
-  //   { svg: <Motorcycle />, title: 'Motorcycle', color: '#BB6BD9' },
-  // ];
 
   return (
     <main>
@@ -327,54 +202,56 @@ const Home: NextPage = () => {
               component='p'
               sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
             >
-              <Link href='#' underline='none' color='unset'>
+              <Link href='/today' underline='none' color='unset'>
                 Show All
               </Link>
             </Typography>
           </Box>
           <Grid container spacing={2} sx={{ paddingY: 1 }}>
-            {today.map((el, i) => {
-              return (
-                <Grid
-                  item
-                  key={i}
-                  md={3}
-                  xs={6}
-                  sx={{
-                    display: i > 1 ? { xs: 'none', md: 'block' } : null,
-                  }}
-                >
-                  <Link href={`/posteredit/${el.id}`} underline='none'>
-                    <Card elevation={2}>
-                      <CardMedia
-                        src={`http://52.23.195.42:8000/api/files/posters/${el.id}/${el.image}`}
-                        component='img'
-                        alt='image'
-                        sx={{ width: '100%', height: '100%' }}
-                      />
-                    </Card>
-                  </Link>
-                  <Typography
-                    variant='body1'
-                    component='p'
+            {today
+              .filter((_, i) => i < 4)
+              .map((el, i) => {
+                return (
+                  <Grid
+                    item
+                    key={i}
+                    md={3}
+                    xs={6}
                     sx={{
-                      marginTop: 1,
-                      fontSize: { md: '1.2rem', xs: '1rem' },
-                      color: 'gray',
+                      display: i > 1 ? { xs: 'none', md: 'block' } : null,
                     }}
                   >
-                    {el.title}
-                  </Typography>
-                  <Typography
-                    variant='subtitle2'
-                    component='p'
-                    sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
-                  >
-                    {el.designation}
-                  </Typography>
-                </Grid>
-              );
-            })}
+                    <Link href={`/posteredit/${el.id}`} underline='none'>
+                      <Card elevation={2}>
+                        <CardMedia
+                          src={`http://52.23.195.42:8000/api/files/posters/${el.id}/${el.image}`}
+                          component='img'
+                          alt='image'
+                          sx={{ width: '100%', height: '100%' }}
+                        />
+                      </Card>
+                    </Link>
+                    <Typography
+                      variant='body1'
+                      component='p'
+                      sx={{
+                        marginTop: 1,
+                        fontSize: { md: '1.2rem', xs: '1rem' },
+                        color: 'gray',
+                      }}
+                    >
+                      {el.title}
+                    </Typography>
+                    <Typography
+                      variant='subtitle2'
+                      component='p'
+                      sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
+                    >
+                      {el.designation}
+                    </Typography>
+                  </Grid>
+                );
+              })}
           </Grid>
         </Box>
         {/*
@@ -396,54 +273,56 @@ const Home: NextPage = () => {
               component='p'
               sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
             >
-              <Link href='#' underline='none' color='unset'>
+              <Link href='/stories' underline='none' color='unset'>
                 Show All
               </Link>
             </Typography>
           </Box>
           <Grid container spacing={2} sx={{ paddingY: 1 }}>
-            {stories.map((el, i) => {
-              return (
-                <Grid
-                  item
-                  key={i}
-                  md={3}
-                  xs={6}
-                  sx={{
-                    display: i > 1 ? { xs: 'none', md: 'block' } : null,
-                  }}
-                >
-                  <Link href={`/posteredit/${el.id}`} underline='none'>
-                    <Card elevation={2}>
-                      <CardMedia
-                        src={`http://52.23.195.42:8000/api/files/posters/${el.id}/${el.image}`}
-                        component='img'
-                        alt='image'
-                        sx={{ width: '100%', height: '100%' }}
-                      />
-                    </Card>
-                  </Link>
-                  <Typography
-                    variant='body1'
-                    component='p'
+            {stories
+              .filter((_, i) => i < 4)
+              .map((el, i) => {
+                return (
+                  <Grid
+                    item
+                    key={i}
+                    md={3}
+                    xs={6}
                     sx={{
-                      marginTop: 1,
-                      fontSize: { md: '1.2rem', xs: '1rem' },
-                      color: 'gray',
+                      display: i > 1 ? { xs: 'none', md: 'block' } : null,
                     }}
                   >
-                    {el.title}
-                  </Typography>
-                  <Typography
-                    variant='subtitle2'
-                    component='p'
-                    sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
-                  >
-                    {el.designation}
-                  </Typography>
-                </Grid>
-              );
-            })}
+                    <Link href={`/posteredit/${el.id}`} underline='none'>
+                      <Card elevation={2}>
+                        <CardMedia
+                          src={`http://52.23.195.42:8000/api/files/posters/${el.id}/${el.image}`}
+                          component='img'
+                          alt='image'
+                          sx={{ width: '100%', height: '100%' }}
+                        />
+                      </Card>
+                    </Link>
+                    <Typography
+                      variant='body1'
+                      component='p'
+                      sx={{
+                        marginTop: 1,
+                        fontSize: { md: '1.2rem', xs: '1rem' },
+                        color: 'gray',
+                      }}
+                    >
+                      {el.title}
+                    </Typography>
+                    <Typography
+                      variant='subtitle2'
+                      component='p'
+                      sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
+                    >
+                      {el.designation}
+                    </Typography>
+                  </Grid>
+                );
+              })}
           </Grid>
         </Box>
         {/*
@@ -465,54 +344,56 @@ const Home: NextPage = () => {
               component='p'
               sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
             >
-              <Link href='#' underline='none' color='unset'>
+              <Link href='/quotes' underline='none' color='unset'>
                 Show All
               </Link>
             </Typography>
           </Box>
           <Grid container spacing={2} sx={{ paddingY: 1 }}>
-            {quotes.map((el, i) => {
-              return (
-                <Grid
-                  item
-                  key={i}
-                  md={3}
-                  xs={6}
-                  sx={{
-                    display: i > 1 ? { xs: 'none', md: 'block' } : null,
-                  }}
-                >
-                  <Link href={`/posteredit/${el.id}`} underline='none'>
-                    <Card elevation={2}>
-                      <CardMedia
-                        src={`http://52.23.195.42:8000/api/files/posters/${el.id}/${el.image}`}
-                        component='img'
-                        alt='image'
-                        sx={{ width: '100%', height: '100%' }}
-                      />
-                    </Card>
-                  </Link>
-                  <Typography
-                    variant='body1'
-                    component='p'
+            {quotes
+              .filter((_, i) => i < 4)
+              .map((el, i) => {
+                return (
+                  <Grid
+                    item
+                    key={i}
+                    md={3}
+                    xs={6}
                     sx={{
-                      marginTop: 1,
-                      fontSize: { md: '1.2rem', xs: '1rem' },
-                      color: 'gray',
+                      display: i > 1 ? { xs: 'none', md: 'block' } : null,
                     }}
                   >
-                    {el.title}
-                  </Typography>
-                  <Typography
-                    variant='subtitle2'
-                    component='p'
-                    sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
-                  >
-                    {el.designation}
-                  </Typography>
-                </Grid>
-              );
-            })}
+                    <Link href={`/posteredit/${el.id}`} underline='none'>
+                      <Card elevation={2}>
+                        <CardMedia
+                          src={`http://52.23.195.42:8000/api/files/posters/${el.id}/${el.image}`}
+                          component='img'
+                          alt='image'
+                          sx={{ width: '100%', height: '100%' }}
+                        />
+                      </Card>
+                    </Link>
+                    <Typography
+                      variant='body1'
+                      component='p'
+                      sx={{
+                        marginTop: 1,
+                        fontSize: { md: '1.2rem', xs: '1rem' },
+                        color: 'gray',
+                      }}
+                    >
+                      {el.title}
+                    </Typography>
+                    <Typography
+                      variant='subtitle2'
+                      component='p'
+                      sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
+                    >
+                      {el.designation}
+                    </Typography>
+                  </Grid>
+                );
+              })}
           </Grid>
         </Box>
         {/*
@@ -534,54 +415,56 @@ const Home: NextPage = () => {
               component='p'
               sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
             >
-              <Link href='#' underline='none' color='unset'>
+              <Link href='/tomorrow' underline='none' color='unset'>
                 Show All
               </Link>
             </Typography>
           </Box>
           <Grid container spacing={2} sx={{ paddingY: 1 }}>
-            {tomorrow.map((el, i) => {
-              return (
-                <Grid
-                  item
-                  key={i}
-                  md={3}
-                  xs={6}
-                  sx={{
-                    display: i > 1 ? { xs: 'none', md: 'block' } : null,
-                  }}
-                >
-                  <Link href={`/posteredit/${el.id}`} underline='none'>
-                    <Card elevation={2}>
-                      <CardMedia
-                        src={`http://52.23.195.42:8000/api/files/posters/${el.id}/${el.image}`}
-                        component='img'
-                        alt='image'
-                        sx={{ width: '100%', height: '100%' }}
-                      />
-                    </Card>
-                  </Link>
-                  <Typography
-                    variant='body1'
-                    component='p'
+            {tomorrow
+              .filter((_, i) => i < 4)
+              .map((el, i) => {
+                return (
+                  <Grid
+                    item
+                    key={i}
+                    md={3}
+                    xs={6}
                     sx={{
-                      marginTop: 1,
-                      fontSize: { md: '1.2rem', xs: '1rem' },
-                      color: 'gray',
+                      display: i > 1 ? { xs: 'none', md: 'block' } : null,
                     }}
                   >
-                    {el.title}
-                  </Typography>
-                  <Typography
-                    variant='subtitle2'
-                    component='p'
-                    sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
-                  >
-                    {el.designation}
-                  </Typography>
-                </Grid>
-              );
-            })}
+                    <Link href={`/posteredit/${el.id}`} underline='none'>
+                      <Card elevation={2}>
+                        <CardMedia
+                          src={`http://52.23.195.42:8000/api/files/posters/${el.id}/${el.image}`}
+                          component='img'
+                          alt='image'
+                          sx={{ width: '100%', height: '100%' }}
+                        />
+                      </Card>
+                    </Link>
+                    <Typography
+                      variant='body1'
+                      component='p'
+                      sx={{
+                        marginTop: 1,
+                        fontSize: { md: '1.2rem', xs: '1rem' },
+                        color: 'gray',
+                      }}
+                    >
+                      {el.title}
+                    </Typography>
+                    <Typography
+                      variant='subtitle2'
+                      component='p'
+                      sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
+                    >
+                      {el.designation}
+                    </Typography>
+                  </Grid>
+                );
+              })}
           </Grid>
         </Box>
       </Box>
