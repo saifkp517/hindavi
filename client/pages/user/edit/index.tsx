@@ -71,7 +71,7 @@ const EditProfile: NextPage = () => {
       let { url } = await uploadToS3(file);
       setImageUrl(url);
       axios
-        .post('http://localhost:4000/upload-profile', {
+        .post('http://54.242.34.13:4000/upload-profile', {
           email: 'saifkhan501721@gmail.com',
           profilephoto: url,
         })

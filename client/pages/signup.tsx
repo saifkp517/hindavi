@@ -120,7 +120,7 @@ const Home: NextPage = () => {
     try {
       if (emailreference.current) {
         await axios
-          .post('http://localhost:4000/email', {
+          .post('http://54.242.34.13:4000/email', {
             email: emailreference.current.value,
             otp: otp,
           })
@@ -160,12 +160,15 @@ const Home: NextPage = () => {
           setCookie('otp', otp);
           setCookie('userreference', emailreference.current.value);
 
-          const data = await axios.post(`http://localhost:4000/signup/${id}`, {
-            username: usernamereference.current.value,
-            email: emailreference.current.value,
-            password: passwordreference.current.value,
-            phoneno: phonereference.current.value,
-          });
+          const data = await axios.post(
+            `http://54.242.34.13:4000/signup/${id}`,
+            {
+              username: usernamereference.current.value,
+              email: emailreference.current.value,
+              password: passwordreference.current.value,
+              phoneno: phonereference.current.value,
+            }
+          );
           try {
             if (data) {
               console.log(data);

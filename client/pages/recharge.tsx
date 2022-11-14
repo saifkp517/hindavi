@@ -39,13 +39,13 @@ const Recharge: NextPage = () => {
   const Verify = async () => {
     const token = getCookie('key');
     axios
-      .post('http://localhost:4000/protected', {
+      .post('http://54.242.34.13:4000/protected', {
         token: token,
       })
       .then((data) => {
         setId(data.data);
         axios
-          .get(`http://localhost:4000/payment-history/${data.data}`)
+          .get(`http://54.242.34.13:4000/payment-history/${data.data}`)
           .then((data) => {
             setRows(data.data);
           })
@@ -85,7 +85,7 @@ const Recharge: NextPage = () => {
     if (!res)
       return alert('Razorpay SDK failed, Check your internet connection.....');
 
-    const result = await axios.post(`http://localhost:4000/orders/${value}`);
+    const result = await axios.post(`http://54.242.34.13:4000/orders/${value}`);
 
     if (!result) {
       alert('Server Error, Please Wait until the servers are back online...');
@@ -112,7 +112,7 @@ const Recharge: NextPage = () => {
 
         //verifyying signature confirmation
         const result = await axios.post(
-          'http://localhost:4000/verify-success',
+          'http://54.242.34.13:4000/verify-success',
           data
         );
 
@@ -129,7 +129,7 @@ const Recharge: NextPage = () => {
           }
 
           const updateCoins = await axios.post(
-            'http://localhost:4000/update-coins',
+            'http://54.242.34.13:4000/update-coins',
             {
               id: id,
               coins: coins,
@@ -138,7 +138,7 @@ const Recharge: NextPage = () => {
 
           if (updateCoins) {
             axios
-              .post('http://localhost:4000/payment-history', {
+              .post('http://54.242.34.13:4000/payment-history', {
                 buyer: id,
                 paymentamount: value,
                 coinspurchased: coins,
@@ -147,7 +147,7 @@ const Recharge: NextPage = () => {
               .catch((err) => console.log(err));
 
             axios
-              .get(`http://localhost:4000/payment-history/${id}`)
+              .get(`http://54.242.34.13:4000/payment-history/${id}`)
               .then((data) => {
                 setRows(data.data);
               });

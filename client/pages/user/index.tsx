@@ -60,7 +60,7 @@ const UserPage: NextPage = () => {
   const Verify = async () => {
     const token = getCookie('key');
     axios
-      .post('http://localhost:4000/protected', {
+      .post('http://54.242.34.13:4000/protected', {
         token: token,
       })
       .then((data) => {
@@ -78,7 +78,7 @@ const UserPage: NextPage = () => {
   const UserInfo = async (id: any) => {
     if (id !== '') {
       axios
-        .post('http://localhost:4000/userinfo', {
+        .post('http://54.242.34.13:4000/userinfo', {
           id: id,
         })
         .then((res) => {

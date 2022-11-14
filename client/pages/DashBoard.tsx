@@ -42,7 +42,7 @@ const DashBoard: NextPage = () => {
   const Verify = async () => {
     const token = getCookie('key');
     axios
-      .post('http://localhost:4000/protected', {
+      .post('http://54.242.34.13:4000/protected', {
         token: token,
       })
       .then((data) => {
@@ -66,7 +66,7 @@ const DashBoard: NextPage = () => {
   //     let file = event.target.files[0];
   //     let { url } = await uploadToS3(file)
   //     setImageUrl(url)
-  //     axios.post("htt://localhost:4000/upload-profile", {
+  //     axios.post("htt://54.242.34.13:4000/upload-profile", {
   //       email: email,
   //       profilephoto: JSON.stringify(imageUrl)
   //     })
@@ -83,7 +83,7 @@ const DashBoard: NextPage = () => {
       let { url } = await uploadToS3(file);
       setImageUrl(url);
       axios
-        .post('http://localhost:4000/upload-image', {
+        .post('http://54.242.34.13:4000/upload-image', {
           title: 'this is a image title',
           designation: 'By Hindavi Graphics',
           image: url,
@@ -116,7 +116,7 @@ const DashBoard: NextPage = () => {
     if (!res)
       return alert('Razorpay SDK failed, Check your internet connection.....');
 
-    const result = await axios.post('http://localhost:4000/orders');
+    const result = await axios.post('http://54.242.34.13:4000/orders');
 
     if (!result) {
       alert('Server Error, Please Wait until the servers are back online...');
@@ -143,7 +143,7 @@ const DashBoard: NextPage = () => {
 
         //verifyying signature confirmation
         const result = await axios.post(
-          'http://localhost:4000/verify-success',
+          'http://54.242.34.13:4000/verify-success',
           data
         );
 
