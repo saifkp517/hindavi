@@ -1,27 +1,10 @@
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/system/Box';
 import { NextPage } from 'next';
-import { useRouter } from 'next/router';
-import { StaticImageData } from 'next/image';
 import axios from 'axios';
-import Card from '@mui/material/Card';
+import Box from '@mui/system/Box';
 import { useEffect, useState } from 'react';
-import CardMedia from '@mui/material/CardMedia';
-
-export interface Design {
-  img: StaticImageData | string;
-  title: string;
-  designation: string;
-}
-
-interface CategoriesType {
-  svg: any;
-  title: string;
-  color: string;
-}
+import { PosterCards } from '../components/PosterCards/PosterCards';
+import Container from '@mui/material/Container';
+import { SkeletonLoading } from '../components/SkeletonLoading/SkeletonLoading';
 
 export type CategoryType = {
   title: string;
@@ -39,8 +22,6 @@ export type PosterType = {
 };
 
 const Home: NextPage = () => {
-  const router = useRouter();
-  const [value, setValue] = useState(0);
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [today, setToday] = useState<PosterType[]>([]);
   const [stories, setStories] = useState<PosterType[]>([]);
@@ -51,31 +32,33 @@ const Home: NextPage = () => {
     getCategories();
     (async () => {
       try {
-        const todayRes = await axios
-          .get('http://52.23.195.42:8000/api/collections/today/records')
-          .then((res) => res.data);
-        const todayPosters = await getPosters(todayRes.items);
-        setToday(todayPosters);
-        const storyResult = await axios
-          .get('http://52.23.195.42:8000/api/collections/stories/records')
-          .then((res) => res.data);
-        const storyPosters = await getPosters(storyResult.items);
-        setStories(storyPosters);
-        const quotesResult = await axios
-          .get('http://52.23.195.42:8000/api/collections/quotes/records')
-          .then((res) => res.data);
-        const quotePosters = await getPosters(quotesResult.items);
-        setQuotes(quotePosters);
-        const tomorrowResult = await axios
-          .get('http://52.23.195.42:8000/api/collections/tomorrow/records')
-          .then((res) => res.data);
-        const tomorrowPosters = await getPosters(tomorrowResult.items);
-        setTomorrow(tomorrowPosters);
+        const todayPosters = await getResults('today');
+        todayPosters && setToday(todayPosters);
+        const storiesPosters = await getResults('stories');
+        storiesPosters && setStories(storiesPosters);
+        const quotesPosters = await getResults('quotes');
+        quotesPosters && setQuotes(quotesPosters);
+        const tomorrowPosters = await getResults('tomorrow');
+        tomorrowPosters && setTomorrow(tomorrowPosters);
       } catch (error: any) {
-        console.log(error);
+        console.log(error.message);
       }
     })();
   }, []);
+
+  const getResults = async (table: string) => {
+    try {
+      const result: any = await axios
+        .get(`http://52.23.195.42:8000/api/collections/${table}/records`)
+        .then((res) => res.data);
+      if (result) {
+        const posters = getPosters(result.items);
+        if (posters) return posters;
+      }
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
 
   const getCategories = async () => {
     try {
@@ -107,368 +90,55 @@ const Home: NextPage = () => {
   };
 
   return (
-    <main>
+    <Container maxWidth='xl'>
       <Box sx={{ flexGrow: 1 }} color='secondary.light'>
         {/* 
           Categories
         */}
-        <Box sx={{ paddingX: 3, paddingTop: 1 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'baseline',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Typography variant='h6' component='p' sx={{ color: 'black' }}>
-              Categories
-            </Typography>
-            <Typography
-              variant='subtitle2'
-              component='p'
-              sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
-            >
-              <Link href='/categories' underline='none' color='unset'>
-                Show All
-              </Link>
-            </Typography>
-          </Box>
-          <Grid container spacing={0} sx={{ paddingX: { md: 1, xs: 0 } }}>
-            {categories
-              .filter((el, i) => i < 6)
-              .map((el, i) => (
-                <Grid
-                  item
-                  key={el.id}
-                  md={2}
-                  xs={3}
-                  sx={{
-                    display: i > 3 ? { xs: 'none', md: 'block' } : null,
-                  }}
-                >
-                  <Box sx={{ marginTop: 2, marginBottom: 1 }}>
-                    <Link href={`/categories/${el.id}`} underline='none'>
-                      <Paper
-                        elevation={2}
-                        sx={{
-                          width: { md: '6rem', xs: '3.5rem' },
-                          height: { md: '6rem', xs: '3.5rem' },
-                          borderRadius: '50%',
-                          padding: { md: 3, xs: 2 },
-                          marginX: 'auto',
-                          fill: 'white',
-                          backgroundColor: 'grey',
-                        }}
-                      >
-                        <img
-                          src={`http://52.23.195.42:8000/api/files/categories/${el.id}/${el.icon}`}
-                          alt='category image'
-                          style={{ width: '100%', height: '100%' }}
-                        />
-                      </Paper>
-                    </Link>
-                  </Box>
-                  <Typography
-                    variant='body1'
-                    component='p'
-                    sx={{
-                      textAlign: 'center',
-                      fontSize: { md: '1.2rem', xs: '1rem' },
-                      color: 'gray',
-                    }}
-                  >
-                    {el.title}
-                  </Typography>
-                </Grid>
-              ))}
-          </Grid>
-        </Box>
+        {categories.length > 0 ? (
+          <PosterCards
+            heading='Categories'
+            limit={6}
+            list={[]}
+            categories={categories}
+          />
+        ) : (
+          <SkeletonLoading type='categories' />
+        )}
         {/* 
           Today
         */}
-        <Box sx={{ paddingX: 3, paddingTop: 1 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'baseline',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Typography variant='h6' component='p' sx={{ color: 'black' }}>
-              Today
-            </Typography>
-            <Typography
-              variant='subtitle2'
-              component='p'
-              sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
-            >
-              <Link href='/today' underline='none' color='unset'>
-                Show All
-              </Link>
-            </Typography>
-          </Box>
-          <Grid container spacing={2} sx={{ paddingY: 1 }}>
-            {today
-              .filter((_, i) => i < 4)
-              .map((el, i) => {
-                return (
-                  <Grid
-                    item
-                    key={i}
-                    md={3}
-                    xs={6}
-                    sx={{
-                      display: i > 1 ? { xs: 'none', md: 'block' } : null,
-                    }}
-                  >
-                    <Link href={`/posteredit/${el.id}`} underline='none'>
-                      <Card elevation={2}>
-                        <CardMedia
-                          src={`http://52.23.195.42:8000/api/files/posters/${el.id}/${el.image}`}
-                          component='img'
-                          alt='image'
-                          sx={{ width: '100%', height: '100%' }}
-                        />
-                      </Card>
-                    </Link>
-                    <Typography
-                      variant='body1'
-                      component='p'
-                      sx={{
-                        marginTop: 1,
-                        fontSize: { md: '1.2rem', xs: '1rem' },
-                        color: 'gray',
-                      }}
-                    >
-                      {el.title}
-                    </Typography>
-                    <Typography
-                      variant='subtitle2'
-                      component='p'
-                      sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
-                    >
-                      {el.designation}
-                    </Typography>
-                  </Grid>
-                );
-              })}
-          </Grid>
-        </Box>
+        {today.length > 0 ? (
+          <PosterCards heading='Today' limit={4} list={today} />
+        ) : (
+          <SkeletonLoading />
+        )}
         {/*
          Stories 
         */}
-        <Box sx={{ paddingX: 3, paddingTop: 1 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'baseline',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Typography variant='h6' component='p' sx={{ color: 'black' }}>
-              Stories
-            </Typography>
-            <Typography
-              variant='subtitle2'
-              component='p'
-              sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
-            >
-              <Link href='/stories' underline='none' color='unset'>
-                Show All
-              </Link>
-            </Typography>
-          </Box>
-          <Grid container spacing={2} sx={{ paddingY: 1 }}>
-            {stories
-              .filter((_, i) => i < 4)
-              .map((el, i) => {
-                return (
-                  <Grid
-                    item
-                    key={i}
-                    md={3}
-                    xs={6}
-                    sx={{
-                      display: i > 1 ? { xs: 'none', md: 'block' } : null,
-                    }}
-                  >
-                    <Link href={`/posteredit/${el.id}`} underline='none'>
-                      <Card elevation={2}>
-                        <CardMedia
-                          src={`http://52.23.195.42:8000/api/files/posters/${el.id}/${el.image}`}
-                          component='img'
-                          alt='image'
-                          sx={{ width: '100%', height: '100%' }}
-                        />
-                      </Card>
-                    </Link>
-                    <Typography
-                      variant='body1'
-                      component='p'
-                      sx={{
-                        marginTop: 1,
-                        fontSize: { md: '1.2rem', xs: '1rem' },
-                        color: 'gray',
-                      }}
-                    >
-                      {el.title}
-                    </Typography>
-                    <Typography
-                      variant='subtitle2'
-                      component='p'
-                      sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
-                    >
-                      {el.designation}
-                    </Typography>
-                  </Grid>
-                );
-              })}
-          </Grid>
-        </Box>
+        {stories.length > 0 ? (
+          <PosterCards heading='Stories' limit={4} list={stories} />
+        ) : (
+          <SkeletonLoading />
+        )}
         {/*
          Quotes
         */}
-        <Box sx={{ paddingX: 3, paddingTop: 1 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'baseline',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Typography variant='h6' component='p' sx={{ color: 'black' }}>
-              Quotes
-            </Typography>
-            <Typography
-              variant='subtitle2'
-              component='p'
-              sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
-            >
-              <Link href='/quotes' underline='none' color='unset'>
-                Show All
-              </Link>
-            </Typography>
-          </Box>
-          <Grid container spacing={2} sx={{ paddingY: 1 }}>
-            {quotes
-              .filter((_, i) => i < 4)
-              .map((el, i) => {
-                return (
-                  <Grid
-                    item
-                    key={i}
-                    md={3}
-                    xs={6}
-                    sx={{
-                      display: i > 1 ? { xs: 'none', md: 'block' } : null,
-                    }}
-                  >
-                    <Link href={`/posteredit/${el.id}`} underline='none'>
-                      <Card elevation={2}>
-                        <CardMedia
-                          src={`http://52.23.195.42:8000/api/files/posters/${el.id}/${el.image}`}
-                          component='img'
-                          alt='image'
-                          sx={{ width: '100%', height: '100%' }}
-                        />
-                      </Card>
-                    </Link>
-                    <Typography
-                      variant='body1'
-                      component='p'
-                      sx={{
-                        marginTop: 1,
-                        fontSize: { md: '1.2rem', xs: '1rem' },
-                        color: 'gray',
-                      }}
-                    >
-                      {el.title}
-                    </Typography>
-                    <Typography
-                      variant='subtitle2'
-                      component='p'
-                      sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
-                    >
-                      {el.designation}
-                    </Typography>
-                  </Grid>
-                );
-              })}
-          </Grid>
-        </Box>
+        {quotes.length > 0 ? (
+          <PosterCards heading='Quotes' limit={4} list={quotes} />
+        ) : (
+          <SkeletonLoading />
+        )}
         {/*
          Tomorrow
         */}
-        <Box sx={{ paddingX: 3, paddingTop: 1 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'baseline',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Typography variant='h6' component='p' sx={{ color: 'black' }}>
-              Tomorrow
-            </Typography>
-            <Typography
-              variant='subtitle2'
-              component='p'
-              sx={{ fontSize: { md: '0.9rem', xs: '0.8rem' } }}
-            >
-              <Link href='/tomorrow' underline='none' color='unset'>
-                Show All
-              </Link>
-            </Typography>
-          </Box>
-          <Grid container spacing={2} sx={{ paddingY: 1 }}>
-            {tomorrow
-              .filter((_, i) => i < 4)
-              .map((el, i) => {
-                return (
-                  <Grid
-                    item
-                    key={i}
-                    md={3}
-                    xs={6}
-                    sx={{
-                      display: i > 1 ? { xs: 'none', md: 'block' } : null,
-                    }}
-                  >
-                    <Link href={`/posteredit/${el.id}`} underline='none'>
-                      <Card elevation={2}>
-                        <CardMedia
-                          src={`http://52.23.195.42:8000/api/files/posters/${el.id}/${el.image}`}
-                          component='img'
-                          alt='image'
-                          sx={{ width: '100%', height: '100%' }}
-                        />
-                      </Card>
-                    </Link>
-                    <Typography
-                      variant='body1'
-                      component='p'
-                      sx={{
-                        marginTop: 1,
-                        fontSize: { md: '1.2rem', xs: '1rem' },
-                        color: 'gray',
-                      }}
-                    >
-                      {el.title}
-                    </Typography>
-                    <Typography
-                      variant='subtitle2'
-                      component='p'
-                      sx={{ fontSize: { md: '0.7rem', xs: '0.6rem' } }}
-                    >
-                      {el.designation}
-                    </Typography>
-                  </Grid>
-                );
-              })}
-          </Grid>
-        </Box>
+        {tomorrow.length > 0 ? (
+          <PosterCards heading='Tomorrow' limit={4} list={tomorrow} />
+        ) : (
+          <SkeletonLoading />
+        )}
       </Box>
-    </main>
+    </Container>
   );
 };
 
