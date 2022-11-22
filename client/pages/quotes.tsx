@@ -12,7 +12,7 @@ const QuotesPage: NextPage = () => {
     (async () => {
       try {
         const result = await axios
-          .get('http://52.23.195.42:8000/api/collections/quotes/records')
+          .get('http://127.0.0.1:8090/api/collections/quotes/records')
           .then((res) => res.data);
         const poster = await getPosters(result.items);
         setPosters(poster);
@@ -28,7 +28,7 @@ const QuotesPage: NextPage = () => {
         try {
           const posterData = await axios
             .get(
-              `http://52.23.195.42:8000/api/collections/posters/records/${el.posterId}`
+              `http://127.0.0.1:8090/api/collections/posters/records/${el.posterId}`
             )
             .then((res) => res.data);
           return posterData;

@@ -10,12 +10,14 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/system/Box';
 import Link from '@mui/material/Link';
+import NextLink from 'next/link';
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import { Navbar } from '../../components/Navbar/Navbar';
 import { NextPage } from 'next';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import ShoppingCart from '@mui/icons-material/ShoppingCart';
 
 interface Props {
   children?: JSX.Element;
@@ -32,7 +34,7 @@ export const Layout: NextPage<Props> = ({ children }) => {
         <Toolbar
           sx={{
             display: 'flex',
-            gap: 6,
+            gap: 4,
             justifyContent: 'flex-start',
             alignItems: 'center',
           }}
@@ -57,9 +59,19 @@ export const Layout: NextPage<Props> = ({ children }) => {
                 fontSize: 21,
               }}
             >
-              <Link href='/home' sx={{ color: '#fff', textDecoration: 'none' }}>
-                Home
-              </Link>
+              <NextLink href='/home'>
+                <Link
+                  sx={{
+                    color: '#fff',
+                    textDecoration: 'none',
+                    '&:hover': {
+                      cursor: 'pointer',
+                    },
+                  }}
+                >
+                  Home
+                </Link>
+              </NextLink>
             </Typography>
           </Box>
           <Box
@@ -81,12 +93,19 @@ export const Layout: NextPage<Props> = ({ children }) => {
                 fontSize: 21,
               }}
             >
-              <Link
-                href='/recharge'
-                sx={{ color: '#fff', textDecoration: 'none' }}
-              >
-                Recharge
-              </Link>
+              <NextLink href='/recharge'>
+                <Link
+                  sx={{
+                    color: '#fff',
+                    textDecoration: 'none',
+                    '&:hover': {
+                      cursor: 'pointer',
+                    },
+                  }}
+                >
+                  Recharge
+                </Link>
+              </NextLink>
             </Typography>
           </Box>
           <Box
@@ -108,12 +127,19 @@ export const Layout: NextPage<Props> = ({ children }) => {
                 fontSize: 21,
               }}
             >
-              <Link
-                href='/refer/userno'
-                sx={{ color: '#fff', textDecoration: 'none' }}
-              >
-                Refer and Earn
-              </Link>
+              <NextLink href='/refer'>
+                <Link
+                  sx={{
+                    color: '#fff',
+                    textDecoration: 'none',
+                    '&:hover': {
+                      cursor: 'pointer',
+                    },
+                  }}
+                >
+                  Refer and Earn
+                </Link>
+              </NextLink>
             </Typography>
           </Box>
           <Box
@@ -135,12 +161,53 @@ export const Layout: NextPage<Props> = ({ children }) => {
                 fontSize: 21,
               }}
             >
-              <Link
-                href='/notifications'
-                sx={{ color: '#fff', textDecoration: 'none' }}
-              >
-                Notifications
-              </Link>
+              <NextLink href='/notifications'>
+                <Link
+                  sx={{
+                    color: '#fff',
+                    textDecoration: 'none',
+                    '&:hover': {
+                      cursor: 'pointer',
+                    },
+                  }}
+                >
+                  Notifications
+                </Link>
+              </NextLink>
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 2,
+            }}
+          >
+            <ShoppingCart sx={{ color: '#fff' }} />
+            <Typography
+              variant='h6'
+              component='p'
+              sx={{
+                textAlign: 'center',
+                marginRight: 2,
+                lineHeight: 1,
+                fontSize: 21,
+              }}
+            >
+              <NextLink href='/cart'>
+                <Link
+                  sx={{
+                    color: '#fff',
+                    textDecoration: 'none',
+                    '&:hover': {
+                      cursor: 'pointer',
+                    },
+                  }}
+                >
+                  Cart
+                </Link>
+              </NextLink>
             </Typography>
           </Box>
         </Toolbar>
@@ -162,6 +229,7 @@ export const Layout: NextPage<Props> = ({ children }) => {
             setValue(newValue);
           }}
           sx={{
+            width: '100%',
             paddingY: '1.6rem',
           }}
         >
@@ -178,10 +246,10 @@ export const Layout: NextPage<Props> = ({ children }) => {
             icon={<CurrencyRupee />}
           />
           <BottomNavigationAction
-            label='Refer'
-            value='Refer'
-            icon={<Share />}
-            onClick={() => router.push('/refer/userno')}
+            label='Cart'
+            value='Cart'
+            icon={<ShoppingCart />}
+            onClick={() => router.push('/cart')}
           />
           <BottomNavigationAction
             label='Notifications'
@@ -198,7 +266,7 @@ export const Layout: NextPage<Props> = ({ children }) => {
         </BottomNavigation>
       </Paper>
       {children}
-      <Box sx={{ height: { xs: '3rem', md: 0 } }}></Box>
+      <Box sx={{ height: { xs: '3.5rem', md: 0 } }}></Box>
     </>
   );
 };

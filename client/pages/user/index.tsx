@@ -17,6 +17,7 @@ import { getCookie } from 'cookies-next';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
+import Share from '@mui/icons-material/Share';
 
 type options = {
   title: string;
@@ -29,13 +30,14 @@ const UserPage: NextPage = () => {
 
   const optionsArr: options[] = [
     { title: 'Edit your profile', icon: <Edit />, link: './user/edit' },
+    { title: 'Refer and Earn', icon: <Share />, link: './refer' },
     {
-      title: 'Create business profile',
+      title: 'Business profile',
       icon: <Business />,
       link: './user/business',
     },
     {
-      title: 'Create political profile',
+      title: 'Political profile',
       icon: <Gavel />,
       link: './user/political',
     },

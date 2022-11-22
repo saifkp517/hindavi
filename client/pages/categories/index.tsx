@@ -13,7 +13,7 @@ const Categories: NextPage = () => {
     (async () => {
       try {
         const result = await axios
-          .get('http://52.23.195.42:8000/api/collections/categories/records')
+          .get('http://127.0.0.1:8090/api/collections/categories/records')
           .then((res) => res.data);
         setCategories(result.items);
       } catch (error) {

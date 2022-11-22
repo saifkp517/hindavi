@@ -66,7 +66,7 @@ const Poster: NextPage<Props> = ({ id }) => {
     (async () => {
       console.log(id);
       const result: PosterType = await axios
-        .get(`http://52.23.195.42:8000/api/collections/posters/records/${id}`)
+        .get(`http://127.0.0.1:8090/api/collections/posters/records/${id}`)
         .then((res) => res.data);
       setImg(result.image);
     })();
@@ -78,7 +78,7 @@ const Poster: NextPage<Props> = ({ id }) => {
     if (context && img) {
       const image: HTMLImageElement = new (window as any).Image();
       const frame: HTMLImageElement = new (window as any).Image();
-      image.src = `http://52.23.195.42:8000/api/files/posters/${id}/${img}`;
+      image.src = `http://127.0.0.1:8090/api/files/posters/${id}/${img}`;
       frame.src = framesArr[frameIndex].src;
       image.addEventListener(
         'load',

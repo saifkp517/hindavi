@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import CardMedia from '@mui/material/CardMedia';
 import Skeleton from '@mui/material/Skeleton';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 interface Props {
   heading: string;
@@ -25,6 +26,8 @@ export const PosterCards: NextPage<Props> = ({
   limit,
   showAll,
 }) => {
+  const router = useRouter();
+
   const posters = () => {
     if (categories) {
       return categories
@@ -40,26 +43,25 @@ export const PosterCards: NextPage<Props> = ({
             }}
           >
             <Box sx={{ marginTop: 2, marginBottom: 1 }}>
-              <Link href={`/categories/${el.id}`} underline='none'>
-                <Paper
-                  elevation={2}
-                  sx={{
-                    width: { md: '6rem', xs: '3.5rem' },
-                    height: { md: '6rem', xs: '3.5rem' },
-                    borderRadius: '50%',
-                    padding: { md: 3, xs: 2 },
-                    marginX: 'auto',
-                    fill: 'white',
-                    backgroundColor: 'grey',
-                  }}
-                >
-                  <img
-                    src={`http://52.23.195.42:8000/api/files/categories/${el.id}/${el.icon}`}
-                    alt='category image'
-                    style={{ width: '100%', height: '100%' }}
-                  />
-                </Paper>
-              </Link>
+              <Paper
+                elevation={2}
+                onClick={() => router.push(`/posteredit/${el.id}`)}
+                sx={{
+                  width: { md: '6rem', xs: '3.5rem' },
+                  height: { md: '6rem', xs: '3.5rem' },
+                  borderRadius: '50%',
+                  padding: { md: 3, xs: 2 },
+                  marginX: 'auto',
+                  fill: 'white',
+                  backgroundColor: 'grey',
+                }}
+              >
+                <img
+                  src={`http://127.0.0.1:8090/api/files/categories/${el.id}/${el.icon}`}
+                  alt='category image'
+                  style={{ width: '100%', height: '100%' }}
+                />
+              </Paper>
             </Box>
             <Typography
               variant='body1'
@@ -80,36 +82,29 @@ export const PosterCards: NextPage<Props> = ({
         .map((el: PosterType, i: number) => {
           const [loading, setLoading] = useState(true);
           return (
-            <Grid
-              item
-              key={i}
-              md={3}
-              xs={6}
-              sx={{
-                display: i > 1 ? { xs: 'none', md: 'block' } : null,
-              }}
-            >
-              <Link href={`/posteredit/${el.id}`} underline='none'>
-                <Card elevation={2}>
-                  {loading && (
-                    <Skeleton
-                      variant='rectangular'
-                      sx={{ height: '100%', aspectRatio: '1/1' }}
-                    />
-                  )}
-                  <CardMedia
-                    src={`http://52.23.195.42:8000/api/files/posters/${el.id}/${el.image}`}
-                    component='img'
-                    alt='image'
-                    onLoad={() => setLoading(false)}
-                    sx={{
-                      width: '100%',
-                      height: '100%',
-                      display: !loading ? 'block' : 'none',
-                    }}
+            <Grid item key={i} md={3} xs={6}>
+              <Card
+                elevation={2}
+                onClick={() => router.push(`/posteredit/${el.id}`)}
+              >
+                {loading && (
+                  <Skeleton
+                    variant='rectangular'
+                    sx={{ height: '100%', aspectRatio: '1/1' }}
                   />
-                </Card>
-              </Link>
+                )}
+                <CardMedia
+                  src={`http://127.0.0.1:8090/api/files/posters/${el.id}/${el.image}`}
+                  component='img'
+                  alt='image'
+                  onLoad={() => setLoading(false)}
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    display: !loading ? 'block' : 'none',
+                  }}
+                />
+              </Card>
               <Typography
                 variant='body1'
                 component='p'

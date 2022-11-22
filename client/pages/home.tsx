@@ -49,7 +49,7 @@ const Home: NextPage = () => {
   const getResults = async (table: string) => {
     try {
       const result: any = await axios
-        .get(`http://52.23.195.42:8000/api/collections/${table}/records`)
+        .get(`http://127.0.0.1:8090/api/collections/${table}/records`)
         .then((res) => res.data);
       if (result) {
         const posters = getPosters(result.items);
@@ -63,7 +63,7 @@ const Home: NextPage = () => {
   const getCategories = async () => {
     try {
       const result = await axios
-        .get('http://52.23.195.42:8000/api/collections/categories/records')
+        .get('http://127.0.0.1:8090/api/collections/categories/records')
         .then((res) => res.data);
       setCategories(result.items);
     } catch (error) {
@@ -77,7 +77,7 @@ const Home: NextPage = () => {
         try {
           const posterData = await axios
             .get(
-              `http://52.23.195.42:8000/api/collections/posters/records/${el.posterId}`
+              `http://127.0.0.1:8090/api/collections/posters/records/${el.posterId}`
             )
             .then((res) => res.data);
           return posterData;

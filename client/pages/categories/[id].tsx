@@ -20,7 +20,7 @@ const CategoryPoster: NextPage<Props> = ({ id }) => {
         try {
           const result: PosterType = await axios
             .get(
-              `http://52.23.195.42:8000/api/collections/categories/records/${id}`
+              `http://127.0.0.1:8090/api/collections/categories/records/${id}`
             )
             .then((res) => res.data);
           setHeading(result.title);
@@ -40,7 +40,7 @@ const CategoryPoster: NextPage<Props> = ({ id }) => {
     const postersRes = fields.map(async (el) => {
       try {
         return await axios
-          .get(`http://52.23.195.42:8000/api/collections/posters/records/${el}`)
+          .get(`http://127.0.0.1:8090/api/collections/posters/records/${el}`)
           .then((res) => res.data);
       } catch (error: any) {
         console.log(error.message);
