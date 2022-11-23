@@ -66,7 +66,9 @@ const Poster: NextPage<Props> = ({ id }) => {
     (async () => {
       console.log(id);
       const result: PosterType = await axios
-        .get(`http://127.0.0.1:8090/api/collections/posters/records/${id}`)
+        .get(
+          `https://hindavi-pocketbase.herokuapp.com/api/collections/posters/records/${id}`
+        )
         .then((res) => res.data);
       setImg(result.image);
     })();
@@ -78,7 +80,7 @@ const Poster: NextPage<Props> = ({ id }) => {
     if (context && img) {
       const image: HTMLImageElement = new (window as any).Image();
       const frame: HTMLImageElement = new (window as any).Image();
-      image.src = `http://127.0.0.1:8090/api/files/posters/${id}/${img}`;
+      image.src = `https://hindavi-pocketbase.herokuapp.com/api/files/posters/${id}/${img}`;
       frame.src = framesArr[frameIndex].src;
       image.addEventListener(
         'load',
