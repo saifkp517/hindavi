@@ -68,13 +68,6 @@ app.get("/", (req, res) => {
 
 //sign in OR log in
 
-//check if user is logged in or not
-
-app.post('/test', (req, res) => {
-    res.json(req.body.email);
-    res.cookie('cookies', 'data', { httpOnly: true })
-})
-
 
 ////authentications endpoints///////////////////////////////////
 

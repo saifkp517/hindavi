@@ -5,6 +5,7 @@ import axios from 'axios';
 import { setCookie } from 'cookies-next';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
+import PocketBase from 'pocketbase';
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
@@ -34,6 +35,9 @@ export interface State {
 }
 
 const Home: NextPage = () => {
+
+  const pb = new PocketBase('https://hindavi-pocketbase.herokuapp.com');
+
   const router = useRouter();
 
   const usernamereference = useRef<HTMLInputElement>(null);

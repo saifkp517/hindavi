@@ -28,11 +28,11 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
   
-  client:
-    build: ./client
-    restart: always
-    ports:
-    - 3000:3000
+        #  client:
+        #    build: ./client
+        #    restart: always
+        #    ports:
+        #    - 3000:3000
 
 
 volumes:
