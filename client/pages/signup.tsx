@@ -22,6 +22,9 @@ import {
   InputFields,
   InputFieldType,
 } from '../components/InputFields/InputFields';
+import { PhonelinkOff } from '@mui/icons-material';
+
+const client = new PocketBase('http://127.0.0.1:8090');
 
 export interface State {
   showPassword: boolean;
@@ -79,7 +82,7 @@ const Home: NextPage = () => {
       icon: <Phone />,
       label: 'Phone number',
       id: 'phone',
-      type: 'number',
+      type: 'text',
       inputProps: {
         minLength: 10,
       },
@@ -164,29 +167,32 @@ const Home: NextPage = () => {
           setCookie('otp', otp);
           setCookie('userreference', emailreference.current.value);
 
-          const data = await axios.post(
-            `http://54.242.34.13:4000/signup/${id}`,
-            {
-              username: usernamereference.current.value,
-              email: emailreference.current.value,
-              password: passwordreference.current.value,
-              phoneno: phonereference.current.value,
-            }
-          );
+          const data = {
+            username: usernamereference.current.value,
+            email: emailreference.current.value,
+            password: passwordreference.current.value,
+            phoneno: phonereference.current.value,
+            profilephoto: "none",
+            coins: 0,
+            verified: false,
+            refcode: "s90df87s"
+          };
+
+          const record = await client.records.create('users', data);
           try {
-            if (data) {
-              console.log(data);
+            if (record) {
+              console.log(record);
               await sendEmail();
               router.push('/emailverify');
             }
           } catch (err) {
             console.log(err);
           }
+
         }
       }
     } catch (err: any) {
       console.log(err);
-      setErr(err.response.data);
       setState({ ...state, error: err.message, showError: true });
     }
   };
