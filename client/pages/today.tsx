@@ -13,7 +13,7 @@ const TodayPage: NextPage = () => {
       try {
         const result = await axios
           .get(
-            'https://hindavi-pocketbase.herokuapp.com/api/collections/today/records'
+            'http://127.0.0.1:8090/api/collections/today/records'
           )
           .then((res) => res.data);
         const poster = await getPosters(result.items);
@@ -30,7 +30,7 @@ const TodayPage: NextPage = () => {
         try {
           const posterData = await axios
             .get(
-              `https://hindavi-pocketbase.herokuapp.com/api/collections/posters/records/${el.posterId}`
+              `http://127.0.0.1:8090/api/collections/posters/records/${el.posterId}`
             )
             .then((res) => res.data);
           return posterData;

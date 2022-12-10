@@ -57,7 +57,7 @@ export const PosterCards: NextPage<Props> = ({
                 }}
               >
                 <img
-                  src={`https://hindavi-pocketbase.herokuapp.com/api/files/categories/${el.id}/${el.icon}`}
+                  src={`http://127.0.0.1:8090/api/files/categories/${el.id}/${el.icon}`}
                   alt='category image'
                   style={{ width: '100%', height: '100%' }}
                 />
@@ -94,7 +94,7 @@ export const PosterCards: NextPage<Props> = ({
                   />
                 )}
                 <CardMedia
-                  src={`https://hindavi-pocketbase.herokuapp.com/api/files/posters/${el.id}/${el.image}`}
+                  src={`http://127.0.0.1:8090/api/files/posters/${el.id}/${el.image}`}
                   component='img'
                   alt='image'
                   onLoad={() => setLoading(false)}

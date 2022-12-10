@@ -8,6 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
+import PocketBase from 'pocketbase';
 import Typography from '@mui/material/Typography';
 import { NextPage } from 'next';
 import { useRef } from 'react';
@@ -19,6 +20,8 @@ import {
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useS3Upload } from 'next-s3-upload';
+
+const client = new PocketBase('http://127.0.0.1:8090');
 
 const BusinessProfile: NextPage = () => {
   const taglineRef = useRef<HTMLInputElement>(null);
@@ -48,7 +51,7 @@ const BusinessProfile: NextPage = () => {
       icon: <Phone />,
       id: 'phone',
       label: 'Phone Number',
-      type: 'number',
+      type: 'text',
       reference: phoneRef,
       inputProps: {
         minLength: 10,
@@ -85,7 +88,8 @@ const BusinessProfile: NextPage = () => {
     }
   };
 
-  const addBusiness = async () => {
+  const addBusiness = async (event: any) => {
+    event.preventDefault()
     if (
       taglineRef.current &&
       emailRef.current &&
@@ -93,16 +97,20 @@ const BusinessProfile: NextPage = () => {
       addressRef.current &&
       websiteRef.current
     ) {
-      axios
-        .post('http://3.89.137.234:4000/add/political', {
-          email: emailRef.current.value,
-          tagline: taglineRef.current.value,
-          whatsappno: phoneRef.current.value,
-          address: addressRef.current.value,
-          websiteurl: websiteRef.current.value,
-        })
-        .then((data) => console.log(data))
-        .catch((err) => console.log);
+      const data = {
+        tagline: taglineRef.current.value,
+        email: emailRef.current.value,
+        phoneno: phoneRef.current.value,
+        address: addressRef.current.value,
+        website: websiteRef.current.value
+      };
+
+      client.records.create('businessprofile', data)
+      .then(data => {
+        console.log(data)
+        alert("Created")
+      })
+      .catch(err => console.log(err))
     }
   };
 

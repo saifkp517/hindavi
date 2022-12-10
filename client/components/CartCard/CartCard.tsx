@@ -86,7 +86,7 @@ export const CartCard: NextPage<Props> = ({ el }) => {
         />
       )}
       <CardMedia
-        src={`https://hindavi-pocketbase.herokuapp.com/api/files/posters/${el.id}/${el.image}`}
+        src={`http://127.0.0.1:8090/api/files/posters/${el.id}/${el.image}`}
         component='img'
         alt='poster'
         sx={{

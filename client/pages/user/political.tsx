@@ -8,11 +8,13 @@ import Instagram from '@mui/icons-material/Instagram';
 import Twitter from '@mui/icons-material/Twitter';
 import { NextPage } from 'next';
 import { useRef } from 'react';
+
 import {
   InputFields,
   InputFieldType,
 } from '../../components/InputFields/InputFields';
 import Button from '@mui/material/Button';
+import PocketBase from 'pocketbase';
 import Box from '@mui/material/Box';
 import Upload from '@mui/icons-material/Upload';
 import Avatar from '@mui/material/Avatar';
@@ -20,6 +22,8 @@ import Avatar from '@mui/material/Avatar';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useS3Upload } from 'next-s3-upload';
+
+const client = new PocketBase('http://127.0.0.1:8090');
 
 const PoliticalProfile: NextPage = () => {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -115,27 +119,45 @@ const PoliticalProfile: NextPage = () => {
     }
   };
 
-  const addPolitical = async () => {
+  const addPolitical = async (event: any) => {
+    event.preventDefault();
     if (
       fbRef.current &&
       instaRef.current &&
       twitterRef.current &&
       des1Ref.current &&
-      des2Ref.current
+      des2Ref.current &&
+      nameRef.current &&
+      phoneRef.current
     ) {
-      axios
-        .post('http://3.89.137.234:4000/add/political', {
-          email: 'saifkhan501721@gmail.com',
-          partylogo: partyLogo,
-          profilelogo: profileImage,
+      // axios
+      //   .post('http://3.89.137.234:4000/add/political', {
+      //     email: email,
+      //     facebook: fbRef.current.value,
+      //     instagram: instaRef.current.value,
+      //     twitter: twitterRef.current.value,
+      //     designation1: des1Ref.current.value,
+      //     designation2: des2Ref.current.value,
+      //   })
+      //   .then((data) => console.log(data))
+      //   .catch((err) => console.log);
+      
+        const data = {
+          username: nameRef.current.value,
+          phoneno: phoneRef.current.value,
           facebook: fbRef.current.value,
           instagram: instaRef.current.value,
           twitter: twitterRef.current.value,
           designation1: des1Ref.current.value,
           designation2: des2Ref.current.value,
+        };
+  
+        client.records.create('politicalprofile', data)
+        .then(data => {
+          console.log(data)
+          alert("Created")
         })
-        .then((data) => console.log(data))
-        .catch((err) => console.log);
+        .catch(err => console.log(err.data))
     }
   };
 

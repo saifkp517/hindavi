@@ -14,7 +14,7 @@ const Categories: NextPage = () => {
       try {
         const result = await axios
           .get(
-            'https://hindavi-pocketbase.herokuapp.com/api/collections/categories/records'
+            'http://127.0.0.1:8090/api/collections/categories/records'
           )
           .then((res) => res.data);
         setCategories(result.items);

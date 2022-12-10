@@ -61,7 +61,7 @@ const Home: NextPage = () => {
         //     setErr(err.response.data);
         //   });
 
-        const authData = await client.users.authViaEmail('saifkhan501721@gmail.com', 'pass12345');
+        const authData = await client.users.authViaEmail(emailRef.current.value, passwordRef.current.value);
 
         console.log(authData);
 
@@ -75,6 +75,10 @@ const Home: NextPage = () => {
 
       }
     } catch (err: any) {
+      if(err.message == "Failed to authenticate.")
+      {
+        err.message = "Incorrect Email or Password"
+      }
       setState({ ...state, error: err.message, showError: true });
     }
   };

@@ -126,15 +126,17 @@ const Home: NextPage = () => {
   const sendEmail = async () => {
     try {
       if (emailreference.current) {
-        await axios
-          .post('http://54.242.34.13:4000/email', {
-            email: emailreference.current.value,
-            otp: otp,
-          })
-          .then((data) => {
-            console.log(data);
-          })
-          .catch((err) => console.log(err));
+        // await axios
+        //   .post('http://54.242.34.13:4000/email', {
+        //     email: emailreference.current.value,
+        //     otp: otp,
+        //   })
+        //   .then((data) => {
+        //     console.log(data);
+        //   })
+        //   .catch((err) => console.log(err));
+
+        await client.users.requestVerification(emailreference.current.value)
       }
     } catch (err: any) {
       console.log(err.message);
@@ -167,23 +169,32 @@ const Home: NextPage = () => {
           setCookie('otp', otp);
           setCookie('userreference', emailreference.current.value);
 
-
-          const data = {
-            username: usernamereference.current.value,
+          const signin = {
             email: emailreference.current.value,
             password: passwordreference.current.value,
             passwordConfirm: confirmPasswordreference.current.value,
+          };
+
+          const data = {
+            username: usernamereference.current.value,
             phoneno: phonereference.current.value,
             profilephoto: "none",
             coins: 0,
             verified: false,
             refcode: "s90df87s"
-          };
+          }
 
 
-          const record = await client.users.create(data);
-          if (record) {
-            console.log(record);
+          const user = await client.users.create(signin);
+          if (user) {
+            console.log(user);
+
+            const updateUser = await client.records.update(
+              "profiles",
+              user?.profile?.id!,
+              data
+            )
+
             await sendEmail();
             router.push('/emailverify');
           }

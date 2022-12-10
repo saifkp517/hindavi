@@ -4,7 +4,10 @@ import Box from '@mui/system/Box';
 import { useEffect, useState } from 'react';
 import { PosterCards } from '../components/PosterCards/PosterCards';
 import Container from '@mui/material/Container';
+import PocketBase from 'pocketbase';
 import { SkeletonLoading } from '../components/SkeletonLoading/SkeletonLoading';
+
+const client = new PocketBase('http://127.0.0.1:8090');
 
 export type CategoryType = {
   title: string;
@@ -21,6 +24,8 @@ export type PosterType = {
   field: string[];
   price: number;
 };
+
+console.log(client.authStore.isValid);
 
 const Home: NextPage = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -51,7 +56,7 @@ const Home: NextPage = () => {
     try {
       const result: any = await axios
         .get(
-          `https://hindavi-pocketbase.herokuapp.com/api/collections/${table}/records`
+          `http://127.0.0.1:8090/api/collections/${table}/records`
         )
         .then((res) => res.data);
       if (result) {
@@ -67,7 +72,7 @@ const Home: NextPage = () => {
     try {
       const result = await axios
         .get(
-          'https://hindavi-pocketbase.herokuapp.com/api/collections/categories/records'
+          'http://127.0.0.1:8090/api/collections/categories/records'
         )
         .then((res) => res.data);
       setCategories(result.items);
@@ -82,7 +87,7 @@ const Home: NextPage = () => {
         try {
           const posterData = await axios
             .get(
-              `https://hindavi-pocketbase.herokuapp.com/api/collections/posters/records/${el.posterId}`
+              `http://127.0.0.1:8090/api/collections/posters/records/${el.posterId}`
             )
             .then((res) => res.data);
           return posterData;
