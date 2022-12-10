@@ -167,18 +167,9 @@ const Home: NextPage = () => {
           setCookie('otp', otp);
           setCookie('userreference', emailreference.current.value);
 
-          const profile = {
-            username: String,
-            phoneno: Number,
-            address: String,
-            avatar: any,
-            coins: Number,
-            verified: Boolean,
-            refcode: String
-          }
 
           const data = {
-            profile.username: usernamereference.current.value,
+            username: usernamereference.current.value,
             email: emailreference.current.value,
             password: passwordreference.current.value,
             passwordConfirm: confirmPasswordreference.current.value,
