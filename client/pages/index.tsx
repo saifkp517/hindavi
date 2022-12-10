@@ -7,6 +7,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/system/Box';
 import IconButton from '@mui/material/IconButton';
+import PocketBase from 'pocketbase';
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -27,6 +28,9 @@ interface State {
 }
 
 const Home: NextPage = () => {
+
+  const client = new PocketBase('http://127.0.0.1:8090');
+
   const router = useRouter();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -43,19 +47,32 @@ const Home: NextPage = () => {
     event.preventDefault();
     try {
       if (emailRef.current && passwordRef.current) {
-        await axios
-          .post('http://54.242.34.13:4000/signin', {
-            email: emailRef.current.value,
-            password: passwordRef.current.value,
-          })
-          .then((data: any) => {
-            setCookie('key', data.data.token);
-            router.push('/home');
-          })
-          .catch((err) => {
-            console.log(err);
-            setErr(err.response.data);
-          });
+        // await axios
+        //   .post('http://54.242.34.13:4000/signin', {
+        //     email: emailRef.current.value,
+        //     password: passwordRef.current.value,
+        //   })
+        //   .then((data: any) => {
+        //     setCookie('key', data.data.token);
+        //     router.push('/home');
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
+        //     setErr(err.response.data);
+        //   });
+
+        const authData = await client.users.authViaEmail('saifkhan501721@gmail.com', 'pass12345');
+
+        console.log(authData);
+
+        // after the above you can also access the auth data from the authStore
+        console.log(client.authStore.isValid);
+        console.log(client.authStore.token);
+        console.log(client?.authStore?.model?.id!);
+
+
+
+
       }
     } catch (err: any) {
       setState({ ...state, error: err.message, showError: true });

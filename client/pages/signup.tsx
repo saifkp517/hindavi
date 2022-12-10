@@ -5,10 +5,10 @@ import axios from 'axios';
 import { setCookie } from 'cookies-next';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import PocketBase from 'pocketbase';
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
+import PocketBase from 'pocketbase';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
@@ -37,9 +37,9 @@ export interface State {
   passwordValue?: string;
 }
 
-const Home: NextPage = () => {
 
-  const pb = new PocketBase('https://hindavi-pocketbase.herokuapp.com');
+
+const Home: NextPage = () => {
 
   const router = useRouter();
 
@@ -167,10 +167,21 @@ const Home: NextPage = () => {
           setCookie('otp', otp);
           setCookie('userreference', emailreference.current.value);
 
+          const profile = {
+            username: String,
+            phoneno: Number,
+            address: String,
+            avatar: any,
+            coins: Number,
+            verified: Boolean,
+            refcode: String
+          }
+
           const data = {
-            username: usernamereference.current.value,
+            profile.username: usernamereference.current.value,
             email: emailreference.current.value,
             password: passwordreference.current.value,
+            passwordConfirm: confirmPasswordreference.current.value,
             phoneno: phonereference.current.value,
             profilephoto: "none",
             coins: 0,
@@ -178,21 +189,23 @@ const Home: NextPage = () => {
             refcode: "s90df87s"
           };
 
-          const record = await client.records.create('users', data);
-          try {
-            if (record) {
-              console.log(record);
-              await sendEmail();
-              router.push('/emailverify');
-            }
-          } catch (err) {
-            console.log(err);
+
+          const record = await client.users.create(data);
+          if (record) {
+            console.log(record);
+            await sendEmail();
+            router.push('/emailverify');
           }
 
         }
       }
     } catch (err: any) {
-      console.log(err);
+      console.log(err.data)
+      if(err.status == 400)
+      {
+        err.message = "User already exists!, Please try Logging in"
+      }
+      console.log("Error: "+err.status);
       setState({ ...state, error: err.message, showError: true });
     }
   };
