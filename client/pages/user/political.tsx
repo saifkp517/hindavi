@@ -152,6 +152,7 @@ const PoliticalProfile: NextPage = () => {
         designation2: des2Ref.current.value,
       };
 
+<<<<<<< HEAD
       client.records.create('politicalprofile', data)
         .then(data => {
           console.log(data)
@@ -164,6 +165,15 @@ const PoliticalProfile: NextPage = () => {
           }
           alert(err.message)
         })
+=======
+      client.records
+        .create('politicalprofile', data)
+        .then((data) => {
+          console.log(data);
+          alert('Created');
+        })
+        .catch((err) => console.log(err.data));
+>>>>>>> 5e1e8e135145d85541bdeaed5c8fbcbac2c1c4c0
     }
   };
 
@@ -195,23 +205,31 @@ const PoliticalProfile: NextPage = () => {
             }}
             src={profileImage}
           />
-          <Button
-            variant='contained'
-            startIcon={<Upload />}
-            color='secondary'
-            sx={{
-              color: 'white',
-              marginTop: 2,
-              fontSize: {
-                md: '0.9rem',
-                xs: '0.6rem',
-              },
-            }}
-          >
-            Upload Profile
-            <input hidden accept='image/*' type='file' />
-          </Button>
-          <input type='file' onChange={profileChange} />
+          <input
+            id='profile'
+            type='file'
+            accept='image/*'
+            onChange={profileChange}
+            hidden
+          />
+          <label htmlFor='profile'>
+            <Button
+              variant='contained'
+              startIcon={<Upload />}
+              component='span'
+              color='secondary'
+              sx={{
+                color: 'white',
+                marginTop: 2,
+                fontSize: {
+                  md: '0.9rem',
+                  xs: '0.6rem',
+                },
+              }}
+            >
+              Upload Profile
+            </Button>
+          </label>
         </Box>
         <Box>
           <Avatar
@@ -223,23 +241,31 @@ const PoliticalProfile: NextPage = () => {
             }}
             src={partyLogo}
           />
-          <Button
-            variant='contained'
-            startIcon={<Upload />}
-            color='secondary'
-            sx={{
-              color: 'white',
-              marginTop: 2,
-              fontSize: {
-                md: '0.9rem',
-                xs: '0.6rem',
-              },
-            }}
-          >
-            Upload Party Icon
-            <input hidden accept='image/*' type='file' />
-          </Button>
-          <input type='file' onChange={partylogoChange} />
+          <input
+            id='party'
+            type='file'
+            accept='image/*'
+            onChange={partylogoChange}
+            hidden
+          />
+          <label htmlFor='party'>
+            <Button
+              variant='contained'
+              startIcon={<Upload />}
+              color='secondary'
+              component='span'
+              sx={{
+                color: 'white',
+                marginTop: 2,
+                fontSize: {
+                  md: '0.9rem',
+                  xs: '0.6rem',
+                },
+              }}
+            >
+              Upload Party Icon
+            </Button>
+          </label>
         </Box>
       </Box>
       <form onSubmit={addPolitical}>

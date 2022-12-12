@@ -18,7 +18,7 @@ const CartPage: NextPage = () => {
     (async () => {
       const records = await axios
         .get(
-          'http://127.0.0.1:8090/api/collections/cart/records?userId=ge890clfoykvdqu&expand=posterId'
+          'http://127.0.0.1:8090/api/collections/cart/records?userId=vaciwcxwr8hu6e1&expand=posterId'
         )
         .then((res) => res.data.items[0]);
       setPosters(records['@expand'].posterId);

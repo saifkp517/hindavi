@@ -89,7 +89,7 @@ const BusinessProfile: NextPage = () => {
   };
 
   const addBusiness = async (event: any) => {
-    event.preventDefault()
+    event.preventDefault();
     if (
       taglineRef.current &&
       emailRef.current &&
@@ -102,9 +102,10 @@ const BusinessProfile: NextPage = () => {
         email: emailRef.current.value,
         phoneno: phoneRef.current.value,
         address: addressRef.current.value,
-        website: websiteRef.current.value
+        website: websiteRef.current.value,
       };
 
+<<<<<<< HEAD
       client.records.create('businessprofile', data)
       .then(data => {
         console.log(data)
@@ -118,6 +119,15 @@ const BusinessProfile: NextPage = () => {
         }
         alert(err.message)
       })
+=======
+      client.records
+        .create('businessprofile', data)
+        .then((data) => {
+          console.log(data);
+          alert('Created');
+        })
+        .catch((err) => console.log(err));
+>>>>>>> 5e1e8e135145d85541bdeaed5c8fbcbac2c1c4c0
     }
   };
 
@@ -136,16 +146,24 @@ const BusinessProfile: NextPage = () => {
           }}
           src={profileImage}
         />
-        <Button
-          variant='contained'
-          startIcon={<Upload />}
-          color='secondary'
-          sx={{ color: 'white', marginTop: 2 }}
-        >
-          Upload Logo
-          <input hidden accept='image/*' type='file' />
-        </Button>
-        <input type='file' onChange={profileImageChange} />
+        <input
+          id='logo'
+          accept='images/*'
+          type='file'
+          onChange={profileImageChange}
+          hidden
+        />
+        <label htmlFor='logo'>
+          <Button
+            variant='contained'
+            component='span'
+            startIcon={<Upload />}
+            color='secondary'
+            sx={{ color: 'white', marginTop: 2 }}
+          >
+            Upload Logo
+          </Button>
+        </label>
       </Box>
       <form onSubmit={addBusiness}>
         {inputsArr.map((el: InputFieldType, i) => (
