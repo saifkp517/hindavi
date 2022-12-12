@@ -110,7 +110,14 @@ const BusinessProfile: NextPage = () => {
         console.log(data)
         alert("Created")
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err.data)
+        if(err.status == 400)
+        {
+          err.message = "User already exists!, Please try Logging in"
+        }
+        alert(err.message)
+      })
     }
   };
 
