@@ -141,23 +141,24 @@ const PoliticalProfile: NextPage = () => {
       //   })
       //   .then((data) => console.log(data))
       //   .catch((err) => console.log);
-      
-        const data = {
-          username: nameRef.current.value,
-          phoneno: phoneRef.current.value,
-          facebook: fbRef.current.value,
-          instagram: instaRef.current.value,
-          twitter: twitterRef.current.value,
-          designation1: des1Ref.current.value,
-          designation2: des2Ref.current.value,
-        };
-  
-        client.records.create('politicalprofile', data)
-        .then(data => {
-          console.log(data)
-          alert("Created")
+
+      const data = {
+        username: nameRef.current.value,
+        phoneno: phoneRef.current.value,
+        facebook: fbRef.current.value,
+        instagram: instaRef.current.value,
+        twitter: twitterRef.current.value,
+        designation1: des1Ref.current.value,
+        designation2: des2Ref.current.value,
+      };
+
+      client.records
+        .create('politicalprofile', data)
+        .then((data) => {
+          console.log(data);
+          alert('Created');
         })
-        .catch(err => console.log(err.data))
+        .catch((err) => console.log(err.data));
     }
   };
 
@@ -189,23 +190,31 @@ const PoliticalProfile: NextPage = () => {
             }}
             src={profileImage}
           />
-          <Button
-            variant='contained'
-            startIcon={<Upload />}
-            color='secondary'
-            sx={{
-              color: 'white',
-              marginTop: 2,
-              fontSize: {
-                md: '0.9rem',
-                xs: '0.6rem',
-              },
-            }}
-          >
-            Upload Profile
-            <input hidden accept='image/*' type='file' />
-          </Button>
-          <input type='file' onChange={profileChange} />
+          <input
+            id='profile'
+            type='file'
+            accept='image/*'
+            onChange={profileChange}
+            hidden
+          />
+          <label htmlFor='profile'>
+            <Button
+              variant='contained'
+              startIcon={<Upload />}
+              component='span'
+              color='secondary'
+              sx={{
+                color: 'white',
+                marginTop: 2,
+                fontSize: {
+                  md: '0.9rem',
+                  xs: '0.6rem',
+                },
+              }}
+            >
+              Upload Profile
+            </Button>
+          </label>
         </Box>
         <Box>
           <Avatar
@@ -217,23 +226,31 @@ const PoliticalProfile: NextPage = () => {
             }}
             src={partyLogo}
           />
-          <Button
-            variant='contained'
-            startIcon={<Upload />}
-            color='secondary'
-            sx={{
-              color: 'white',
-              marginTop: 2,
-              fontSize: {
-                md: '0.9rem',
-                xs: '0.6rem',
-              },
-            }}
-          >
-            Upload Party Icon
-            <input hidden accept='image/*' type='file' />
-          </Button>
-          <input type='file' onChange={partylogoChange} />
+          <input
+            id='party'
+            type='file'
+            accept='image/*'
+            onChange={partylogoChange}
+            hidden
+          />
+          <label htmlFor='party'>
+            <Button
+              variant='contained'
+              startIcon={<Upload />}
+              color='secondary'
+              component='span'
+              sx={{
+                color: 'white',
+                marginTop: 2,
+                fontSize: {
+                  md: '0.9rem',
+                  xs: '0.6rem',
+                },
+              }}
+            >
+              Upload Party Icon
+            </Button>
+          </label>
         </Box>
       </Box>
       <form onSubmit={addPolitical}>

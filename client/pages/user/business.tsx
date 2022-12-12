@@ -89,7 +89,7 @@ const BusinessProfile: NextPage = () => {
   };
 
   const addBusiness = async (event: any) => {
-    event.preventDefault()
+    event.preventDefault();
     if (
       taglineRef.current &&
       emailRef.current &&
@@ -102,15 +102,16 @@ const BusinessProfile: NextPage = () => {
         email: emailRef.current.value,
         phoneno: phoneRef.current.value,
         address: addressRef.current.value,
-        website: websiteRef.current.value
+        website: websiteRef.current.value,
       };
 
-      client.records.create('businessprofile', data)
-      .then(data => {
-        console.log(data)
-        alert("Created")
-      })
-      .catch(err => console.log(err))
+      client.records
+        .create('businessprofile', data)
+        .then((data) => {
+          console.log(data);
+          alert('Created');
+        })
+        .catch((err) => console.log(err));
     }
   };
 
@@ -129,16 +130,24 @@ const BusinessProfile: NextPage = () => {
           }}
           src={profileImage}
         />
-        <Button
-          variant='contained'
-          startIcon={<Upload />}
-          color='secondary'
-          sx={{ color: 'white', marginTop: 2 }}
-        >
-          Upload Logo
-          <input hidden accept='image/*' type='file' />
-        </Button>
-        <input type='file' onChange={profileImageChange} />
+        <input
+          id='logo'
+          accept='images/*'
+          type='file'
+          onChange={profileImageChange}
+          hidden
+        />
+        <label htmlFor='logo'>
+          <Button
+            variant='contained'
+            component='span'
+            startIcon={<Upload />}
+            color='secondary'
+            sx={{ color: 'white', marginTop: 2 }}
+          >
+            Upload Logo
+          </Button>
+        </label>
       </Box>
       <form onSubmit={addBusiness}>
         {inputsArr.map((el: InputFieldType, i) => (
