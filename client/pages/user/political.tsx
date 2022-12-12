@@ -152,7 +152,6 @@ const PoliticalProfile: NextPage = () => {
         designation2: des2Ref.current.value,
       };
 
-<<<<<<< HEAD
       client.records.create('politicalprofile', data)
         .then(data => {
           console.log(data)
@@ -165,15 +164,6 @@ const PoliticalProfile: NextPage = () => {
           }
           alert(err.message)
         })
-=======
-      client.records
-        .create('politicalprofile', data)
-        .then((data) => {
-          console.log(data);
-          alert('Created');
-        })
-        .catch((err) => console.log(err.data));
->>>>>>> 5e1e8e135145d85541bdeaed5c8fbcbac2c1c4c0
     }
   };
 

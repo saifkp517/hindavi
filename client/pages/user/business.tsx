@@ -105,7 +105,6 @@ const BusinessProfile: NextPage = () => {
         website: websiteRef.current.value,
       };
 
-<<<<<<< HEAD
       client.records.create('businessprofile', data)
       .then(data => {
         console.log(data)
@@ -119,15 +118,6 @@ const BusinessProfile: NextPage = () => {
         }
         alert(err.message)
       })
-=======
-      client.records
-        .create('businessprofile', data)
-        .then((data) => {
-          console.log(data);
-          alert('Created');
-        })
-        .catch((err) => console.log(err));
->>>>>>> 5e1e8e135145d85541bdeaed5c8fbcbac2c1c4c0
     }
   };
 
