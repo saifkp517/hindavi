@@ -17,6 +17,7 @@ import {
   InputFieldType,
 } from '../../components/InputFields/InputFields';
 
+
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useS3Upload } from 'next-s3-upload';
@@ -124,7 +125,7 @@ const BusinessProfile: NextPage = () => {
   return (
     <Container maxWidth='sm'>
       <Typography variant='h5' component='h2' sx={{ marginY: 2 }}>
-        Business Profile
+        Businesss Profile
       </Typography>
       <Box sx={{ marginY: 2, textAlign: 'center' }}>
         <Avatar
