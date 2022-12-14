@@ -17,6 +17,7 @@ import {
   InputFieldType,
 } from '../../components/InputFields/InputFields';
 
+
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useS3Upload } from 'next-s3-upload';
@@ -105,20 +106,26 @@ const BusinessProfile: NextPage = () => {
         website: websiteRef.current.value,
       };
 
-      client.records
-        .create('businessprofile', data)
-        .then((data) => {
-          console.log(data);
-          alert('Created');
-        })
-        .catch((err) => console.log(err));
+      client.records.create('businessprofile', data)
+      .then(data => {
+        console.log(data)
+        alert("Created")
+      })
+      .catch(err => {
+        console.log(err.data)
+        if(err.status == 400)
+        {
+          err.message = "User already exists!, Please try Logging in"
+        }
+        alert(err.message)
+      })
     }
   };
 
   return (
     <Container maxWidth='sm'>
       <Typography variant='h5' component='h2' sx={{ marginY: 2 }}>
-        Business Profile
+        Businesss Profile
       </Typography>
       <Box sx={{ marginY: 2, textAlign: 'center' }}>
         <Avatar

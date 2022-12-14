@@ -119,7 +119,7 @@ const PoliticalProfile: NextPage = () => {
     }
   };
 
-  const addPolitical = async (event: any) => {
+  const addPolitical = async (event: React.FormEvent) => {
     event.preventDefault();
     if (
       fbRef.current &&
@@ -152,13 +152,18 @@ const PoliticalProfile: NextPage = () => {
         designation2: des2Ref.current.value,
       };
 
-      client.records
-        .create('politicalprofile', data)
-        .then((data) => {
-          console.log(data);
-          alert('Created');
+      client.records.create('politicalprofile', data)
+        .then(data => {
+          console.log(data)
+          alert("Created")
         })
-        .catch((err) => console.log(err.data));
+        .catch(err => {
+          console.log(err.data)
+          if (err.status == 400) {
+            err.message = "User already exists!, Please try Logging in"
+          }
+          alert(err.message)
+        })
     }
   };
 
