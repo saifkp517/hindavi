@@ -12,14 +12,13 @@ import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Link from '@mui/material/Link';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 import Email from '@mui/icons-material/Email';
 import Lock from '@mui/icons-material/Lock';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/router';
+import { ErrorDisplay } from '../components/ErrorDisplay/ErrorDisplay';
 
 interface State {
   error: string;
@@ -28,7 +27,6 @@ interface State {
 }
 
 const Home: NextPage = () => {
-
   const client = new PocketBase('http://127.0.0.1:8090');
 
   const router = useRouter();
@@ -61,7 +59,10 @@ const Home: NextPage = () => {
         //     setErr(err.response.data);
         //   });
 
-        const authData = await client.users.authViaEmail(emailRef.current.value, passwordRef.current.value);
+        const authData = await client.users.authViaEmail(
+          emailRef.current.value,
+          passwordRef.current.value
+        );
 
         console.log(authData);
 
@@ -69,15 +70,10 @@ const Home: NextPage = () => {
         console.log(client.authStore.isValid);
         console.log(client.authStore.token);
         console.log(client?.authStore?.model?.id!);
-
-
-
-
       }
     } catch (err: any) {
-      if(err.message == "Failed to authenticate.")
-      {
-        err.message = "Incorrect Email or Password"
+      if (err.message == 'Failed to authenticate.') {
+        err.message = 'Incorrect Email or Password';
       }
       setState({ ...state, error: err.message, showError: true });
     }
@@ -225,20 +221,12 @@ const Home: NextPage = () => {
           Sign up
         </Link>
       </Typography>
-      <Snackbar
+      <ErrorDisplay
         open={state.showError}
-        autoHideDuration={6000}
-        onClose={() => setState({ ...state, showError: false })}
-      >
-        <Alert
-          severity='error'
-          variant='filled'
-          elevation={4}
-          onClose={() => setState({ ...state, showError: false })}
-        >
-          {state.error}
-        </Alert>
-      </Snackbar>
+        error={state.error}
+        setError={(value: boolean) => setState({ ...state, showError: value })}
+        color='error'
+      />
     </Container>
   );
 };

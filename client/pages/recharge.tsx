@@ -11,6 +11,7 @@ import { NextPage } from 'next';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { getCookie } from 'cookies-next';
+import Paper from '@mui/material/Paper';
 
 declare global {
   interface Window {
@@ -283,20 +284,64 @@ const Recharge: NextPage = () => {
           Recharge
         </Button>
       </Box>
-      <Typography variant='h6' component='h3'>
+      <Typography variant='h6' component='h3' sx={{ marginBottom: 2 }}>
         Payment History :-
-        {rows.map((row) => {
-          return (
-            <div id={row.id}>
-              <hr />
-              <p>
-                Amount Paid: {row.paymentamount} | Coins Purchased:{' '}
-                {row.coinspurchased}
-              </p>
-            </div>
-          );
-        })}
       </Typography>
+      {rows.map((row) => {
+        return (
+          <div id={row.id}>
+            <hr />
+            <p>
+              Amount Paid: {row.paymentamount} | Coins Purchased:{' '}
+              {row.coinspurchased}
+            </p>
+          </div>
+        );
+      })}
+      <Paper
+        sx={{
+          padding: 1.5,
+          marginBottom: 1.5,
+          border: '2px solid #F27C35',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: 2,
+        }}
+      >
+        <Box>
+          <Typography variant='body1' component='p'>
+            &#8377; 5900
+          </Typography>
+          <Typography
+            variant='subtitle2'
+            component='p'
+            sx={{ color: 'gray', fontSize: '0.7rem' }}
+          >
+            Date purchased:{' '}
+            {new Date().toLocaleDateString('en-UK', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+            })}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant='body1' component='p' sx={{ fontWeight: 500 }}>
+            Coins:
+            <Typography variant='h6' component='span' sx={{ marginX: 1 }}>
+              99
+            </Typography>
+          </Typography>
+        </Box>
+      </Paper>
     </Container>
   );
 };

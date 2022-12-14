@@ -25,15 +25,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/user/business": [
+    "/recharge": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/user/business.js"
+      "static/chunks/pages/recharge.js"
     ],
-    "/user/political": [
+    "/user": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/user/political.js"
+      "static/chunks/pages/user.js"
     ]
   },
   "ampFirstPages": []
