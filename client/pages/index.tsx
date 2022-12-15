@@ -64,12 +64,16 @@ const Home: NextPage = () => {
           passwordRef.current.value
         );
 
-        console.log(authData);
+        //console.log(authData.user.profile.username);
 
         // after the above you can also access the auth data from the authStore
-        console.log(client.authStore.isValid);
-        console.log(client.authStore.token);
-        console.log(client?.authStore?.model?.id!);
+
+        if(client.authStore.isValid == true) 
+        {
+          router.push('/home');
+          setCookie('key', client.authStore.token);
+          //console.log(client.authStore.token);
+        }
       }
     } catch (err: any) {
       if (err.message == 'Failed to authenticate.') {

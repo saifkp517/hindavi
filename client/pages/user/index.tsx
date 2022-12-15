@@ -6,6 +6,7 @@ import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import Container from '@mui/system/Container';
 import Edit from '@mui/icons-material/Edit';
+import PocketBase from 'pocketbase';
 import Business from '@mui/icons-material/Business';
 import Gavel from '@mui/icons-material/Gavel';
 import Watermark from '@mui/icons-material/BrandingWatermark';
@@ -24,6 +25,8 @@ type options = {
   icon: JSX.Element;
   link: string;
 };
+
+const client = new PocketBase('http://127.0.0.1:8090');
 
 const UserPage: NextPage = () => {
   const router = useRouter();
@@ -61,20 +64,18 @@ const UserPage: NextPage = () => {
 
   const Verify = async () => {
     const token = getCookie('key');
-    axios
-      .post('http://54.242.34.13:4000/protected', {
-        token: token,
-      })
-      .then((data) => {
-        console.log(data);
-        UserInfo(data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-        if (err.response.status === 401) {
-          setError('Please Login again!');
-        }
-      });
+    const authData = await client.users.authViaEmail(
+      emailRef.current.value,
+      passwordRef.current.value
+    );
+    if(token)
+    {
+      console.log(authData.user.profile.username);
+    }
+    else
+    {
+      router.push('/')
+    }
   };
 
   const UserInfo = async (id: any) => {
