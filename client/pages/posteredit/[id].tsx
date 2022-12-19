@@ -2,6 +2,7 @@ import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import Share from '@mui/icons-material/Share';
 import { styled } from '@mui/material';
 import Button from '@mui/material/Button';
+import PocketBase from 'pocketbase';
 import Card from '@mui/material/Card';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -34,6 +35,11 @@ interface Props {
 const Poster: NextPage<Props> = ({ id }) => {
   const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const client = new PocketBase('http://127.0.0.1:8090');
+
+  const userDet = client?.authStore?.model?.profile!;
+  console.log(userDet)
 
   const [frameIndex, setFrameIndex] = useState(0);
   const [img, setImg] = useState('');
@@ -124,6 +130,12 @@ const Poster: NextPage<Props> = ({ id }) => {
       }}
     >
       <Box sx={{ width: '100%', marginBottom: 1 }}>
+      <ul>
+        <li>PhoneNo: {userDet?.phoneno}</li>
+        <li>Username: {userDet?.username}</li>
+        <li>Userid: {userDet?.userId}</li>
+        <li>Coins: {userDet?.coins}</li>
+      </ul>
         <ColorButton onClick={() => router.back()}>
           <ChevronLeft />
         </ColorButton>
