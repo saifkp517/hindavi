@@ -66,13 +66,13 @@ const Home: NextPage = () => {
 
         //console.log(authData.user.profile.username);
 
+        console.log(client.authStore.isValid);
+        console.log(authData);
+
         // after the above you can also access the auth data from the authStore
 
-        if(client.authStore.isValid == true) 
-        {
+        if (client.authStore.isValid == true) {
           router.push('/home');
-          setCookie('key', client.authStore.token);
-          //console.log(client.authStore.token);
         }
       }
     } catch (err: any) {

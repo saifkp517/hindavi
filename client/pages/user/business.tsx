@@ -78,6 +78,7 @@ const BusinessProfile: NextPage = () => {
 
   const { uploadToS3, files } = useS3Upload();
   const [profileImage, setProfileImage] = useState('');
+  console.log(client.authStore.model.profile)
 
   const profileImageChange = async (event: any) => {
     try {
@@ -107,18 +108,17 @@ const BusinessProfile: NextPage = () => {
       };
 
       client.records.create('businessprofile', data)
-      .then(data => {
-        console.log(data)
-        alert("Created")
-      })
-      .catch(err => {
-        console.log(err.data)
-        if(err.status == 400)
-        {
-          err.message = "User already exists!, Please try Logging in"
-        }
-        alert(err.message)
-      })
+        .then(data => {
+          console.log(data)
+          alert("Created")
+        })
+        .catch(err => {
+          console.log(err.data)
+          if (err.status == 400) {
+            err.message = "User already exists!, Please try Logging in"
+          }
+          alert(err.message)
+        })
     }
   };
 
