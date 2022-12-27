@@ -8,12 +8,16 @@ import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Skeleton from '@mui/material/Skeleton';
+import CardHeader from '@mui/material/CardHeader';
+import IconButton from '@mui/material/IconButton';
+import Close from '@mui/icons-material/Close';
 
 type Props = {
   el: PosterType;
+  removePoster: (id: string) => void;
 };
 
-export const CartCard: NextPage<Props> = ({ el }) => {
+export const CartCard: NextPage<Props> = ({ el, removePoster }) => {
   const [loading, setLoading] = useState(true);
 
   return (
@@ -21,11 +25,27 @@ export const CartCard: NextPage<Props> = ({ el }) => {
       key={el.id}
       elevation={2}
       sx={{
+        position: 'relative',
         display: 'flex',
         flexDirection: 'row-reverse',
         marginBottom: 2,
       }}
     >
+      <CardHeader
+        action={
+          <IconButton
+            aria-label='close'
+            sx={{
+              position: 'absolute',
+              top: '0.25rem',
+              right: '0.25rem',
+            }}
+            onClick={() => removePoster(el.id)}
+          >
+            <Close />
+          </IconButton>
+        }
+      />
       <CardContent
         sx={{
           flex: '100%',
@@ -61,20 +81,6 @@ export const CartCard: NextPage<Props> = ({ el }) => {
             Coins: {el.price}
           </Typography>
         </Box>
-        <Box>
-          <Button
-            size='small'
-            variant='contained'
-            color='primary'
-            sx={{
-              color: '#fff',
-              fontSize: { xs: '0.75rem', md: '0.9rem' },
-              paddingY: { xs: '0.1rem', md: '0.2rem' },
-            }}
-          >
-            Buy
-          </Button>
-        </Box>
       </CardContent>
       {loading && (
         <Skeleton
@@ -90,8 +96,8 @@ export const CartCard: NextPage<Props> = ({ el }) => {
         component='img'
         alt='poster'
         sx={{
-          height: { xs: '8rem', md: '12rem' },
-          width: { xs: '10rem', md: '12rem' },
+          height: { xs: '8rem', md: '10rem' },
+          width: { xs: '10rem', md: '10rem' },
           boxShadow: '1px 0 5px 1px rgba(0, 0, 0, 0.25)',
           display: !loading ? 'block' : 'none',
         }}
