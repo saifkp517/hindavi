@@ -133,7 +133,7 @@ const Poster: NextPage<Props> = ({ id }) => {
       <ul>
         <li>PhoneNo: {userDet?.phoneno}</li>
         <li>Username: {userDet?.username}</li>
-        <li>Userid: {userDet?.userId}</li>
+        <li>Userid: {userDet?.id}</li>
         <li>Coins: {userDet?.coins}</li>
       </ul>
         <ColorButton onClick={() => router.back()}>

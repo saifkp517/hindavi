@@ -5,6 +5,7 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
+import PocketBase from 'pocketbase';
 import Button from '@mui/material/Button';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -15,14 +16,23 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
 const CartPage: NextPage = () => {
+
+  const client = new PocketBase('http://127.0.0.1:8090');
+
+  const userDet = client?.authStore?.model?.profile!;
+
   const [posters, setPosters] = useState<PosterType[]>([]);
   const [cartId, setCartId] = useState('');
 
-  useEffect(() => {
+  useEffect(() => {   
     (async () => {
+
+      const userid = userDet?.id
+
+
       const records = await axios
         .get(
-          'http://127.0.0.1:8090/api/collections/cart/records?userId=vaciwcxwr8hu6e1&expand=posterId'
+          `http://127.0.0.1:8090/api/collections/cart/records?userId=rgpyi28sqcfwdix&expand=posterId`
         )
         .then((res) => {
           res.data.items.length > 0 ? setCartId(res.data.items[0].id) : null;
@@ -38,17 +48,18 @@ const CartPage: NextPage = () => {
     try {
       const ids: string[] = [];
       posters.forEach((el) => (el.id !== id ? ids.push(el.id) : null));
+      alert(userDet?.id)
 
       const records = await axios.patch(
         `http://127.0.0.1:8090/api/collections/cart/records/${cartId}`,
         {
-          userId: 'vaciwcxwr8hu6e1',
+          userId: 'rgpyi28sqcfwdix',
           posterId: ids,
         }
       );
       setPosters(posters.filter((el) => el.id !== id));
     } catch (error: any) {
-      console.log(error.message);
+      console.log(error);
     }
   };
 

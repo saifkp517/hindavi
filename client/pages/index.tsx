@@ -1,7 +1,5 @@
 import type { NextPage } from 'next';
-import axios from 'axios';
 import Container from '@mui/material/Container';
-import { setCookie } from 'cookies-next';
 import FormControl from '@mui/material/FormControl';
 import InputAdornment from '@mui/material/InputAdornment';
 import Typography from '@mui/material/Typography';

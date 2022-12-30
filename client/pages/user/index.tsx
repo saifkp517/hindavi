@@ -17,7 +17,7 @@ import { NextPage } from 'next';
 import { getCookie } from 'cookies-next';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import Share from '@mui/icons-material/Share';
 
 type options = {
@@ -58,25 +58,14 @@ const UserPage: NextPage = () => {
   const [id, setId] = useState<any>('');
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    Verify();
+
+  useLayoutEffect(() => {
+    if (client.authStore.isValid == false) {
+      router.push('/');
+    }
+
   }, []);
 
-  const Verify = async () => {
-    const token = getCookie('key');
-    const authData = await client.users.authViaEmail(
-      emailRef.current.value,
-      passwordRef.current.value
-    );
-    if(token)
-    {
-      console.log(authData.user.profile.username);
-    }
-    else
-    {
-      router.push('/')
-    }
-  };
 
   const UserInfo = async (id: any) => {
     if (id !== '') {
