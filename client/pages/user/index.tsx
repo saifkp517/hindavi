@@ -59,11 +59,10 @@ const UserPage: NextPage = () => {
   const [error, setError] = useState('');
 
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (client.authStore.isValid == false) {
       router.push('/');
     }
-
   }, []);
 
 

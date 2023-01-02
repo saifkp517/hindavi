@@ -24,15 +24,15 @@ const CartPage: NextPage = () => {
   const [posters, setPosters] = useState<PosterType[]>([]);
   const [cartId, setCartId] = useState('');
 
+  const userid = userDet?.id
+
   useEffect(() => {   
     (async () => {
-
-      const userid = userDet?.id
 
 
       const records = await axios
         .get(
-          `http://127.0.0.1:8090/api/collections/cart/records?userId=rgpyi28sqcfwdix&expand=posterId`
+          `http://127.0.0.1:8090/api/collections/cart/records?userId=${userid}&expand=posterId`
         )
         .then((res) => {
           res.data.items.length > 0 ? setCartId(res.data.items[0].id) : null;
@@ -53,7 +53,7 @@ const CartPage: NextPage = () => {
       const records = await axios.patch(
         `http://127.0.0.1:8090/api/collections/cart/records/${cartId}`,
         {
-          userId: 'rgpyi28sqcfwdix',
+          userId: `${userid}`,
           posterId: ids,
         }
       );
