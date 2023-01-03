@@ -203,7 +203,7 @@ const Poster: NextPage<Props> = ({ id }) => {
         }}
       >
         <Typography variant='body1' component='p'>
-          Download / Share
+          Add to cart
         </Typography>
       </Button>
     </Container>
