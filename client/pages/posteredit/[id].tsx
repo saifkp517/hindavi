@@ -36,10 +36,10 @@ const Poster: NextPage<Props> = ({ id }) => {
   const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const client = new PocketBase('http://127.0.0.1:8090');
+  const client: any = new PocketBase('http://127.0.0.1:8090');
 
   const userDet = client?.authStore?.model?.profile!;
-  console.log(userDet)
+  console.log(userDet);
 
   const [frameIndex, setFrameIndex] = useState(0);
   const [img, setImg] = useState('');
@@ -67,14 +67,13 @@ const Poster: NextPage<Props> = ({ id }) => {
   ];
 
   const frameHeights = [0, 80, 100, 155, 141, 160, 160, 160, 100, 50, 850];
+  const userid = 'vaciwcxwr8hu6e1';
 
   useEffect(() => {
     (async () => {
       console.log(id);
       const result: PosterType = await axios
-        .get(
-          `http://127.0.0.1:8090/api/collections/posters/records/${id}`
-        )
+        .get(`http://127.0.0.1:8090/api/collections/posters/records/${id}`)
         .then((res) => res.data);
       setImg(result.image);
     })();
@@ -115,6 +114,35 @@ const Poster: NextPage<Props> = ({ id }) => {
     }
   }, [frameIndex, img]);
 
+  const addToCart = async () => {
+    const records = await (
+      await axios.get(
+        `http://127.0.0.1:8090/api/collections/cart/records?filter=(userId='${userid}')&expand=posterId`
+      )
+    ).data.items[0];
+    if (!records) {
+      const response = await axios.post(
+        'http://127.0.0.1:8090/api/collections/cart/records',
+        {
+          userId: 'emnxjoo82a7e0rk',
+          posterId: [id],
+        }
+      );
+    }
+    const posters = records.posterId;
+    const collectionId = records.id;
+    const res = await axios.patch(
+      `http://127.0.0.1:8090/api/collections/cart/records/${collectionId}`,
+      {
+        userId: userid,
+        posterId: [...posters, id],
+      }
+    );
+    if (res.data) {
+      router.push('/cart');
+    }
+  };
+
   return (
     <Container
       className='Poster__main'
@@ -130,12 +158,12 @@ const Poster: NextPage<Props> = ({ id }) => {
       }}
     >
       <Box sx={{ width: '100%', marginBottom: 1 }}>
-      <ul>
-        <li>PhoneNo: {userDet?.phoneno}</li>
-        <li>Username: {userDet?.username}</li>
-        <li>Userid: {userDet?.id}</li>
-        <li>Coins: {userDet?.coins}</li>
-      </ul>
+        <ul>
+          <li>PhoneNo: {userDet?.phoneno}</li>
+          <li>Username: {userDet?.username}</li>
+          <li>Userid: {userDet?.id}</li>
+          <li>Coins: {userDet?.coins}</li>
+        </ul>
         <ColorButton onClick={() => router.back()}>
           <ChevronLeft />
         </ColorButton>
@@ -167,6 +195,7 @@ const Poster: NextPage<Props> = ({ id }) => {
         variant='contained'
         fullWidth={true}
         startIcon={<Share />}
+        onClick={addToCart}
         sx={{
           color: '#fff',
           paddingY: 1.5,
