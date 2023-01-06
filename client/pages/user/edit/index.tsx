@@ -158,17 +158,24 @@ const EditProfile: NextPage = () => {
             marginX: 'auto',
           }}
         />
-        <Button
-          variant='contained'
-          startIcon={<Upload />}
-          color='secondary'
-          sx={{ color: 'white', marginTop: 2 }}
-        >
-          Update Profile Picture
-          <input hidden accept='image/*' type='file' />
-        </Button>
-
-        <input type='file' onChange={fileHandleChange} />
+        <input
+          id='logo'
+          accept='images/*'
+          type='file'
+          onChange={fileHandleChange}
+          hidden
+        />
+        <label htmlFor='logo'>
+          <Button
+            variant='contained'
+            component='span'
+            startIcon={<Upload />}
+            color='secondary'
+            sx={{ color: 'white', marginTop: 2 }}
+          >
+            Edit Profile Picture
+          </Button>
+        </label>
 
         <div>
           {files.map((file, index) => (

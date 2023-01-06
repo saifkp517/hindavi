@@ -19,6 +19,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import Share from '@mui/icons-material/Share';
+import PhotoLibrary from '@mui/icons-material/PhotoLibrary';
 
 type options = {
   title: string;
@@ -33,6 +34,7 @@ const UserPage: NextPage = () => {
 
   const optionsArr: options[] = [
     { title: 'Edit your profile', icon: <Edit />, link: './user/edit' },
+    { title: 'Poster Library', icon: <PhotoLibrary />, link: './library' },
     { title: 'Refer and Earn', icon: <Share />, link: './refer' },
     {
       title: 'Business profile',
@@ -58,13 +60,11 @@ const UserPage: NextPage = () => {
   const [id, setId] = useState<any>('');
   const [error, setError] = useState('');
 
-
   useEffect(() => {
-    if (client.authStore.isValid == false) {
-      router.push('/');
-    }
+    // if (client.authStore.isValid == false) {
+    //   router.push('/');
+    // }
   }, []);
-
 
   const UserInfo = async (id: any) => {
     if (id !== '') {

@@ -17,7 +17,6 @@ import {
   InputFieldType,
 } from '../../components/InputFields/InputFields';
 
-
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useS3Upload } from 'next-s3-upload';
@@ -78,7 +77,7 @@ const BusinessProfile: NextPage = () => {
 
   const { uploadToS3, files } = useS3Upload();
   const [profileImage, setProfileImage] = useState('');
-  console.log(client.authStore.model.profile)
+  // console.log(client.authStore.model.profile)
 
   const profileImageChange = async (event: any) => {
     try {
@@ -107,18 +106,19 @@ const BusinessProfile: NextPage = () => {
         website: websiteRef.current.value,
       };
 
-      client.records.create('businessprofile', data)
-        .then(data => {
-          console.log(data)
-          alert("Created")
+      client.records
+        .create('businessprofile', data)
+        .then((data) => {
+          console.log(data);
+          alert('Created');
         })
-        .catch(err => {
-          console.log(err.data)
+        .catch((err) => {
+          console.log(err.data);
           if (err.status == 400) {
-            err.message = "User already exists!, Please try Logging in"
+            err.message = 'User already exists!, Please try Logging in';
           }
-          alert(err.message)
-        })
+          alert(err.message);
+        });
     }
   };
 
