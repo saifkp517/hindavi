@@ -12,12 +12,13 @@ import axios from 'axios';
 
 const LibraryPage: NextPage = () => {
   const [posters, setPosters] = useState<PosterType[]>([]);
+  const [userId, setUserId] = useState('emnxjoo82a7e0rk');
 
   useEffect(() => {
     (async () => {
       const records = await axios
         .get(
-          `http://127.0.0.1:8090/api/collections/library/records?filter=(userId='emnxjoo82a7e0rk')&expand=posterId`
+          `http://127.0.0.1:8090/api/collections/library/records?filter=(userId='${userId}')&expand=posterId`
         )
         .then((res) => res.data.items[0]);
       setPosters(records['@expand'].posterId);
@@ -44,7 +45,7 @@ const LibraryPage: NextPage = () => {
       >
         Poster Library
       </Typography>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} marginTop={1}>
         {posters.map((el) => (
           <Grid key={el.id} xs={6} sm={3}>
             <Card>
