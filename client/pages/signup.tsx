@@ -126,15 +126,15 @@ const Home: NextPage = () => {
   const sendEmail = async () => {
     try {
       if (emailreference.current) {
-        // await axios
-        //   .post('http://54.242.34.13:4000/email', {
-        //     email: emailreference.current.value,
-        //     otp: otp,
-        //   })
-        //   .then((data) => {
-        //     console.log(data);
-        //   })
-        //   .catch((err) => console.log(err));
+        await axios
+          .post('http://localhost:4000/email', {
+            email: emailreference.current.value,
+            otp: otp,
+          })
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((err) => console.log(err));
 
         await client.users.requestVerification(emailreference.current.value)
       }
