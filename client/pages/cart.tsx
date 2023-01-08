@@ -9,30 +9,32 @@ import PocketBase from 'pocketbase';
 import Button from '@mui/material/Button';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { PosterType } from '../home';
-import { CartCard } from '../../components/CartCard/CartCard';
+import { PosterType } from './home';
+import { CartCard } from '../components/CartCard/CartCard';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
 const CartPage: NextPage = () => {
+
   const client = new PocketBase('http://127.0.0.1:8090');
 
-  // const userDet = client?.authStore?.model?.profile!;
+  const userDet = client?.authStore?.model?.profile!;
 
   const [posters, setPosters] = useState<PosterType[]>([]);
   const [cartId, setCartId] = useState('');
 
-  const userid = 'vaciwcxwr8hu6e1';
+  const userid = userDet?.id
 
-  useEffect(() => {
+  useEffect(() => {   
     (async () => {
+
+
       const records = await axios
         .get(
           `http://127.0.0.1:8090/api/collections/cart/records?filter=(userId='${userid}')&expand=posterId`
         )
         .then((res) => {
-          console.log(res.data);
           res.data.items.length > 0 ? setCartId(res.data.items[0].id) : null;
           return res.data.items.length > 0 ? res.data.items[0] : [];
         });
@@ -46,7 +48,6 @@ const CartPage: NextPage = () => {
     try {
       const ids: string[] = [];
       posters.forEach((el) => (el.id !== id ? ids.push(el.id) : null));
-      // alert(userDet?.id);
 
       const records = await axios.patch(
         `http://127.0.0.1:8090/api/collections/cart/records/${cartId}`,
@@ -63,7 +64,6 @@ const CartPage: NextPage = () => {
 
   return (
     <Container maxWidth='md' sx={{ position: 'relative' }}>
-      <h1>{userid}</h1>
       <Typography
         variant='h5'
         sx={{ marginTop: 2, fontWeight: 500, marginBottom: 2.5 }}

@@ -112,3 +112,12 @@ Content-Type: application/json
 
 ###
 GET http://172.22.251.148:4000/images
+
+###
+POST http://172.17.0.1:4000/email HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "saifkhan501721@gmail.com",
+    "otp": "2348787"
+}

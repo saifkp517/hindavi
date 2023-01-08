@@ -289,8 +289,8 @@ app.post('/email', (req, res) => {
         secure: false,
         requireTLS: true,
         auth: {
-            user: process.env.EMAIL,
-            pass: process.env.PASSWD,
+            user: process.env.email,
+            pass: process.env.passwd,
         }
     })
 
