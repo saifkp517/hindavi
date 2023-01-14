@@ -57,21 +57,26 @@ const Home: NextPage = () => {
         //     setErr(err.response.data);
         //   });
 
-        const authData = await client.users.authViaEmail(
+
+        client.users.authViaEmail(
           emailRef.current.value,
           passwordRef.current.value
-        );
+        ).then(data => {
+          console.log(data);
+          client.records.getFullList('profiles')
+          .then(data => console.log(data))
+          //router.push('/home');
+        })
+          .catch(err => {
+            console.log("no")
+            setState({ ...state, error: "Incorrect Email or Password", showError: true });
+            return console.log(err)
+          })
 
         //console.log(authData.user.profile.username);
 
-        console.log(client.authStore.isValid);
-        console.log(authData);
 
         // after the above you can also access the auth data from the authStore
-
-        if (client.authStore.isValid == true) {
-          router.push('/home');
-        }
       }
     } catch (err: any) {
       if (err.message == 'Failed to authenticate.') {

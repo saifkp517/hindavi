@@ -39,6 +39,7 @@
     "react-dom": "latest",
     "react-razorpay": "^1.1.5",
     "react-router-dom": "^6.3.0",
+    "react-uuid": "^2.0.0",
     "sass": "^1.54.0",
     "tls": "^0.0.1",
     "universal-cookie": "^4.0.4"

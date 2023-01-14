@@ -111,20 +111,20 @@ app.post('/userinfo', async (req, res) => {
     })
 })
 
-app.post('/emailverify', async (req, res) => {
-    const { email } = req.body;
+// app.post('/emailverify', async (req, res) => {
+//     const { email } = req.body;
 
-    const verified = await prisma.user.update({
-        where: {
-            email: email
-        },
-        data: {
-            verified: true
-        }
-    })
+//     const verified = await prisma.user.update({
+//         where: {
+//             email: email
+//         },
+//         data: {
+//             verified: true
+//         }
+//     })
 
-    if (verified) res.json("Email has been verified!")
-})
+//     if (verified) res.json("Email has been verified!")
+// })
 
 
 app.post('/signin', async (req, res) => {
@@ -225,17 +225,6 @@ app.post('/upload-image', async (req, res) => {
     }).catch(err => console.log(err));
 })
 
-app.get("/image", (req, res) => {
-    const deleteParams = {
-        Bucket: process.env.BUCKET_NAME,
-        Key: 'next-s3-uploads/186d7ded-e3cf-41c2-853a-bb9047c863b2/wall.png'
-    }
-
-    s3.getObject(deleteParams, (err, data) => {
-        if (err) return console.log(err, err.stack);
-        console.log(data);
-    })
-})
 
 app.get('/images', async (req, res) => {
 
@@ -247,35 +236,36 @@ app.get('/images', async (req, res) => {
 
 })
 
-app.get('/delete', (req, res) => {
-    const imageurl = "sdf";
-
-    const deleteParams = {
-        Bucket: process.env.BUCKET_NAME,
-        Key: 'next-s3-uploads/0b4cf6b1-2aa1-4a89-bf83-7b298fd011e7/first%20ace.png'
-    }
-
-    s3.deleteObject(deleteParams, (err, data) => {
-        if (err) return console.log(err, err.stack);
-        console.log(data);
-    })
-
-
-})
 
 app.post('/forgotpassword', async (req, res) => {
-    const { email, newpassword } = req.body;
+    const { email } = req.body;
 
-    await prisma.user.update({
-        where: {
-            email: email
-        },
-        data: {
-            password: newpassword
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        port: 587,
+        secure: false,
+        requireTLS: true,
+        auth: {
+            user: process.env.email,
+            pass: process.env.passwd,
         }
     })
 
-    res.status(200).json({ message: "updates email" })
+    let mailOptions = {
+        to: email,
+        subject: 'HINDAVI GRAPHICS STUDIOS',
+        text: `In order to register and get yourself verified please refer to the number given below
+        Your OTT number is ${otp}`
+    }
+
+    transporter.sendMail(mailOptions, (err, info) => {
+        if (err) console.log(err)
+        else {
+            console.log('email sent' + info.response)
+            res.json("Email has been sent Successfully!")
+        }
+    })
+
 })
 
 
